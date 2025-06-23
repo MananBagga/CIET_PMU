@@ -1,0 +1,50 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Signup</title>
+  {% tailwind_css %}
+</head>
+<body class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <form method="post" class="bg-white p-6 rounded shadow w-full max-w-md space-y-4">
+    {% csrf_token %}
+    <h2 class="text-2xl font-semibold mb-4 text-center">Create Account</h2>
+
+    <div>
+      <label for="id_username" class="block text-sm font-medium text-gray-700">Username</label>
+      {{ form.username }}
+      {% if form.username.errors %}
+        <p class="text-red-600 text-sm">{{ form.username.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <label for="id_password1" class="block text-sm font-medium text-gray-700">Password</label>
+      {{ form.password1 }}
+      {% if form.password1.errors %}
+        <p class="text-red-600 text-sm">{{ form.password1.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <label for="id_password2" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+      {{ form.password2 }}
+      {% if form.password2.errors %}
+        <p class="text-red-600 text-sm">{{ form.password2.errors.0 }}</p>
+      {% endif %}
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="text-red-600 text-sm">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">Sign Up</button>
+
+    <p class="mt-3 text-center text-sm text-gray-600">
+      Already have an account? <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Login</a>
+    </p>
+  </form>
+</body>
+</html>
