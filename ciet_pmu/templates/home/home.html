@@ -1,0 +1,172 @@
+{% load static tailwind_tags %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static "theme/css/styles.css" %}"> 
+    {% comment %} <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script> {% endcomment %}
+
+    {% tailwind_css %}
+  </head>
+  <body>
+    <!-- TOP BAR -->
+    <div
+      class="bg-gray-700 text-white text-sm sticky top-0 z-50 p-2.5 shadow-sm"
+    >
+      <div
+        class="max-w-screen-xl mx-auto flex flex-wrap justify-between items-center px-4 py-1.5"
+      >
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-1">
+            <span>🕒</span><span id="time"></span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span>📅</span><span id="date"></span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-sm flex-wrap justify-end">
+          <a
+            href="#main-content"
+            class="hover:underline focus:outline focus:ring-2"
+            >Skip to main content</a
+          >
+          |
+          <a
+            href="#navigation"
+            class="hover:underline focus:outline focus:ring-2"
+            >Skip to navigation</a
+          >
+          |
+          <a href="#" class="hover:underline focus:outline focus:ring-2"
+            >Screen Reader Access</a
+          >
+          |
+          <span class="flex items-center gap-1"
+            >Text Size:
+            <button class="hover:underline px-1 focus:outline focus:ring-2">
+              A–
+            </button>
+            <button class="hover:underline px-1 focus:outline focus:ring-2">
+              A
+            </button>
+            <button class="hover:underline px-1 focus:outline focus:ring-2">
+              A+
+            </button>
+          </span>
+          |
+          <select
+            aria-label="Language"
+            class="bg-gray-700 text-white focus:outline-none focus:ring-2"
+          >
+            <option>Language</option>
+            <option>English</option>
+            <option>हिन्दी</option>
+          </select>
+          <button
+            title="Toggle dark mode"
+            class="ml-1 focus:outline focus:ring-2"
+          >
+            🌙
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <header id="navigation" class="bg-white shadow sticky top-[2.25rem] z-40">
+      <div
+        class="max-w-screen-xl mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <!-- Logo + Title -->
+        <div class="flex items-center gap-4">
+          <img src="{% static "images/home_page_images/ciet-full-logo.jpg" %}"
+          alt="CIET Logo" class="h-12 w-auto" />
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="hidden md:flex items-center gap-6 font-medium text-sm">
+          <a href="#" class="hover:text-blue-700 transition">Home</a>
+
+          <div class="relative group">
+            <button
+              class="hover:text-blue-700 transition focus:outline focus:ring-2"
+            >
+              About
+            </button>
+          </div>
+
+          <div class="relative group">
+            <button
+              class="hover:text-blue-700 transition focus:outline focus:ring-2"
+            >
+              Departments
+            </button>
+          </div>
+
+          <div class="relative group">
+            <button
+              class="hover:text-blue-700 transition focus:outline focus:ring-2"
+            >
+              Initiatives
+            </button>
+          </div>
+
+          <div class="relative group">
+            <button
+              class="hover:text-blue-700 transition focus:outline focus:ring-2"
+            >
+              More
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <section class="bg-gray-100 pt-16 pb-24 text-center">
+      <div class="max-w-4xl mx-auto px-4">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6" data-aos="fade-up">
+          Project management Unit
+        </h1>
+        <p class="text-lg text-gray-600 mb-8 delay-150" data-aos="fade-up">
+          Fund management application by CIET, NCERT
+        </p>
+        <a href="login/"
+          ><button
+            onclick="openModal()"
+            class="bg-blue-600 cursor-pointer text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+          >
+            Login
+          </button></a
+        >
+        <a href="signup/"
+          ><button
+            onclick="openModal()"
+            class="bg-blue-600 cursor-pointer text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+          >
+            Signup
+          </button></a
+        >
+      </div>
+    </section>
+
+    <!-- ABOUT US SECTION -->
+    <section class="bg-white py-16">
+      <div class="max-w-5xl mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">
+          About CIET
+        </h2>
+        <p class="text-gray-600 text-lg mb-6 delay-100" data-aos="fade-up">
+          The Central Institute of Educational Technology (CIET), a unit of
+          NCERT, focuses on improving education through technology. The Budget
+          Management System helps streamline fund management with transparency
+          and accountability.
+        </p>
+      </div>
+    </section>
+
+    <script src="{% static 'js/script.js' %}"></script>
+  </body>
+</html>

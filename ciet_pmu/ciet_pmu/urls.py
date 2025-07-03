@@ -25,6 +25,7 @@ path('admin/', admin.site.urls),
     path('signup/', views.signup, name='signup'),
     path('login/', views.login, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('user_admin/', include('user_admin.urls')),
     
     path("__reload__/", include("django_browser_reload.urls")),
 ]

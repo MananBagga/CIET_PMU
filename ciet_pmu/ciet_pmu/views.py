@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 
 def home(req):
-    return render(req, 'home.html')
+    return render(req, 'home/home.html')
 
 def signup(request):
     if request.method == 'POST':
