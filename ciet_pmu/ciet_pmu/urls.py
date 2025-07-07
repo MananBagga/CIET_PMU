@@ -22,10 +22,20 @@ from django.contrib import admin
 urlpatterns = [
 path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+<<<<<<< HEAD
     path('signup/', views.signup, name='signup'),
     path('login/', views.login, name='login'),
     # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', include('user_admin.urls')),
     
+=======
+
+    # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('user_admin/', include('user_admin.urls')),
+    path('', include('signup.urls')),
+    path('', include('login.urls')),
+
+>>>>>>> 7ebaad400bd5dd141310415e70e97112c4cd6c9d
     path("__reload__/", include("django_browser_reload.urls")),
+    
 ]
