@@ -1,8 +1,4 @@
 from django.db import models
-<<<<<<< HEAD
-
-# Create your models here.
-=======
 from django.utils import timezone
 
 # Create your models here.
@@ -98,4 +94,4 @@ class programs(models.Model):
 #     class Meta:
 #         managed = False
 #         db_table = 'Task'
->>>>>>> 7ebaad400bd5dd141310415e70e97112c4cd6c9d
+

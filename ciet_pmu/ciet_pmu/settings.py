@@ -41,13 +41,9 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'django_browser_reload',
-<<<<<<< HEAD
     'user_admin', 
-=======
-    'user_admin',
     'signup',
     'login',
->>>>>>> 7ebaad400bd5dd141310415e70e97112c4cd6c9d
 ]
 
 TAILWIND_APP_NAME = 'theme' # This is the name of the app that will be used to generate the tailwind files
