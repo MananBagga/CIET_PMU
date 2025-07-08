@@ -1,0 +1,97 @@
+{% load static tailwind_tags %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIET PMU Admin Dashboard</title>
+  {% tailwind_css %}
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-900 antialiased">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-[20%] bg-gradient-to-b from-indigo-400 to-indigo-900 text-white p-6 rounded-lg shadow-lg">
+      {% comment %} <div class="mb-8">
+        <img src="{% static 'images/home_page_images/ciet-full-logo.jpg' %}" alt="CIET PMU Logo" class="h-12">
+      </div> {% endcomment %}
+      <nav>
+        <button onclick="showSection('overview')" class="w-full text-left p-2 mb-2  hover:bg-gray-100 rounded-lg transition-colors text-black"><img src="{% static "images/admin_dashboard_images/dashboard.svg" %}" alt="dashboard">Dashboard</button>
+        <a href="{% url 'projects' %}"><button onclick="showSection('projects')" class="w-full text-left p-2 mb-2  hover:bg-gray-100 rounded-lg transition-colors text-black"><img src="{% static "images/admin_dashboard_images/projects.svg" %}" alt="projects">Projects</button></a>
+        <a href="{% url 'budget' %}"><button  class="w-full text-left p-2 mb-2 hover:bg-gray-100 rounded-lg transition-colors text-black"><img src="{% static "images/admin_dashboard_images/budget.svg" %}" alt="budget">Budget</button></a>
+        {% comment %} <button onclick="showSection('reports')" class="w-full text-left p-2 bg-gray-400 hover:bg-indigo-600 rounded-lg transition-colors">Reports</button> {% endcomment %}
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-8 overflow-auto">
+      <!-- Overview Section -->
+      <section id="overview" class="section active fade-in">
+        <h2 class="text-2xl font-bold mb-4">CIET PMU Overview</h2>
+        <div class="grid grid-cols-2 gap-6">
+          <div class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-lg font-semibold">Project Progress</h3>
+            <div class="h-32">
+              <!-- Placeholder for bar chart -->
+              <div class="bg-gray-200 h-full rounded"></div>
+            </div>
+          </div>
+          <div class="bg-white p-4 rounded-lg shadow">
+            <h3 class="text-lg font-semibold">Unit Distribution</h3>
+            <div class="h-32 flex items-center justify-center bg-gray-200 rounded">
+              100%
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 bg-white p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold">Total Projects</h3>
+          <p class="text-2xl">50</p>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      
+
+      <!-- Budget Section -->
+      
+
+      <!-- Reports Section -->
+      <section id="reports" class="section fade-in">
+        <h2 class="text-2xl font-bold mb-4">Reports</h2>
+        <div class="bg-white p-4 rounded-lg shadow">
+          <h3 class="text-lg font-semibold">Generated Reports</h3>
+          <p class="text-gray-600">Detailed reports will be displayed here.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    function showSection(sectionId) {
+      const sections = document.getElementsByClassName('section');
+      for (let section of sections) {
+        section.classList.remove('active');
+      }
+      document.getElementById(sectionId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
