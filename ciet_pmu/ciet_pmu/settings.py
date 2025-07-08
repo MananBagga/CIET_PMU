@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'signup',
     'login',
     'admin_login',
+    'user_dashboard',
 ]
 
 TAILWIND_APP_NAME = 'theme' # This is the name of the app that will be used to generate the tailwind files
