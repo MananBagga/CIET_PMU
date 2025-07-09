@@ -4,18 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Set Annual Budget</title>
+    <title>Annual Budget</title>
      {% tailwind_css %}
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        .section {
+            display: block;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-100 font-sans text-gray-900 antialiased">
     <section id="budget" class="section fade-in">
-        <h2 class="text-2xl font-bold mb-4">Set Annual Budget</h2>
+        <h2 class="text-2xl font-bold mb-4">Annual Budget</h2>
+        <div class="bg-white p-4 rounded-lg shadow mb-6 flex justify-center">
+          <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Set Annual Budget</h2>
+        <form id="budgetForm" onsubmit="event.preventDefault(); submitBudget();" class="space-y-6">
+            <div>
+                <label for="amount" class="block text-sm font-medium text-gray-700">Budget Amount (INR)</label>
+                <input 
+                    type="number" 
+                    id="amount" 
+                    name="amount" 
+                    min="0" 
+                    step="0.01" 
+                    required 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter amount (e.g., 10000.00)"
+                >
+            </div>
+            <div>
+                <button 
+                    type="submit" 
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                    Set Budget
+                </button>
+            </div>
+        </form>
+        <p id="message" class="mt-4 text-center text-sm text-gray-600"></p>
+    </div>
+
+        </div>
         <div class="bg-white p-4 rounded-lg shadow">
-          <h3 class="text-lg font-semibold">Recent Transactions</h3>
+          <h3 class="text-lg font-semibold">Budget History</h3>
           <table class="w-full text-left">
             <thead>
               <tr class="border-b">
-                <th class="p-2">Status</th>
                 <th class="p-2">Date</th>
                 <th class="p-2">Type</th>
                 <th class="p-2">Amount</th>
@@ -24,15 +69,13 @@
             </thead>
             <tbody>
               <tr class="border-b">
-                <td class="p-2 text-green-500">Completed</td>
                 <td class="p-2">2025-07-01</td>
                 <td class="p-2">Deposit</td>
                 <td class="p-2">5.34</td>
                 <td class="p-2">Deposit to balance</td>
               </tr>
               <tr class="border-b">
-                <td class="p-2 text-orange-500">Pending</td>
-                <td class="p-2">2025-07-02</td>
+               <td class="p-2">2025-07-02</td>
                 <td class="p-2">Withdrawal</td>
                 <td class="p-2">-3.45</td>
                 <td class="p-2">Tokens withdrawn</td>

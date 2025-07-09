@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from user_admin.models import User 
+from admin_dashboard.models import User
 from django.contrib import messages
 import re 
 
