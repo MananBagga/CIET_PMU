@@ -9,49 +9,8 @@
   </head>
 
   <body class="bg-gray-50 font-sans text-gray-800 animate-fade-in-up">
-    <nav
-      class="flex items-center justify-between p-6 bg-white shadow-xl border-b-2 border-gray-100 relative z-50 animate-slide-in-up"
-    >
-      <div class="flex items-center space-x-6">
-        <img src="{% static "images/home_page_images/ciet-full-logo.jpg" %}"
-        alt="CIET PMU Logo" class="h-14 transition-transform duration-300
-        hover:scale-105">
-        <span class="text-2xl font-bold text-gray-800">CIET PMU</span>
-      </div>
-      <div class="space-x-10">
-        <a
-          href="/"
-          class="text-gray-700 hover:text-purple-800 font-medium transition-colors duration-300 animate-slide-in-right"
-          style="animation-delay: 0.1s"
-          >Home</a
-        >
-        <a
-          href="/features"
-          class="text-gray-700 hover:text-purple-800 font-medium transition-colors duration-300 animate-slide-in-right"
-          style="animation-delay: 0.2s"
-          >Features</a
-        >
-        <a
-          href="/pricing"
-          class="text-gray-700 hover:text-purple-800 font-medium transition-colors duration-300 animate-slide-in-right"
-          style="animation-delay: 0.3s"
-          >Pricing</a
-        >
-        <a
-          href="/testimonials"
-          class="text-gray-700 hover:text-purple-800 font-medium transition-colors duration-300 animate-slide-in-right"
-          style="animation-delay: 0.4s"
-          >Testimonials</a
-        >
-      </div>
-      <div class="space-x-4">
-        <a
-          href="/login"
-          class="text-white bg-purple-700 hover:bg-purple-800 px-6 py-3 rounded-full font-semibold transition-colors duration-300 hover:scale-105"
-          >Login</a
-        >
-      </div>
-    </nav>
+    
+    {% include "partials/navbar.html" %}
 
     <div
       class="flex items-center justify-center min-h-screen p-12 relative z-10"
