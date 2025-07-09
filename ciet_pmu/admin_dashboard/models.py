@@ -73,6 +73,17 @@ class User(models.Model):
         managed = False
         db_table = 'User'
 
+class PMUAdmin(models.Model):
+    username = models.TextField(unique=True)
+    password = models.TextField()
+    role = models.TextField(blank=True, null=True)
+    name = models.TextField()
+    email = models.TextField(unique=True)
+
+    class Meta:
+        managed = False
+        db_table = 'PMUAdmin'
+
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
