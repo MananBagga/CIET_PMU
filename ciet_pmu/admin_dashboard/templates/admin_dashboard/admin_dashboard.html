@@ -26,20 +26,10 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-900 antialiased">
+<body class="bg-gray-100 font-sans text-gray-900 antialiased ">
   <div class="flex h-screen">
-    <!-- Sidebar -->
-    <div class="w-[20%] bg-gradient-to-b from-indigo-400 to-indigo-900 text-white p-6 rounded-lg shadow-lg">
-      {% comment %} <div class="mb-8">
-        <img src="{% static 'images/home_page_images/ciet-full-logo.jpg' %}" alt="CIET PMU Logo" class="h-12">
-      </div> {% endcomment %}
-      <nav>
-        <button onclick="showSection('overview')" class="w-full text-left p-2 mb-2  hover:bg-gray-100 rounded-lg transition-colors text-black"><img src="{% static "images/admin_dashboard_images/dashboard.svg" %}" alt="dashboard">Dashboard</button>
-        <a href="{% url 'projects' %}"><button onclick="showSection('projects')" class="w-full text-left p-2 mb-2  hover:bg-gray-100 rounded-lg transition-colors text-black"><img src="{% static "images/admin_dashboard_images/projects.svg" %}" alt="projects">Projects</button></a>
-        <a href="{% url 'budget' %}"><button  class="w-full text-left p-2 mb-2 hover:bg-gray-100 rounded-lg transition-colors text-black"><img src="{% static "images/admin_dashboard_images/budget.svg" %}" alt="budget">Budget</button></a>
-        {% comment %} <button onclick="showSection('reports')" class="w-full text-left p-2 bg-gray-400 hover:bg-indigo-600 rounded-lg transition-colors">Reports</button> {% endcomment %}
-      </nav>
-    </div>
+
+    {% include "partials/admin_sidebar.html" %}
 
     <!-- Main Content -->
     <div class="flex-1 p-8 overflow-auto">
@@ -66,13 +56,6 @@
           <p class="text-2xl">50</p>
         </div>
       </section>
-
-      <!-- Projects Section -->
-      
-
-      <!-- Budget Section -->
-      
-
       <!-- Reports Section -->
       <section id="reports" class="section fade-in">
         <h2 class="text-2xl font-bold mb-4">Reports</h2>

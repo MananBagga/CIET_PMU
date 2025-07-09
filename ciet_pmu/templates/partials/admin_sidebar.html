@@ -1,0 +1,21 @@
+{% load static %}
+{% load static tailwind_tags %}
+
+<div class="fixed top-0 flex justify-center left-0 h-screen w-[20%] bg-gradient-to-b from-indigo-400 to-indigo-900 text-white p-6 shadow-lg z-50">
+  <nav class="space-y-2">
+    <a href="{% url "admin_dashboard" %}"><button class="w-full flex items-center gap-2 text-left p-2 hover:bg-gray-100 rounded-lg transition-colors text-black">
+      <img src="{% static 'images/admin_dashboard_images/dashboard.svg' %}" alt="dashboard" class="w-5 h-5"> Dashboard
+    </button></a>
+    <a href="{% url 'projects' %}">
+      <button class="w-full flex items-center gap-2 text-left p-2 hover:bg-gray-100 rounded-lg transition-colors text-black">
+        <img src="{% static 'images/admin_dashboard_images/projects.svg' %}" alt="projects" class="w-5 h-5"> Projects
+      </button>
+    </a>
+    <a href="{% url 'budget' %}">
+      <button class="w-full flex items-center gap-2 text-left p-2 hover:bg-gray-100 rounded-lg transition-colors text-black">
+        <img src="{% static 'images/admin_dashboard_images/budget.svg' %}" alt="budget" class="w-5 h-5"> Budget
+      </button>
+    </a>
+    {# <button onclick="showSection('reports')" class="w-full text-left p-2 bg-gray-400 hover:bg-indigo-600 rounded-lg transition-colors">Reports</button> #}
+  </nav>
+</div>

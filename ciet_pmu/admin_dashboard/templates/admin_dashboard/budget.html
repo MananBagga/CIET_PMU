@@ -24,7 +24,11 @@
     </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-900 antialiased">
-    <section id="budget" class="section fade-in">
+
+  <div class="flex h-screen">
+    {% include "partials/admin_sidebar.html" %}
+
+    <section id="budget" class="section w-full flex justify-center items-center ml-[20%] p-6 overflow-auto fade-in">
         <h2 class="text-2xl font-bold mb-4">Annual Budget</h2>
         <div class="bg-white p-4 rounded-lg shadow mb-6 flex justify-center">
           <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -84,5 +88,6 @@
           </table>
         </div>
       </section>
+  </div>
 </body>
 </html>
