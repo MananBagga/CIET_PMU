@@ -14,6 +14,8 @@ def login(request):
             return render(request, 'login/login.html')
     
     if User.objects.filter(username=username, password=password).exists():
+        request.session['username'] = username
+        
         return redirect('user_dashboard')
     else:
         messages.error(request, 'Invalid username or password.')
