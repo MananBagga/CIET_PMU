@@ -1,80 +1,84 @@
 {% load static tailwind_tags %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CIET PMU Admin Dashboard</title>
-  {% tailwind_css %}
-  <style>
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CIET PMU Admin Dashboard</title>
+    <script src="{% static 'js/chart.js' %}"></script>
+    {% tailwind_css %}
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
-      to {
-        opacity: 1;
+      .fade-in {
+        animation: fadeIn 0.5s ease-in-out forwards;
       }
-    }
-    .fade-in {
-      animation: fadeIn 0.5s ease-in-out forwards;
-    }
-    .section {
-      display: none;
-    }
-    .section.active {
-      display: block;
-    }
-  </style>
-</head>
-<body class="bg-gray-100 font-sans text-gray-900 antialiased ">
-  <div class="flex h-screen">
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans text-gray-900 antialiased">
+    <div class="flex h-screen">
+      {% include "partials/admin_sidebar.html" %}
 
-    {% include "partials/admin_sidebar.html" %}
-
-    <!-- Main Content -->
-    <div class="flex-1 p-8 overflow-auto">
-      <!-- Overview Section -->
-      <section id="overview" class="section active fade-in">
-        <h2 class="text-2xl font-bold mb-4">CIET PMU Overview</h2>
-        <div class="grid grid-cols-2 gap-6">
-          <div class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-lg font-semibold">Project Progress</h3>
-            <div class="h-32">
-              <!-- Placeholder for bar chart -->
-              <div class="bg-gray-200 h-full rounded"></div>
-            </div>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow">
-            <h3 class="text-lg font-semibold">Unit Distribution</h3>
-            <div class="h-32 flex items-center justify-center bg-gray-200 rounded">
-              100%
-            </div>
-          </div>
+      <!-- Main Content -->
+      <div class="flex-1 p-8 overflow-auto">
+        <div class="bg-white mt-10 p-4 rounded-lg shadow">
+          <canvas id="barChart"></canvas>
         </div>
-        <div class="mt-6 bg-white p-4 rounded-lg shadow">
-          <h3 class="text-lg font-semibold">Total Projects</h3>
-          <p class="text-2xl">50</p>
-        </div>
-      </section>
-      <!-- Reports Section -->
-      <section id="reports" class="section fade-in">
-        <h2 class="text-2xl font-bold mb-4">Reports</h2>
-        <div class="bg-white p-4 rounded-lg shadow">
-          <h3 class="text-lg font-semibold">Generated Reports</h3>
-          <p class="text-gray-600">Detailed reports will be displayed here.</p>
-        </div>
-      </section>
+      </div>
     </div>
-  </div>
 
-  <script>
-    function showSection(sectionId) {
-      const sections = document.getElementsByClassName('section');
-      for (let section of sections) {
-        section.classList.remove('active');
+    <script>
+      const labels = {{ labels|safe }};
+      const data = {
+        labels: labels,
+        datasets: [{
+          label: 'Monthly Data',
+          data: {{ data|safe }},
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      };
+
+      const config = {
+        type: 'bar',
+        data: data,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      };
+
+      new Chart(
+        document.getElementById('barChart'),
+        config
+      );
+    </script>
+
+    <script>
+      function showSection(sectionId) {
+        const sections = document.getElementsByClassName("section");
+        for (let section of sections) {
+          section.classList.remove("active");
+        }
+        document.getElementById(sectionId).classList.add("active");
       }
-      document.getElementById(sectionId).classList.add('active');
-    }
-  </script>
-</body>
+    </script>
+  </body>
 </html>
