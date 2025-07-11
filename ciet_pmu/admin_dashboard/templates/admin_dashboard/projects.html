@@ -31,6 +31,10 @@
                             <option value="">Select Coordinator</option>
                             {% for user in user %}
                                 <option value="{{ user.id }}">{{ user.name }}</option>
+
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.get_full_name|default:user.username }}</option>
+
                             {% endfor %}
                         </select>
                         <span class="error-message text-red-500 text-sm hidden">Please select a coordinator</span>

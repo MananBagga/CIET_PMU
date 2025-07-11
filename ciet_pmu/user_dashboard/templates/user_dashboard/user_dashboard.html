@@ -162,6 +162,7 @@
                 </div>
             </div>
 
+
             <div id="form-step-4" class="step hidden">
                 <h2 validated="text-xl font-semibold text-gray-800 mb-4">Manpower Details</h2>
                 <p class="text-gray-600 mb-6">Enter Manpower Information.</p>
@@ -187,83 +188,124 @@
             </div>
             </div>
         </div>
+
+           <div id="form-step-4" class="step hidden">
+  <h2 validated="text-xl font-semibold text-gray-800 mb-4">Manpower Details</h2>
+  <p class="text-gray-600 mb-6">Enter Manpower Information.</p>
+  <div class="space-y-4">
+    <div>
+      <input type="text" id="manpower-count" placeholder="Number of People" class="w-full p-2 border rounded-lg" required>
+      <span class="error-message text-red-500 text-sm hidden">Please enter manpower count</span>
+
     </div>
+    <div>
+      <input type="date" id="manpower-date" placeholder="Manpower Date" class="w-full p-2 border rounded-lg" required>
+      <span class="error-message text-red-500 text-sm hidden">Please select date</span>
+    </div>
+    <div>
+      <input type="number" id="manpower-budget" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+      <span class="error-message text-red-500 text-sm hidden">Please enter manpower budget</span>
+    </div>
+  </div>
+  <div class="mt-6 flex justify-between">
+    <button id="prev-3" class="px-4 py-2 bg-gray-200 rounded-lg">Previous</button>
+    <button id="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg">Submit</button>
+  </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const steps = document.querySelectorAll('.step');
-            const nextButtons = document.querySelectorAll('[id^="next-"]');
-            const prevButtons = document.querySelectorAll('[id^="prev-"]');
-            const submitButton = document.getElementById('submit');
-            let currentStep = 1;
-            const formData = {};
+<!-- 2. After the step container, show program card dynamically -->
+<div id="submitted-program" class="max-w-4xl mx-auto p-6 hidden">
+  <div class="bg-white shadow-md rounded-lg p-4 mb-6">
+    <h3 class="text-xl font-bold text-gray-800 mb-2" id="submitted-program-title"></h3>
+    <div class="flex gap-4">
+      <button id="view-program" class="px-4 py-2 bg-blue-500 text-white rounded">View Program</button>
+      <button id="edit-program" class="px-4 py-2 bg-yellow-500 text-white rounded">Edit Program</button>
+    </div>
+  </div>
+</div>
 
-            function validateStep(step) {
-                const inputs = steps[step - 1].querySelectorAll('input, select');
-                let isValid = true;
-                inputs.forEach(input => {
-                    const errorMessage = input.nextElementSibling;
-                    if (!input.value.trim() || (input.tagName === 'SELECT' && input.value === '')) {
-                        isValid = false;
-                        errorMessage.classList.remove('hidden');
-                        input.classList.add('border-red-500');
-                    } else {
-                        errorMessage.classList.add('hidden');
-                        input.classList.remove('border-red-500');
-                        formData[input.id] = input.value;
-                    }
-                });
-                const nextButton = document.getElementById(`next-${step}`);
-                if (nextButton) nextButton.disabled = !isValid;
-                return isValid;
-            }
+<!-- 3. Update JS to handle these features -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const steps = document.querySelectorAll('.step');
+    const nextButtons = document.querySelectorAll('[id^="next-"]');
+    const prevButtons = document.querySelectorAll('[id^="prev-"]');
+    const submitButton = document.getElementById('submit');
+    let currentStep = 1;
+    const formData = {};
 
-            function updateReviewStep() {
-                document.getElementById('review-program-type').textContent = formData['program-type'] || '';
-                document.getElementById('review-program-title').textContent = formData['program-title'] || '';
-                document.getElementById('review-kpi-name').textContent = formData['kpi-name'] || '';
-                document.getElementById('review-kpi-target').textContent = formData['kpi-target'] || '';
-                document.getElementById('review-workshop-title').textContent = formData['workshop-title'] || '';
-                document.getElementById('review-workshop-date').textContent = formData['workshop-date'] || '';
-                document.getElementById('review-meeting-title').textContent = formData['meeting-title'] || '';
-                document.getElementById('review-meeting-date').textContent = formData['meeting-date'] || '';
-            }
+    function validateStep(step) {
+      const inputs = steps[step - 1].querySelectorAll('input, select');
+      let isValid = true;
+      inputs.forEach(input => {
+        const errorMessage = input.nextElementSibling;
+        if (!input.value.trim() || (input.tagName === 'SELECT' && input.value === '')) {
+          isValid = false;
+          errorMessage.classList.remove('hidden');
+          input.classList.add('border-red-500');
+        } else {
+          errorMessage.classList.add('hidden');
+          input.classList.remove('border-red-500');
+          formData[input.id] = input.value;
+        }
+      });
+      const nextButton = document.getElementById(`next-${step}`);
+      if (nextButton) nextButton.disabled = !isValid;
+      return isValid;
+    }
 
-            steps.forEach(step => {
-                const inputs = step.querySelectorAll('input, select');
-                inputs.forEach(input => {
-                    input.addEventListener('input', () => validateStep(currentStep));
-                });
-            });
+    steps.forEach(step => {
+      const inputs = step.querySelectorAll('input, select');
+      inputs.forEach(input => {
+        input.addEventListener('input', () => validateStep(currentStep));
+      });
+    });
 
-            nextButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    if (validateStep(currentStep)) {
-                        steps[currentStep - 1].classList.add('hidden');
-                        currentStep++;
-                        steps[currentStep - 1].classList.remove('hidden');
-                        if (currentStep === 5) updateReviewStep();
-                        validateStep(currentStep);
-                    }
-                });
-            });
+    nextButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        if (validateStep(currentStep)) {
+          steps[currentStep - 1].classList.add('hidden');
+          currentStep++;
+          steps[currentStep - 1].classList.remove('hidden');
+          validateStep(currentStep);
+        }
+      });
+    });
 
-            prevButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    steps[currentStep - 1].classList.add('hidden');
-                    currentStep--;
-                    steps[currentStep - 1].classList.remove('hidden');
-                    validateStep(currentStep);
-                });
-            });
+    prevButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        steps[currentStep - 1].classList.add('hidden');
+        currentStep--;
+        steps[currentStep - 1].classList.remove('hidden');
+        validateStep(currentStep);
+      });
+    });
 
-            submitButton.addEventListener('click', () => {
-                alert('Form submitted successfully!\n' + JSON.stringify(formData, null, 2));
-            });
+    submitButton.addEventListener('click', () => {
+      if (!validateStep(currentStep)) return;
+      // Hide form and show summary card
+      document.querySelector('.step').parentElement.classList.add('hidden');
+      const card = document.getElementById('submitted-program');
+      const title = document.getElementById('submitted-program-title');
+      title.textContent = formData['program-title'];
+      card.classList.remove('hidden');
+    });
 
-            // Initial validation for step 1
-            validateStep(1);
-        });
-    </script>
-</body>
-</html>
+    document.getElementById('view-program').addEventListener('click', () => {
+      alert(JSON.stringify(formData, null, 2));
+    });
+
+    document.getElementById('edit-program').addEventListener('click', () => {
+      currentStep = 1;
+      document.getElementById('submitted-program').classList.add('hidden');
+      document.querySelector('.step').parentElement.classList.remove('hidden');
+      steps.forEach((step, index) => {
+        step.classList.add('hidden');
+      });
+      steps[0].classList.remove('hidden');
+      validateStep(1);
+    });
+
+    validateStep(1);
+  });
+</script>
