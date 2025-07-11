@@ -27,6 +27,7 @@ path('admin/', admin.site.urls),
     path('', include('admin_login.urls')),
     path('', include('admin_dashboard.urls')),
     path('', include('user_dashboard.urls')),
+    
 
 
     path("__reload__/", include("django_browser_reload.urls")),
