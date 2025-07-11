@@ -9,18 +9,18 @@ def admin_login(request):
         username = request.GET.get('username', '').strip()
         password = request.GET.get('password', '')
 
-    if not username or not password:
-            messages.error(request, 'All fields are required.')
-            return render(request, 'login/login.html')
-    
-    if PMUAdmin.objects.filter(username=username, password=password).exists():
-        return redirect('admin_dashboard')
-    else:
-        messages.error(request, 'Invalid username or password.')
-        # user = User.objects.get(username=username, password=password)
-        # if user.role == 'Coordinator':
-        # else:
-        #     messages.error(request, 'You do not have permission to access this page.')
-        #     return render(request, 'login/login.html')
+        if not username or not password:
+                messages.error(request, 'All fields are required.')
+                return render(request, 'login/login.html')
+        
+        if PMUAdmin.objects.filter(username=username, password=password).exists():
+            return redirect('admin_dashboard')
+        else:
+            messages.error(request, 'Invalid username or password.')
+            # user = User.objects.get(username=username, password=password)
+            # if user.role == 'Coordinator':
+            # else:
+            #     messages.error(request, 'You do not have permission to access this page.')
+            #     return render(request, 'login/login.html')
 
     return render(request, 'admin_login/admin_login.html')
