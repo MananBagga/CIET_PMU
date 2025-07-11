@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from urllib3 import request
 from admin_dashboard.models import User
 from django.contrib import messages
 from django.contrib.auth import login, logout
