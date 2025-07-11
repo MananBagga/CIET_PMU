@@ -50,3 +50,6 @@ def projects(request):
         
     return render(request, 'admin_dashboard/projects.html', {'users': users})
 
+
+   
+

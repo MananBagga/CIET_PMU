@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
+from urllib3 import request
 from admin_dashboard.models import User
 from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
-def login(request):
 
+def login(request):
+    
     if request.method == 'GET':
         username = request.GET.get('username', '').strip()
         password = request.GET.get('password', '')
@@ -26,3 +30,8 @@ def login(request):
             #     return render(request, 'login/login.html')
 
     return render(request, 'login/login.html')
+
+def logout_view(request):
+    if 'username' in request.session:
+        del request.session['username']
+    return redirect('home')
