@@ -1,11 +1,12 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 class Annualbudget(models.Model):
     year = models.IntegerField()
     budget = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now, blank=True, null=True)
+    updated_at = models.DateTimeField(default=timezone.now, blank=True, null=True)
 
     class Meta:
         managed = False
