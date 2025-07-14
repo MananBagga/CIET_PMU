@@ -56,34 +56,41 @@
                     </div>
                 </div>
 
-<<<<<<< HEAD
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">My Assigned Programs</h2>
-            {% if programs_title %}
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">My Assigned Programs</h2>
+                {% if programs_title %}
                 <div class="space-y-4">
                     {% for program in programs %}
                         <div class="p-4 border rounded-lg bg-gray-50">
                             <p><strong>Program Type:</strong> {{ program_type }}</p>
                             <p><strong>Program Title:</strong> {{ program_title }}</p>
                             <p><strong>Budget:</strong> ₹{{ program_budget}}</p>
-                            {% comment %} <p><strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}</p> {% endcomment %}
-=======
-                <div id="form-step-2" class="step hidden">
+                            <p><strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div id="form-step-2" class="step hidden ">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">KPI Details</h2>
                     <p class="text-gray-600 mb-6">Enter KPI Information.</p>
-                    <div class="space-y-4">
-                        <div>
-                            <input type="text" id="kpi-name" placeholder="KPI Name" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please enter KPI name</span>
->>>>>>> 1ef19d69d2da0a1be38e21cb9a324e4fbff75954
+                    <div id="kpi-fields" class="space-y-4">
+                        <div class="kpi-field-set">
+                            <div>
+                                <input type="text" id="kpi-name-1" placeholder="KPI Name" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please enter KPI name</span>
+                            </div>
+                            <div>
+                                <input type="date" id="kpi-date-1" placeholder="KPI Date" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please select date</span>
+                            </div>
+                            <div>
+                                <input type="number" id="kpi-budget-1" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please enter KPI budget</span>
+                            </div>
                         </div>
-                        <div>
-                            <input type="date" id="kpi-date" placeholder="KPI Date" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please select date</span>
-                        </div>
-                        <div>
-                            <input type="number" id="kpi-budget" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please enter KPI budget</span>
-                        </div>
+                    </div>
+                    <div class="mt-4 flex space-x-2">
+                        <button id="add-kpi" class="px-4 py-2 bg-green-600 text-white rounded-lg">Add Subtask</button>
+                        <button id="remove-kpi" class="px-4 py-2 bg-red-600 text-white rounded-lg " disabled>Remove Subtask</button>
                     </div>
                     <div class="mt-6 flex justify-between">
                         <button id="prev-2" class="px-4 py-2 bg-gray-200 rounded-lg">Previous</button>
@@ -94,19 +101,25 @@
                 <div id="form-step-3" class="step hidden">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">Workshop Details</h2>
                     <p class="text-gray-600 mb-6">Enter Workshop Information.</p>
-                    <div class="space-y-4">
-                        <div>
-                            <input type="text" id="workshop-title" placeholder="Workshop Title" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please enter workshop title</span>
+                    <div id="workshop-fields" class="space-y-4">
+                        <div class="workshop-field-set">
+                            <div>
+                                <input type="text" id="workshop-title-1" placeholder="Workshop Title" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please enter workshop title</span>
+                            </div>
+                            <div>
+                                <input type="date" id="workshop-date-1" placeholder="Workshop Date" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please select workshop date</span>
+                            </div>
+                            <div>
+                                <input type="number" id="workshop-budget-1" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please enter workshop budget</span>
+                            </div>
                         </div>
-                        <div>
-                            <input type="date" id="workshop-date" placeholder="Workshop Date" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please select workshop date</span>
-                        </div>
-                        <div>
-                            <input type="number" id="workshop-budget" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please enter workshop budget</span>
-                        </div>
+                    </div>
+                    <div class="mt-4 flex space-x-2">
+                        <button id="add-workshop" class="px-4 py-2 bg-green-600 text-white rounded-lg">Add Workshop</button>
+                        <button id="remove-workshop" class="px-4 py-2 bg-red-600 text-white rounded-lg" disabled>Remove Workshop</button>
                     </div>
                     <div class="mt-6 flex justify-between">
                         <button id="prev-3" class="px-4 py-2 bg-gray-200 rounded-lg">Previous</button>
@@ -117,19 +130,25 @@
                 <div id="form-step-4" class="step hidden">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">Review Meeting Details</h2>
                     <p class="text-gray-600 mb-6">Enter Review Meeting Information.</p>
-                    <div class="space-y-4">
-                        <div>
-                            <input type="text" id="meeting-title" placeholder="Meeting Title" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please enter meeting title</span>
+                    <div id="meeting-fields" class="space-y-4">
+                        <div class="meeting-field-set">
+                            <div>
+                                <input type="text" id="meeting-title-1" placeholder="Meeting Title" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please enter meeting title</span>
+                            </div>
+                            <div>
+                                <input type="date" id="meeting-date-1" placeholder="Meeting Date" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please select meeting date</span>
+                            </div>
+                            <div>
+                                <input type="number" id="meeting-budget-1" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                                <span class="error-message text-red-500 text-sm hidden">Please enter meeting budget</span>
+                            </div>
                         </div>
-                        <div>
-                            <input type="date" id="meeting-date" placeholder="Meeting Date" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please select meeting date</span>
-                        </div>
-                        <div>
-                            <input type="number" id="meeting-budget" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
-                            <span class="error-message text-red-500 text-sm hidden">Please enter meeting budget</span>
-                        </div>
+                    </div>
+                    <div class="mt-4 flex space-x-2">
+                        <button id="add-meeting" class="px-4 py-2 bg-green-600 text-white rounded-lg">Add Meeting</button>
+                        <button id="remove-meeting" class="px-4 py-2 bg-red-600 text-white rounded-lg" disabled>Remove Meeting</button>
                     </div>
                     <div class="mt-6 flex justify-between">
                         <button id="prev-4" class="px-4 py-2 bg-gray-200 rounded-lg">Previous</button>
@@ -166,7 +185,7 @@
                 <div class="bg-white shadow-md rounded-lg p-4 mb-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-2" id="submitted-program-title"></h3>
                     <div class="flex gap-4">
-                        <button id="view-program" class="px-4 py-2 bg-blue-500 text-white rounded">View Program</button></br>
+                        <button id="view-program" class="px-4 py-2 bg-blue-500 text-white rounded">View Program</button>
                         <button id="edit-program" class="px-4 py-2 bg-blue-500 text-white rounded">Edit Program</button>
                     </div>
                 </div>
@@ -199,6 +218,9 @@
             const closeViewButton = document.getElementById('close-view');
             let currentStep = 1;
             let formData = {};
+            let kpiCount = 1;
+            let workshopCount = 1;
+            let meetingCount = 1;
 
             function validateStep(step) {
                 const inputs = steps[step - 1].querySelectorAll('input');
@@ -238,21 +260,47 @@
 
             function displayViewMode() {
                 const viewContent = document.getElementById('view-content');
-                viewContent.innerHTML = `
-                    <p><strong>Program Title:</strong> ${formData['program-title'] || 'N/A'}</p>
-                    <p><strong>KPI Name:</strong> ${formData['kpi-name'] || 'N/A'}</p>
-                    <p><strong>KPI Date:</strong> ${formData['kpi-date'] || 'N/A'}</p>
-                    <p><strong>KPI Budget:</strong> ${formData['kpi-budget'] || 'N/A'}</p>
-                    <p><strong>Workshop Title:</strong> ${formData['workshop-title'] || 'N/A'}</p>
-                    <p><strong>Workshop Date:</strong> ${formData['workshop-date'] || 'N/A'}</p>
-                    <p><strong>Workshop Budget:</strong> ${formData['workshop-budget'] || 'N/A'}</p>
-                    <p><strong>Meeting Title:</strong> ${formData['meeting-title'] || 'N/A'}</p>
-                    <p><strong>Meeting Date:</strong> ${formData['meeting-date'] || 'N/A'}</p>
-                    <p><strong>Meeting Budget:</strong> ${formData['meeting-budget'] || 'N/A'}</p>
+                let content = `<p><strong>Program Title:</strong> ${formData['program-title'] || 'N/A'}</p>`;
+                
+                // Display KPIs
+                for (let i = 1; i <= kpiCount; i++) {
+                    if (formData[`kpi-name-${i}`]) {
+                        content += `
+                            <p><strong>KPI ${i} Name:</strong> ${formData[`kpi-name-${i}`] || 'N/A'}</p>
+                            <p><strong>KPI ${i} Date:</strong> ${formData[`kpi-date-${i}`] || 'N/A'}</p>
+                            <p><strong>KPI ${i} Budget:</strong> ${formData[`kpi-budget-${i}`] || 'N/A'}</p>
+                        `;
+                    }
+                }
+
+                // Display Workshops
+                for (let i = 1; i <= workshopCount; i++) {
+                    if (formData[`workshop-title-${i}`]) {
+                        content += `
+                            <p><strong>Workshop ${i} Title:</strong> ${formData[`workshop-title-${i}`] || 'N/A'}</p>
+                            <p><strong>Workshop ${i} Date:</strong> ${formData[`workshop-date-${i}`] || 'N/A'}</p>
+                            <p><strong>Workshop ${i} Budget:</strong> ${formData[`workshop-budget-${i}`] || 'N/A'}</p>
+                        `;
+                    }
+                }
+
+                // Display Meetings
+                for (let i = 1; i <= meetingCount; i++) {
+                    if (formData[`meeting-title-${i}`]) {
+                        content += `
+                            <p><strong>Meeting ${i} Title:</strong> ${formData[`meeting-title-${i}`] || 'N/A'}</p>
+                            <p><strong>Meeting ${i} Date:</strong> ${formData[`meeting-date-${i}`] || 'N/A'}</p>
+                            <p><strong>Meeting ${i} Budget:</strong> ${formData[`meeting-budget-${i}`] || 'N/A'}</p>
+                        `;
+                    }
+                }
+
+                content += `
                     <p><strong>Manpower Count:</strong> ${formData['manpower-count'] || 'N/A'}</p>
                     <p><strong>Manpower Date:</strong> ${formData['manpower-date'] || 'N/A'}</p>
                     <p><strong>Manpower Budget:</strong> ${formData['manpower-budget'] || 'N/A'}</p>
                 `;
+                viewContent.innerHTML = content;
                 viewModal.classList.remove('hidden');
             }
 
@@ -265,9 +313,195 @@
                         input.nextElementSibling.classList.add('hidden');
                     });
                 });
+                // Reset additional fields
+                const kpiFields = document.getElementById('kpi-fields');
+                const workshopFields = document.getElementById('workshop-fields');
+                const meetingFields = document.getElementById('meeting-fields');
+                kpiFields.innerHTML = `
+                    <div class="kpi-field-set">
+                        <div>
+                            <input type="text" id="kpi-name-1" placeholder="KPI Name" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please enter KPI name</span>
+                        </div>
+                        <div>
+                            <input type="date" id="kpi-date-1" placeholder="KPI Date" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please select date</span>
+                        </div>
+                        <div>
+                            <input type="number" id="kpi-budget-1" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please enter KPI budget</span>
+                        </div>
+                    </div>
+                `;
+                workshopFields.innerHTML = `
+                    <div class="workshop-field-set">
+                        <div>
+                            <input type="text" id="workshop-title-1" placeholder="Workshop Title" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please enter workshop title</span>
+                        </div>
+                        <div>
+                            <input type="date" id="workshop-date-1" placeholder="Workshop Date" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please select workshop date</span>
+                        </div>
+                        <div>
+                            <input type="number" id="workshop-budget-1" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please enter workshop budget</span>
+                        </div>
+                    </div>
+                `;
+                meetingFields.innerHTML = `
+                    <div class="meeting-field-set">
+                        <div>
+                            <input type="text" id="meeting-title-1" placeholder="Meeting Title" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please enter meeting title</span>
+                        </div>
+                        <div>
+                            <input type="date" id="meeting-date-1" placeholder="Meeting Date" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please select meeting date</span>
+                        </div>
+                        <div>
+                            <input type="number" id="meeting-budget-1" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                            <span class="error-message text-red-500 text-sm hidden">Please enter meeting budget</span>
+                        </div>
+                    </div>
+                `;
+                kpiCount = 1;
+                workshopCount = 1;
+                meetingCount = 1;
+                document.getElementById('remove-kpi').disabled = true;
+                document.getElementById('remove-workshop').disabled = true;
+                document.getElementById('remove-meeting').disabled = true;
                 formData = {};
                 submitButton.disabled = true;
+                // Reattach input event listeners
+                attachInputListeners();
             }
+
+            function attachInputListeners() {
+                steps.forEach(step => {
+                    const inputs = step.querySelectorAll('input');
+                    inputs.forEach(input => {
+                        input.removeEventListener('input', () => validateStep(currentStep)); // Remove existing listeners to prevent duplicates
+                        input.addEventListener('input', () => validateStep(currentStep));
+                    });
+                });
+            }
+
+            // Add field sets
+            document.getElementById('add-kpi').addEventListener('click', () => {
+                kpiCount++;
+                const kpiFields = document.getElementById('kpi-fields');
+                const newFieldSet = document.createElement('div');
+                newFieldSet.classList.add('kpi-field-set');
+                newFieldSet.innerHTML = `
+                    <div>
+                        <input type="text" id="kpi-name-${kpiCount}" placeholder="KPI Name" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please enter KPI name</span>
+                    </div>
+                    <div>
+                        <input type="date" id="kpi-date-${kpiCount}" placeholder="KPI Date" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please select date</span>
+                    </div>
+                    <div>
+                        <input type="number" id="kpi-budget-${kpiCount}" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please enter KPI budget</span>
+                    </div>
+                `;
+                kpiFields.appendChild(newFieldSet);
+                document.getElementById('remove-kpi').disabled = false;
+                attachInputListeners();
+                validateStep(currentStep);
+            });
+
+            document.getElementById('add-workshop').addEventListener('click', () => {
+                workshopCount++;
+                const workshopFields = document.getElementById('workshop-fields');
+                const newFieldSet = document.createElement('div');
+                newFieldSet.classList.add('workshop-field-set');
+                newFieldSet.innerHTML = `
+                    <div>
+                        <input type="text" id="workshop-title-${workshopCount}" placeholder="Workshop Title" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please enter workshop title</span>
+                    </div>
+                    <div>
+                        <input type="date" id="workshop-date-${workshopCount}" placeholder="Workshop Date" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please select workshop date</span>
+                    </div>
+                    <div>
+                        <input type="number" id="workshop-budget-${workshopCount}" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please enter workshop budget</span>
+                    </div>
+                `;
+                workshopFields.appendChild(newFieldSet);
+                document.getElementById('remove-workshop').disabled = false;
+                attachInputListeners();
+                validateStep(currentStep);
+            });
+
+            document.getElementById('add-meeting').addEventListener('click', () => {
+                meetingCount++;
+                const meetingFields = document.getElementById('meeting-fields');
+                const newFieldSet = document.createElement('div');
+                newFieldSet.classList.add('meeting-field-set');
+                newFieldSet.innerHTML = `
+                    <div>
+                        <input type="text" id="meeting-title-${meetingCount}" placeholder="Meeting Title" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please enter meeting title</span>
+                    </div>
+                    <div>
+                        <input type="date" id="meeting-date-${meetingCount}" placeholder="Meeting Date" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please select meeting date</span>
+                    </div>
+                    <div>
+                        <input type="number" id="meeting-budget-${meetingCount}" placeholder="Budget" class="w-full p-2 border rounded-lg" required>
+                        <span class="error-message text-red-500 text-sm hidden">Please enter meeting budget</span>
+                    </div>
+                `;
+                meetingFields.appendChild(newFieldSet);
+                document.getElementById('remove-meeting').disabled = false;
+                attachInputListeners();
+                validateStep(currentStep);
+            });
+
+            // Remove field sets
+            document.getElementById('remove-kpi').addEventListener('click', () => {
+                if (kpiCount > 1) {
+                    const kpiFields = document.getElementById('kpi-fields');
+                    kpiFields.removeChild(kpiFields.lastChild);
+                    delete formData[`kpi-name-${kpiCount}`];
+                    delete formData[`kpi-date-${kpiCount}`];
+                    delete formData[`kpi-budget-${kpiCount}`];
+                    kpiCount--;
+                    if (kpiCount === 1) document.getElementById('remove-kpi').disabled = true;
+                    validateStep(currentStep);
+                }
+            });
+
+            document.getElementById('remove-workshop').addEventListener('click', () => {
+                if (workshopCount > 1) {
+                    const workshopFields = document.getElementById('workshop-fields');
+                    workshopFields.removeChild(workshopFields.lastChild);
+                    delete formData[`workshop-title-${workshopCount}`];
+                    delete formData[`workshop-date-${workshopCount}`];
+                    delete formData[`workshop-budget-${workshopCount}`];
+                    workshopCount--;
+                    if (workshopCount === 1) document.getElementById('remove-workshop').disabled = true;
+                    validateStep(currentStep);
+                }
+            });
+
+            document.getElementById('remove-meeting').addEventListener('click', () => {
+                if (meetingCount > 1) {
+                    const meetingFields = document.getElementById('meeting-fields');
+                    meetingFields.removeChild(meetingFields.lastChild);
+                    delete formData[`meeting-title-${meetingCount}`];
+                    delete formData[`meeting-date-${meetingCount}`];
+                    delete formData[`meeting-budget-${meetingCount}`];
+                    meetingCount--;
+                    if (meetingCount === 1) document.getElementById('remove-meeting').disabled = true;
+                    validateStep(currentStep);
+                }
+            });
 
             steps.forEach(step => {
                 const inputs = step.querySelectorAll('input');
