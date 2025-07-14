@@ -1,12 +1,11 @@
 from django.db import models
-from django.utils import timezone
 
-# Create your models here.
+
 class Annualbudget(models.Model):
     year = models.IntegerField()
     budget = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
-    created_at = models.DateTimeField(default=timezone.now, blank=True, null=True)
-    updated_at = models.DateTimeField(default=timezone.now, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -23,6 +22,18 @@ class Budgetsummary(models.Model):
     class Meta:
         managed = False
         db_table = 'BudgetSummary'
+
+
+class Pmuadmin(models.Model):
+    username = models.TextField(unique=True)
+    password = models.TextField()
+    role = models.TextField(blank=True, null=True)
+    name = models.TextField()
+    email = models.TextField(unique=True)
+
+    class Meta:
+        managed = False
+        db_table = 'PMUAdmin'
 
 
 class Program(models.Model):
@@ -73,17 +84,6 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'User'
-
-class PMUAdmin(models.Model):
-    username = models.TextField(unique=True)
-    password = models.TextField()
-    role = models.TextField(blank=True, null=True)
-    name = models.TextField()
-    email = models.TextField(unique=True)
-
-    class Meta:
-        managed = False
-        db_table = 'PMUAdmin'
 
 
 class AuthGroup(models.Model):
@@ -157,7 +157,7 @@ class DjangoAdminLog(models.Model):
     object_repr = models.CharField(max_length=200)
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)      
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     action_time = models.DateTimeField()
 

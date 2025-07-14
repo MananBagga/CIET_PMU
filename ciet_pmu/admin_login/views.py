@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from admin_dashboard.models import PMUAdmin
+from admin_dashboard.models import Pmuadmin
 
 # Create your views here.
 def admin_login(request):
@@ -13,7 +13,7 @@ def admin_login(request):
                 messages.error(request, 'All fields are required.')
                 return render(request, 'login/login.html')
         
-        if PMUAdmin.objects.filter(username=username, password=password).exists():
+        if Pmuadmin.objects.filter(username=username, password=password).exists():
             return redirect('admin_dashboard')
         else:
             messages.error(request, 'Invalid username or password.')
