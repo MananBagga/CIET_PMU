@@ -5,9 +5,9 @@ from admin_dashboard.models import Pmuadmin
 # Create your views here.
 def admin_login(request):
 
-    if request.method == 'GET':
-        username = request.GET.get('username', '').strip()
-        password = request.GET.get('password', '')
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
 
         if not username or not password:
                 messages.error(request, 'All fields are required.')

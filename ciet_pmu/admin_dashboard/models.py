@@ -1,15 +1,16 @@
 from django.db import models
-
+from django.utils import timezone
 
 class Annualbudget(models.Model):
     year = models.IntegerField()
-    budget = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
+    budget = models.DecimalField(max_digits=12, decimal_places=2)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'AnnualBudget'
+        get_latest_by = 'year'
 
 
 class Budgetsummary(models.Model):
@@ -25,15 +26,13 @@ class Budgetsummary(models.Model):
 
 
 class Pmuadmin(models.Model):
-    username = models.TextField(unique=True)
+    username = models.TextField()
+    email = models.TextField(blank=True, null=True)
     password = models.TextField()
-    role = models.TextField(blank=True, null=True)
-    name = models.TextField()
-    email = models.TextField(unique=True)
 
     class Meta:
         managed = False
-        db_table = 'PMUAdmin'
+        db_table = 'Pmuadmin'
 
 
 class Program(models.Model):
@@ -41,8 +40,10 @@ class Program(models.Model):
     title = models.TextField()
     coordinator = models.ForeignKey('User', models.DO_NOTHING)
     annual_budget = models.ForeignKey(Annualbudget, models.DO_NOTHING)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    program_budget = models.DecimalField(decimal_places=2, max_digits=12)
+    program_sub_type = models.TextField()
 
     class Meta:
         managed = False
@@ -52,7 +53,7 @@ class Program(models.Model):
 class Subentry(models.Model):
     task = models.ForeignKey('Task', models.DO_NOTHING)
     title = models.TextField()
-    description = models.TextField(blank=True, null=True)
+    type = models.TextField(blank=True, null=True)
     date = models.DateField()
     budget = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
     created_at = models.DateTimeField(blank=True, null=True)
