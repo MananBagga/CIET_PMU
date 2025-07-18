@@ -1,23 +1,46 @@
 {% load static %}
-{% load static tailwind_tags %}
 
-<nav class="flex items-center justify-between px-8 py-4 bg-white shadow-md sticky top-0 z-50">
-    <div class="flex items-center space-x-4">
-        <img src="{% static 'images/home_page_images/ciet-full-logo.jpg' %}" alt="CIET PMU Logo" class="h-14 transition-transform duration-300 hover:scale-110">
-        <span class="text-2xl font-bold text-gray-800">CIET PMU</span>
+<nav class="flex items-center justify-between px-4 py-3 bg-white shadow-md sticky top-0 z-50">
+    <div class="flex items-center space-x-3">
+        <a href="/"><img src="{% static 'images/home_page_images/ciet-full-logo.jpg' %}" alt="CIET PMU Logo" class="h-12 md:h-14 transition-transform duration-300 hover:scale-110"></a>
+       
     </div>
-    <div class="space-x-10">
+    <div class="hidden md:flex space-x-6">
         <a href="/" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Home</a>
-        <a href="#" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Units</a>
+        <a href="#units" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Units</a>
         <a href="#" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Announcements</a>
-        <a href="#" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">FAQs</a>
+        <a href="#faqs" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">FAQs</a>
     </div>
-    <div class="space-x-4 flex items-center">
-        <span class="text-gray-600 text-lg font-medium">User: {{ request.session.username}}</span>
+    <div class="flex items-center space-x-3">
+        <span class="text-gray-600 text-sm md:text-lg font-medium">User: {{ request.session.username}}</span>
         {% if not request.session.username and request.path != '/admin_login/' %}
-            <a href="{% url 'login' %}" class="text-white bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105">Login</a>
+            <a href="{% url 'login' %}" class="text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-1 md:px-6 md:py-2 rounded-full font-medium text-sm md:text-base transition-all duration-300 transform hover:scale-105">Login</a>
         {% elif request.path != '/admin_login/'%}
-            <a href="{% url 'logout' %}" class="text-white bg-red-600 hover:bg-red-700 px-6 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105">Sign Out</a>
+            <a href="{% url 'logout' %}" class="text-white bg-red-600 hover:bg-red-700 px-4 py-1 md:px-6 md:py-2 rounded-full font-medium text-sm md:text-base transition-all duration-300 transform hover:scale-105">Sign Out</a>
         {% endif %}
     </div>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden flex items-center">
+        <button id="menu-toggle" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden absolute top-16 right-4 bg-white shadow-lg rounded-lg p-4 space-y-2 w-48 z-50">
+        <a href="/" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">Home</a>
+        <a href="#units" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">Units</a>
+        <a href="#" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">Announcements</a>
+        <a href="#faqs" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">FAQs</a>
+    </div>
 </nav>
+
+<script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    });
+</script>
