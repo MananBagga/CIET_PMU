@@ -5,14 +5,8 @@ from .models import User, Program, Annualbudget
 
 # Create your views here.
 def admin_dashboard(request):
-    labels = ['Q1', 'Q2', 'Q3', 'Q4']
-    data = [25, 40, 30, 60]
-
-    context = {
-        'labels': json.dumps(labels),
-        'data': json.dumps(data)
-    }
-    return render(request, 'admin_dashboard/admin_dashboard.html', context)
+    budget = Annualbudget.objects.all()
+    return render(request, 'admin_dashboard/admin_dashboard.html', {'budget':budget})
 
 def budget(request):
     if request.method == 'POST':

@@ -1,8 +1,4 @@
-{% extends "layout.html" %} 
-
-{% load static %} 
-
-{% load static tailwind_tags %} 
+{% extends "layout.html" %} {% load static %} {% load static tailwind_tags %} 
 
 {% block title %}CIET PMU - Admin Dashboard{% endblock %} 
 
@@ -27,16 +23,18 @@
     display: block;
   }
 </style>
-<div class="flex h-screen">
+<div class="flex h-screen min-h-[70vh]">
   {% include "partials/admin_sidebar.html" %}
 
   <!-- Main Content -->
   <div class="flex-1 p-8 overflow-auto">
     <div class="bg-white mt-10 p-4 rounded-lg shadow">
       <canvas
-        id="barChart"
-        data-labels="{{ labels|safe }}"
-        data-values="{{ data|safe }}"
+        id="myChart"
+        data-labels="[{% for item in budget %}{{ item.year }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
+        data-values="[{% for item in budget %}{{ item.budget }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
+
+        class="w-full max-w-3xl h-96"
       ></canvas>
     </div>
   </div>

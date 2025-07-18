@@ -1,40 +1,42 @@
-const ctx = document.getElementById("barChart");
+document.addEventListener("DOMContentLoaded", function () {
+  const chartElement = document.getElementById("myChart");
 
-const labels = JSON.parse(ctx.dataset.labels);
-const chartData = JSON.parse(ctx.dataset.values);
+  const labels = JSON.parse(chartElement.dataset.labels.replace(/'/g, '"'));
+  const data = JSON.parse(chartElement.dataset.values.replace(/'/g, '"'));
 
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: "Monthly Data",
-      data: chartData,
-      backgroundColor: "rgba(54, 162, 235, 0.5)",
-      borderColor: "rgba(54, 162, 235, 1)",
-      borderWidth: 1,
+  const ctx = chartElement.getContext("2d");
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Yearly Budget",
+          data: data,
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.6)",
+            "rgba(255, 205, 86, 0.6)",
+            "rgba(255, 99, 132, 0.6)",
+            "rgba(54, 162, 235, 0.6)",
+          ],
+          borderColor: [
+            "rgba(75, 192, 192, 1)",
+            "rgba(255, 205, 86, 1)",
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
     },
-  ],
-};
-
-const config = {
-  type: "bar",
-  data: data,
-  options: {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true,
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
       },
     },
-  },
-};
-
-new Chart(ctx, config);
-
-function showSection(sectionId) {
-  const sections = document.getElementsByClassName("section");
-  for (let section of sections) {
-    section.classList.remove("active");
-  }
-  document.getElementById(sectionId).classList.add("active");
-}
+  });
+});

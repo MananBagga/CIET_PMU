@@ -116,50 +116,5 @@
       </div>
     </div>
 
-    {% comment %} <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("form");
-        const submitButton = document.getElementById("submit");
-        const formData = {};
-
-        function validateForm() {
-          const inputs = form.querySelectorAll("input, select");
-          let isValid = true;
-          inputs.forEach((input) => {
-            const errorMessage = input.nextElementSibling;
-            if (
-              !input.value.trim() ||
-              (input.tagName === "SELECT" && input.value === "")
-            ) {
-              isValid = false;
-              errorMessage.classList.remove("hidden");
-              input.classList.add("border-red-500");
-            } else {
-              errorMessage.classList.add("hidden");
-              input.classList.remove("border-red-500");
-              formData[input.id] = input.value;
-            }
-          });
-          submitButton.disabled = !isValid;
-          return isValid;
-        }
-
-        form.querySelectorAll("input, select").forEach((input) => {
-          input.addEventListener("input", validateForm);
-        });
-
-        submitButton.addEventListener("click", () => {
-          if (validateForm()) {
-            alert(
-              "Form submitted successfully!\n" +
-                JSON.stringify(formData, null, 2)
-            );
-          }
-        });
-
-        // Initial validation
-        validateForm();
-      });
-    </script> {% endcomment %}
   </body>
 </html>

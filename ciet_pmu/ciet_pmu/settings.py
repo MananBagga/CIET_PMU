@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h+ao^i74+-git3p$*%6j0w8lh-k27hzref$0n$@r!%&!q$-8%=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 ]
 
 TAILWIND_APP_NAME = 'theme' # This is the name of the app that will be used to generate the tailwind files
-INTERNAL_IPS = ['127.0.0.1']
+# INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ['*']
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 LOGIN_REDIRECT_URL = '/'
