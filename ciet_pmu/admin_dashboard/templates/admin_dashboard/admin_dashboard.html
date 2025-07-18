@@ -1,84 +1,46 @@
-{% load static tailwind_tags %} {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CIET PMU Admin Dashboard</title>
-    <script src="{% static 'js/chart.js' %}"></script>
-    {% tailwind_css %}
-    <style>
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      .fade-in {
-        animation: fadeIn 0.5s ease-in-out forwards;
-      }
-      .section {
-        display: none;
-      }
-      .section.active {
-        display: block;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-100 font-sans text-gray-900 antialiased">
-    <div class="flex h-screen">
-      {% include "partials/admin_sidebar.html" %}
+{% extends "layout.html" %} 
 
-      <!-- Main Content -->
-      <div class="flex-1 p-8 overflow-auto">
-        <div class="bg-white mt-10 p-4 rounded-lg shadow">
-          <canvas id="barChart"></canvas>
-        </div>
-      </div>
+{% load static %} 
+
+{% load static tailwind_tags %} 
+
+{% block title %}CIET PMU - Admin Dashboard{% endblock %} 
+
+{% block content %}
+<script src="{% static 'js/chart.js' %}"></script>
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+  .section {
+    display: none;
+  }
+  .section.active {
+    display: block;
+  }
+</style>
+<div class="flex h-screen">
+  {% include "partials/admin_sidebar.html" %}
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8 overflow-auto">
+    <div class="bg-white mt-10 p-4 rounded-lg shadow">
+      <canvas
+        id="barChart"
+        data-labels="{{ labels|safe }}"
+        data-values="{{ data|safe }}"
+      ></canvas>
     </div>
+  </div>
+</div>
 
-    <script>
-      const labels = {{ labels|safe }};
-      const data = {
-        labels: labels,
-        datasets: [{
-          label: 'Monthly Data',
-          data: {{ data|safe }},
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }]
-      };
-
-      const config = {
-        type: 'bar',
-        data: data,
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      };
-
-      new Chart(
-        document.getElementById('barChart'),
-        config
-      );
-    </script>
-
-    <script>
-      function showSection(sectionId) {
-        const sections = document.getElementsByClassName("section");
-        for (let section of sections) {
-          section.classList.remove("active");
-        }
-        document.getElementById(sectionId).classList.add("active");
-      }
-    </script>
-  </body>
-</html>
+<script src="{% static 'js/chartLogic.js' %}"></script>
+{% endblock %}
