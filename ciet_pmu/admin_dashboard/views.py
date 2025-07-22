@@ -55,19 +55,56 @@ def projects(request):
 def view_projects(request):
     coordinators = User.objects.all()
     years = Annualbudget.objects.all()
-    months = [month for month in calendar.month_name if month] 
+    months = [month for month in calendar.month_name if month]
+
+    projects = Program.objects.all()  
 
     if request.method == 'POST':
+        project_name = request.POST.get('project_name', '').strip()
         coord_filter = request.POST.get('coordinator')
-        year_filter = request.POST.get('year')
-        quarter_filter = request.POST.get('quarter')
-        month_filter = request.POST.get('month')
-        period_filter = request.POST.get('period')
+        year_filter = request.POST.get('year', '').strip()
+        quarter_filter = request.POST.get('quarter', '').strip()
+        month_filter = request.POST.get('month', '').strip()
+        period_filter = request.POST.get('period', '').strip()
 
+        coord_filter = User.objects.filter(username = coord_filter).id
 
+        if project_name:
+            projects = projects.filter(title=project_name)
+
+        if coord_filter:
+            projects = projects.filter(coordinator_id=coord_filter)
+
+        if year_filter:
+            projects = projects.filter(annual_budget__year=year_filter)
+
+        if quarter_filter:
+            quarter_map = {
+                'Q1': (1, 3),
+                'Q2': (4, 6),
+                'Q3': (7, 9),
+                'Q4': (10, 12),
+            }
+            if quarter_filter in quarter_map:
+                start_month, end_month = quarter_map[quarter_filter]
+                projects = projects.filter(
+                    annual_budget__year__isnull=False,  # Ensure year exists
+                    created_at__month__gte=start_month,
+                    created_at__month__lte=end_month
+                )
+
+        if month_filter:
+            try:
+                month_index = list(calendar.month_name).index(month_filter)
+                projects = projects.filter(created_at__month=month_index)
+            except ValueError:
+                pass  # Invalid month name
+
+        # Optional: If you want to add more filtering by period (custom logic), add here
 
     return render(request, 'admin_dashboard/view_projects.html', {
         'coordinators': coordinators,
         'years': years,
         'months': months,
+        'projects': projects,  
     })
