@@ -28,13 +28,13 @@
     </style>
   </head>
   <body class="bg-gray-100 font-sans text-gray-900 antialiased">
-    <div class="flex h-screen">
+    <div class="flex flex-col sm:flex-row min-h-screen">
       {% include "partials/admin_sidebar.html" %}
 
       <!-- Main Content -->
-      <div class="flex-1 p-8 overflow-auto">
-        <div class="bg-white mt-10 p-4 rounded-lg shadow">
-          <canvas id="barChart"></canvas>
+      <div class="flex-1 p-4 sm:p-6 md:p-8 overflow-auto">
+        <div class="bg-white mt-6 sm:mt-8 md:mt-10 p-4 sm:p-6 md:p-8 rounded-lg shadow w-full max-w-full mx-auto">
+          <canvas id="barChart" class="w-full h-auto"></canvas>
         </div>
       </div>
     </div>
@@ -57,9 +57,19 @@
         data: data,
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           scales: {
             y: {
               beginAtZero: true
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  size: window.innerWidth < 640 ? 12 : 14
+                }
+              }
             }
           }
         }
