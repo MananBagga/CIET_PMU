@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% load static tailwind_tags %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -37,21 +38,66 @@
           <canvas id="barChart" class="w-full h-auto"></canvas>
         </div>
       </div>
+=======
+{% extends "layout.html" %}
+{% load static %}
+{% load static tailwind_tags %}
+
+{% block title %}CIET PMU - Admin Dashboard{% endblock %}
+
+{% block content %}
+<script src="{% static 'js/chart.js' %}"></script>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.6s ease-in-out forwards;
+  }
+
+  .section {
+    display: none;
+  }
+
+  .section.active {
+    display: block;
+  }
+</style>
+
+<div class="flex min-h-[70vh] h-screen bg-gray-100">
+  {% include "partials/admin_sidebar.html" %}
+
+  <div class="flex-1 flex flex-col relative p-6 md:p-10">
+
+    <div class="flex justify-between items-center mb-8">
+      <p class="text-3xl font-bold text-indigo-700 fade-in">
+        Welcome, {{ admin.username }}!
+      </p>
+      {% if request.path != '/admin_login/' %}
+        <a href="{% url 'logout' %}"
+           class="bg-red-600 hover:bg-red-700 text-white font-medium text-sm md:text-base px-4 py-2 md:px-6 md:py-2 rounded-full shadow transition-all duration-300 transform hover:scale-105">
+          Sign Out
+        </a>
+      {% endif %}
+>>>>>>> 3b845fa48771f5a2e936a900a3edea6de8020eb4
     </div>
 
-    <script>
-      const labels = {{ labels|safe }};
-      const data = {
-        labels: labels,
-        datasets: [{
-          label: 'Monthly Data',
-          data: {{ data|safe }},
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }]
-      };
+    <div class="bg-white p-6 rounded-2xl shadow-md fade-in">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">Budget Overview</h2>
+      <canvas
+        id="myChart"
+        data-labels="[{% for item in budget %}{{ item.year }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
+        data-values="[{% for item in budget %}{{ item.budget }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
+        class="w-full max-w-4xl h-96 mx-auto">
+      </canvas>
+    </div>
+  </div>
+</div>
 
+<<<<<<< HEAD
       const config = {
         type: 'bar',
         data: data,
@@ -92,3 +138,7 @@
     </script>
   </body>
 </html>
+=======
+<script src="{% static 'js/chartLogic.js' %}"></script>
+{% endblock %}
+>>>>>>> 3b845fa48771f5a2e936a900a3edea6de8020eb4

@@ -11,16 +11,20 @@ def admin_login(request):
 
         if not username or not password:
                 messages.error(request, 'All fields are required.')
-                return render(request, 'login/login.html')
+                return render(request, 'admin_login/admin_login.html')
         
-        if Pmuadmin.objects.filter(username=username, password=password).exists():
+        try:
+            admin = Pmuadmin.objects.get(username=username)
+        except Pmuadmin.DoesNotExist:
+            messages.error(request, 'Invalid credentials.')
+            return render(request, 'admin_login/admin_login.html')
+
+        if password == admin.password:
+            request.session['user_id'] = admin.id
+            request.session['username'] = admin.username
+            request.session['is_authenticated'] = True
             return redirect('admin_dashboard')
         else:
-            messages.error(request, 'Invalid username or password.')
-            # user = User.objects.get(username=username, password=password)
-            # if user.role == 'Coordinator':
-            # else:
-            #     messages.error(request, 'You do not have permission to access this page.')
-            #     return render(request, 'login/login.html')
+            messages.error(request, 'Invalid credentials.')
 
     return render(request, 'admin_login/admin_login.html')

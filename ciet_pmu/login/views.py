@@ -48,7 +48,6 @@ def login(request):
 #             messages.success(request,'Wrong username and Password')
 #     return render(request,'login/login.html')
 
-
 def logout_view(request):
     request.session.flush()
     return redirect('home')
