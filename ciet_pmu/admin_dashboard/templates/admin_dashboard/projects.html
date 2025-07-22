@@ -1,14 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}CIET PMU - Projects{% endblock %}
+
+{% block content %}
 {% load static tailwind_tags %} {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CIET PMU - Create Program</title>
-    {% tailwind_css %}
-  </head>
-  <body class="bg-gray-100 font-sans">
-    <div class="flex h-screen">
+<div class="flex h-screen">
       {% include "partials/admin_sidebar.html" %}
       <div class="max-w-4xl mx-auto p-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">
@@ -116,5 +112,4 @@
       </div>
     </div>
 
-  </body>
-</html>
+{% endblock %}

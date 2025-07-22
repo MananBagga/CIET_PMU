@@ -1,12 +1,16 @@
-from django.shortcuts import render, redirect
-import json
+from django.shortcuts import render, redirect, get_object_or_404
 import datetime
-from .models import User, Program, Annualbudget
+from .models import User, Program, Annualbudget, Pmuadmin
 
 # Create your views here.
 def admin_dashboard(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('admin_login')
+
+    admin = get_object_or_404(Pmuadmin, pk=user_id)
     budget = Annualbudget.objects.all()
-    return render(request, 'admin_dashboard/admin_dashboard.html', {'budget':budget})
+    return render(request, 'admin_dashboard/admin_dashboard.html', {'budget': budget, 'admin': admin})
 
 def budget(request):
     if request.method == 'POST':
