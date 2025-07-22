@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 import datetime
+import calendar
 from .models import User, Program, Annualbudget, Pmuadmin
 
 # Create your views here.
@@ -49,3 +50,24 @@ def projects(request):
             print("Error:", e)
 
     return render(request, 'admin_dashboard/projects.html', {'users': users})
+
+
+def view_projects(request):
+    coordinators = User.objects.all()
+    years = Annualbudget.objects.all()
+    months = [month for month in calendar.month_name if month] 
+
+    if request.method == 'POST':
+        coord_filter = request.POST.get('coordinator')
+        year_filter = request.POST.get('year')
+        quarter_filter = request.POST.get('quarter')
+        month_filter = request.POST.get('month')
+        period_filter = request.POST.get('period')
+
+
+
+    return render(request, 'admin_dashboard/view_projects.html', {
+        'coordinators': coordinators,
+        'years': years,
+        'months': months,
+    })
