@@ -1,0 +1,90 @@
+{% extends "layout.html" %} 
+{% load static %} 
+
+{% block title %}Edit Program - {{ program.title }}{% endblock %} 
+
+{% block content %} 
+
+{% include "partials/navbar.html" %}
+
+<button onclick="openEditForm('{{ program.id }}', '{{ program.type }}', '{{ program.title }}', '{{ program.program_budget }}', '{{ program.created_at|date:"d M Y" }}')" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Edit {{program.title}} Program</button>
+
+<div id="edit-form" class="hidden mt-6">
+      <form id="program-form" method="POST">
+        {% csrf_token %}
+        <input type="hidden" id="program-id" name="program_id">
+        
+        <!-- Step 1: Program Details (Read-Only) -->
+        <div id="form-step-1" class="form-step">
+          <h3 class="text-lg font-semibold">Step 1: Program</h3>
+          <div id="program-details"></div>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(2)">Next</button>
+        </div>
+
+        <!-- Step 2: KPI -->
+        <div id="form-step-2" class="form-step hidden">
+          <h3 class="text-lg font-semibold">Step 2: KPI</h3>
+          <div class="mt-4">
+            <label class="block">KPI Name:</label>
+            <input type="text" name="kpi_name" class="border p-2 w-full" required>
+            <label class="block mt-2">Date:</label>
+            <input type="date" name="kpi_date" class="border p-2 w-full" required>
+            <label class="block mt-2">KPI Budget:</label>
+            <input type="number" name="kpi_budget" class="border p-2 w-full" step="0.01" required>
+          </div>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(1)">Back</button>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(3)">Next</button>
+        </div>
+
+        <!-- Step 3: Workshops -->
+        <div id="form-step-3" class="form-step hidden">
+          <h3 class="text-lg font-semibold">Step 3: Workshops</h3>
+          <div class="mt-4">
+            <label class="block">Workshop Name:</label>
+            <input type="text" name="workshop_name" class="border p-2 w-full" required>
+            <label class="block mt-2">Date:</label>
+            <input type="date" name="workshop_date" class="border p-2 w-full" required>
+            <label class="block mt-2">Workshop Budget:</label>
+            <input type="number" name="workshop_budget" class="border p-2 w-full" step="0.01" required>
+          </div>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(2)">Back</button>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(4)">Next</button>
+        </div>
+
+        <!-- Step 4: Review Meetings -->
+        <div id="form-step-4" class="form-step hidden">
+          <h3 class="text-lg font-semibold">Step 4: Review Meetings</h3>
+          <div class="mt-4">
+            <label class="block">Meeting Name:</label>
+            <input type="text" name="meeting_name" class="border p-2 w-full" required>
+            <label class="block mt-2">Date:</label>
+            <input type="date" name="meeting_date" class="border p-2 w-full" required>
+            <label class="block mt-2">Meeting Budget:</label>
+            <input type="number" name="meeting_budget" class="border p-2 w-full" step="0.01" required>
+          </div>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(3)">Back</button>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(5)">Next</button>
+        </div>
+
+        <!-- Step 5: Manpower -->
+        <div id="form-step-5" class="form-step hidden">
+          <h3 class="text-lg font-semibold">Step 5: Manpower</h3>
+          <div class="mt-4">
+            <label class="block">Manpower Details:</label>
+            <input type="text" name="manpower_details" class="border p-2 w-full" required>
+            <label class="block mt-2">Date:</label>
+            <input type="date" name="manpower_date" class="border p-2 w-full" required>
+            <label class="block mt-2">Manpower Budget:</label>
+            <input type="number" name="manpower_budget" class="border p-2 w-full" step="0.01" required>
+          </div>
+          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(4)">Back</button>
+          <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="{% static "js/user_dashboard.js" %}"></script>
+
+{% endblock %}

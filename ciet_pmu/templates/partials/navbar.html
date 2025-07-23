@@ -10,6 +10,7 @@
         <a href="#units" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Units</a>
         <a href="#" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Announcements</a>
         <a href="#faqs" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">FAQs</a>
+        <a href="{% url "user_dashboard" %}" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Projects</a>
     </div>
     <div class="flex items-center space-x-3">
         <span class="text-gray-600 text-sm md:text-lg font-medium">User: {{ request.session.username}}</span>

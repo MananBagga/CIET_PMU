@@ -24,8 +24,8 @@ def login(request):
             request.session['user_id'] = user.id
             request.session['username'] = user.username
             request.session['is_authenticated'] = True
-            return redirect('user_dashboard', user_id=user.id)
-            # return redirect('user_dashboard')
+            # return redirect('user_dashboard', user_id=user.id)
+            return redirect('user_dashboard')
         else:
             messages.error(request, 'Invalid credentials.')
 
