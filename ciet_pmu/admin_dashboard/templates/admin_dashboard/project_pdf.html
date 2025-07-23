@@ -1,44 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-    th, td {
-      border: 1px solid #999;
-      padding: 5px;
-      text-align: left;
-    }
-    th {
-      background-color: #eee;
-    }
-  </style>
 </head>
 <body>
   <h2>Filtered Project Report</h2>
-  <table>
+  <table class="table_pdf">
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Coordinator</th>
-        <th>Year</th>
-        <th>Created At</th>
-        <th>Budget</th>
-        <th>Sub-Type</th>
+        <th class="th_pdf">Title</th>
+        <th class="th_pdf">Coordinator</th>
+        <th class="th_pdf">Year</th>
+        <th class="th_pdf">Created At</th>
+        <th class="th_pdf">Budget</th>
+        <th class="th_pdf">Sub-Type</th>
       </tr>
     </thead>
     <tbody>
       {% for p in projects %}
       <tr>
-        <td>{{ p.title }}</td>
-        <td>{{ p.coordinator.username }}</td>
-        <td>{{ p.annual_budget.year }}</td>
-        <td>{{ p.created_at|date:"Y-m-d" }}</td>
-        <td>{{ p.program_budget }}</td>
-        <td>{{ p.program_sub_type }}</td>
+        <td class="td_pdf">{{ p.title }}</td>
+        <td class="td_pdf">{{ p.coordinator.username }}</td>
+        <td class="td_pdf">{{ p.annual_budget.year }}</td>
+        <td class="td_pdf">{{ p.created_at|date:"Y-m-d" }}</td>
+        <td class="td_pdf">{{ p.program_budget }}</td>
+        <td class="td_pdf">{{ p.program_sub_type }}</td>
       </tr>
       {% endfor %}
     </tbody>

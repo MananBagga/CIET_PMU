@@ -1,0 +1,35 @@
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
+  }
+  .section {
+    display: block;
+  }
+  .section.active {
+    display: block;
+  }
+
+.table_pdf {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+}
+
+.th_pdf {
+      border: 1px solid #999;
+      padding: 5px;
+      text-align: left;
+      background-color: #eee;
+}
+.td_pdf {
+      border: 1px solid #999;
+      padding: 5px;
+      text-align: left;
+}
