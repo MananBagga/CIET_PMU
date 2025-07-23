@@ -11,7 +11,8 @@
     <h1 class="text-3xl font-bold mb-6 text-center">Project Budget Overview</h1>
 
     <!-- Filter Form -->
-    <form method="POST" action="#" class="bg-white rounded-lg shadow p-6 grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <form method="POST" class="bg-white rounded-lg shadow p-6 grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      {% csrf_token %}
       <input type="text" name="project_name" placeholder="Project Name" class="border rounded px-3 py-2" />
 
       <select name="coordinator" class="border rounded px-3 py-2">
@@ -51,47 +52,65 @@
         <option value="all">All Projects</option>
       </select>
 
+      <select name="sub_type" class="border rounded px-3 py-2">
+  <option value="">Select Project Sub-Type</option>
+  <option value="Development">Development</option>
+  <option value="Research">Research</option>
+  <option value="Outreach">Outreach</option>
+  <option value="Planning">Planning</option>
+</select>
+
       <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-semibold py-2 rounded">Apply Filters</button>
 
     </form>
 
     <!-- Budget Table -->
-    {% if budgets %}
-      <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <table class="min-w-full table-auto">
-          <thead class="bg-gray-200 text-gray-700 text-sm">
-            <tr>
-              <th class="px-4 py-3 text-left">Project Name</th>
-              <th class="px-4 py-3 text-left">Coordinator</th>
-              <th class="px-4 py-3 text-left">Year</th>
-              <th class="px-4 py-3 text-left">Quarter</th>
-              <th class="px-4 py-3 text-left">Amount</th>
-            </tr>
-          </thead>
-          <tbody class="text-sm">
-            {% for budget in budgets %}
-              <tr class="border-t hover:bg-gray-50">
-                <td class="px-4 py-2">{{ budget.project_name }}</td>
-                <td class="px-4 py-2">{{ budget.coordinator.username }}</td>
-                <td class="px-4 py-2">{{ budget.year }}</td>
-                <td class="px-4 py-2">{{ budget.quarter }}</td>
-                <td class="px-4 py-2">₹{{ budget.amount }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+    {% if projects %}
+  <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full table-auto">
+      <thead class="bg-gray-200 text-gray-700 text-sm">
+        <tr>
+          <th class="px-4 py-3 text-left">Project Name</th>
+          <th class="px-4 py-3 text-left">Coordinator</th>
+          <th class="px-4 py-3 text-left">Year</th>
+          <th class="px-4 py-3 text-left">Created At</th>
+          <th class="px-4 py-3 text-left">Project Budget</th>
+          <th class="px-4 py-3 text-left">Project Sub-type</th>
+        </tr>
+      </thead>
+      <tbody class="text-sm">
+        {% for project in projects %}
+          <tr class="border-t hover:bg-gray-50">
+            <td class="px-4 py-2">{{ project.title }}</td>
+            <td class="px-4 py-2">{{ project.coordinator.username }}</td>
+            <td class="px-4 py-2">{{ project.annual_budget.year }}</td>
+            <td class="px-4 py-2">{{ project.created_at|date:"Y-m-d" }}</td>
+            <td class="px-4 py-2">{{project.program_budget}}</td>
+            <td class="px-4 py-2">{{project.program_sub_type}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-      <!-- Export Buttons -->
-      <div class="mt-4 flex gap-4">
-        {% comment %} <a href="{% url 'export_excel' %}?{{ request.GET.urlencode }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Download Excel</a> {% endcomment %}
-        <a href="#" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Download Excel</a>
-        <a href="#" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Download PDF</a>
-        {% comment %} <a href="{% url 'export_pdf' %}?{{ request.GET.urlencode }}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Download PDF</a> {% endcomment %}
-      </div>
-    {% else %}
-      <p class="text-center text-gray-600 mt-6">No results found for selected filters.</p>
-    {% endif %}
+  <div class="mt-4 flex gap-4">
+  <form method="post" action="{% url 'export_projects_excel' %}">
+    {% csrf_token %}
+    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+      Download Excel
+    </button>
+  </form>
+  <form method="post" action="{% url 'export_projects_pdf' %}">
+    {% csrf_token %}
+    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+      Download PDF
+    </button>
+  </form>
+</div>
+{% else %}
+  <p class="text-center text-gray-600 mt-6">No results found for selected filters.</p>
+{% endif %}
+
   </div>
 
 </div>

@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 import datetime
 import calendar
 from .models import User, Program, Annualbudget, Pmuadmin
+from openpyxl import Workbook
+from django.http import HttpResponse
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+import io
 
 # Create your views here.
 def admin_dashboard(request):
@@ -13,15 +18,28 @@ def admin_dashboard(request):
     budget = Annualbudget.objects.all()
     return render(request, 'admin_dashboard/admin_dashboard.html', {'budget': budget, 'admin': admin})
 
+from decimal import Decimal
+
 def budget(request):
     if request.method == 'POST':
         program_budget = request.POST.get('program_budget')
-        budget_date = request.POST.get('budget_date') 
+        budget_date = request.POST.get('budget_date')
+
+        if not program_budget or not budget_date:
+            return render(request, 'admin_dashboard/budget.html', {'error': 'All fields are required.'})
+
         parsed_date = datetime.datetime.strptime(budget_date, '%Y-%m-%d')
         year = parsed_date.year
 
-        Annualbudget.objects.create(budget=program_budget, year=year)
+        try:
+            budget_entry = Annualbudget.objects.get(year=year)
+            budget_entry.budget += Decimal(program_budget)
+            budget_entry.save()
+        except Annualbudget.DoesNotExist:
+            Annualbudget.objects.create(budget=Decimal(program_budget), year=year)
+
     return render(request, 'admin_dashboard/budget.html')
+
 
 def projects(request):
     users = User.objects.all()
@@ -52,12 +70,11 @@ def projects(request):
     return render(request, 'admin_dashboard/projects.html', {'users': users})
 
 
-def view_projects(request):
+def helper_filter(request):
     coordinators = User.objects.all()
     years = Annualbudget.objects.all()
     months = [month for month in calendar.month_name if month]
-
-    projects = Program.objects.all()  
+    projects = Program.objects.all()
 
     if request.method == 'POST':
         project_name = request.POST.get('project_name', '').strip()
@@ -65,18 +82,19 @@ def view_projects(request):
         year_filter = request.POST.get('year', '').strip()
         quarter_filter = request.POST.get('quarter', '').strip()
         month_filter = request.POST.get('month', '').strip()
-        period_filter = request.POST.get('period', '').strip()
-
-        coord_filter = User.objects.filter(username = coord_filter).id
+        sub_type_filter = request.POST.get('sub_type', '').strip()
 
         if project_name:
-            projects = projects.filter(title=project_name)
+            projects = projects.filter(title__icontains=project_name)
 
         if coord_filter:
-            projects = projects.filter(coordinator_id=coord_filter)
+            projects = projects.filter(coordinator__id=coord_filter)
 
         if year_filter:
             projects = projects.filter(annual_budget__year=year_filter)
+
+        if sub_type_filter:
+            projects = projects.filter(program_sub_type__iexact=sub_type_filter)
 
         if quarter_filter:
             quarter_map = {
@@ -88,7 +106,6 @@ def view_projects(request):
             if quarter_filter in quarter_map:
                 start_month, end_month = quarter_map[quarter_filter]
                 projects = projects.filter(
-                    annual_budget__year__isnull=False,  # Ensure year exists
                     created_at__month__gte=start_month,
                     created_at__month__lte=end_month
                 )
@@ -98,13 +115,48 @@ def view_projects(request):
                 month_index = list(calendar.month_name).index(month_filter)
                 projects = projects.filter(created_at__month=month_index)
             except ValueError:
-                pass  # Invalid month name
+                pass
 
-        # Optional: If you want to add more filtering by period (custom logic), add here
+    return coordinators, years, months, projects
 
+def view_projects(request):
+    coordinators, years, months, projects = helper_filter(request)
     return render(request, 'admin_dashboard/view_projects.html', {
         'coordinators': coordinators,
         'years': years,
         'months': months,
-        'projects': projects,  
+        'projects': projects, 
     })
+
+def export_projects_excel(request):
+    projects = helper_filter(request)
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Projects"
+
+    ws.append(["Title", "Coordinator", "Year", "Created At", "Budget", "Sub-Type"])
+    for p in projects:
+        ws.append([
+            p.title,
+            p.coordinator.username,
+            p.annual_budget.year if p.annual_budget else '',
+            p.created_at.strftime('%Y-%m-%d'),
+            p.program_budget,
+            p.program_sub_type
+        ])
+
+    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response["Content-Disposition"] = 'attachment; filename="projects.xlsx"'
+    wb.save(response)
+    return response
+
+
+def export_projects_pdf(request):
+    coordinators, years, months, projects = helper_filter(request)
+    template = get_template('admin_dashboard/project_pdf.html')
+    html = template.render({'projects': projects})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="projects.pdf"'
+    pisa.CreatePDF(io.BytesIO(html.encode('UTF-8')), dest=response)
+    return response
