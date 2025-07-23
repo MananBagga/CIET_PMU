@@ -20,12 +20,13 @@
         </div>
         <span class="text-gray-400"></span>
         <div class="flex items-center">
-          <a href="#form-step-2"></a>
-          <div
-            class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600"
-          >
-            2
-          </div>
+          <a href="#form-step-2">
+            <div
+              class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600"
+            >
+              2
+            </div>
+          </a>
           <span class="ml-2 text-gray-600">KPI</span>
         </div>
         <span class="text-gray-400"></span>
@@ -69,16 +70,25 @@
         <p><strong>Program Type:</strong> {{ program.type }}</p>
         <p><strong>Program Title:</strong> {{ program.title }}</p>
         <p><strong>Budget:</strong> ₹{{ program.program_budget }}</p>
-        <p><strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}</p>
-        <a href="{% url 'edit_program' program.id %}"><button class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Edit Program</button></a>
+        <p>
+          <strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}
+        </p>
+        <a href="{% url 'edit_program' program.id %}">
+          <button
+            class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Edit Program
+          </button>
+        </a>
       </div>
       {% endfor %}
     </div>
     {% else %}
     <p class="text-gray-500">No programs assigned to you yet.</p>
     {% endif %}
-    
+  </div>
+</div>
 
-<script src="{% static "js/user_dashboard.js" %}"></script>
+<script src="{% static 'js/user_dashboard.js' %}"></script>
 
 {% endblock %}
