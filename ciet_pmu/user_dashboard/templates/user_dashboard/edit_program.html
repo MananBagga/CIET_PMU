@@ -1,90 +1,197 @@
-{% extends "layout.html" %} 
-{% load static %} 
+{% extends "layout.html" %}
+{% load static %}
 
-{% block title %}Edit Program - {{ program.title }}{% endblock %} 
+{% block title %}Edit Program - {{ program.title }}{% endblock %}
 
-{% block content %} 
+{% block content %}
 
 {% include "partials/navbar.html" %}
 
-<button onclick="openEditForm('{{ program.id }}', '{{ program.type }}', '{{ program.title }}', '{{ program.program_budget }}', '{{ program.created_at|date:"d M Y" }}')" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Edit {{program.title}} Program</button>
+<div class="container mx-auto px-4 py-8">
 
-<div id="edit-form" class="hidden mt-6">
-      <form id="program-form" method="POST">
-        {% csrf_token %}
-        <input type="hidden" id="program-id" name="program_id">
-        
-        <!-- Step 1: Program Details (Read-Only) -->
-        <div id="form-step-1" class="form-step">
-          <h3 class="text-lg font-semibold">Step 1: Program</h3>
-          <div id="program-details"></div>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(2)">Next</button>
+  <!-- Progress Bar -->
+  <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 20%;"></div>
+  </div>
+
+  <!-- Edit Button -->
+  <div class="text-center mb-6">
+    <button
+      onclick="openEditForm('{{ program.id }}', '{{ program.type }}', '{{ program.title }}', '{{ program.program_budget }}', '{{ program.created_at|date:"d M Y" }}')"
+      class="px-6 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700 transition duration-200 text-sm sm:text-base"
+    >
+      Edit {{ program.title }} Program
+    </button>
+  </div>
+
+  <!-- Edit Form -->
+  <div id="edit-form" class="hidden max-w-3xl mx-auto space-y-8">
+    <form id="program-form" method="POST" class="space-y-6 bg-white shadow-lg rounded-xl p-6">
+      {% csrf_token %}
+      <input type="hidden" id="program-id" name="program_id" />
+
+      <!-- Step 1: Program Details -->
+      <div id="form-step-1" class="form-step">
+        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 1: Program</h3>
+        <div id="program-details" class="text-gray-700 space-y-2"></div>
+        <div class="flex justify-end gap-3 mt-6">
+          <button type="button" onclick="nextStep(2)" class="px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Next</button>
         </div>
+      </div>
 
-        <!-- Step 2: KPI -->
-        <div id="form-step-2" class="form-step hidden">
-          <h3 class="text-lg font-semibold">Step 2: KPI</h3>
-          <div class="mt-4">
-            <label class="block">KPI Name:</label>
-            <input type="text" name="kpi_name" class="border p-2 w-full" required>
-            <label class="block mt-2">Date:</label>
-            <input type="date" name="kpi_date" class="border p-2 w-full" required>
-            <label class="block mt-2">KPI Budget:</label>
-            <input type="number" name="kpi_budget" class="border p-2 w-full" step="0.01" required>
+      <!-- Step 2: KPI -->
+      <div id="form-step-2" class="form-step hidden">
+        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 2: KPI</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">KPI Name</label>
+            <input type="text" name="kpi_name" class="input-field" required />
           </div>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(1)">Back</button>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(3)">Next</button>
-        </div>
-
-        <!-- Step 3: Workshops -->
-        <div id="form-step-3" class="form-step hidden">
-          <h3 class="text-lg font-semibold">Step 3: Workshops</h3>
-          <div class="mt-4">
-            <label class="block">Workshop Name:</label>
-            <input type="text" name="workshop_name" class="border p-2 w-full" required>
-            <label class="block mt-2">Date:</label>
-            <input type="date" name="workshop_date" class="border p-2 w-full" required>
-            <label class="block mt-2">Workshop Budget:</label>
-            <input type="number" name="workshop_budget" class="border p-2 w-full" step="0.01" required>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Date</label>
+            <input type="date" name="kpi_date" class="input-field" required />
           </div>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(2)">Back</button>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(4)">Next</button>
-        </div>
-
-        <!-- Step 4: Review Meetings -->
-        <div id="form-step-4" class="form-step hidden">
-          <h3 class="text-lg font-semibold">Step 4: Review Meetings</h3>
-          <div class="mt-4">
-            <label class="block">Meeting Name:</label>
-            <input type="text" name="meeting_name" class="border p-2 w-full" required>
-            <label class="block mt-2">Date:</label>
-            <input type="date" name="meeting_date" class="border p-2 w-full" required>
-            <label class="block mt-2">Meeting Budget:</label>
-            <input type="number" name="meeting_budget" class="border p-2 w-full" step="0.01" required>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">KPI Budget</label>
+            <input type="number" name="kpi_budget" class="input-field" step="0.01" required />
           </div>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(3)">Back</button>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(5)">Next</button>
         </div>
+        <div class="flex justify-between gap-3 mt-6">
+          <button type="button" onclick="nextStep(1)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
+          <button type="button" onclick="validateStep(3)" class="nav-btn bg-indigo-600 hover:bg-indigo-700">Next</button>
+        </div>
+      </div>
 
-        <!-- Step 5: Manpower -->
-        <div id="form-step-5" class="form-step hidden">
-          <h3 class="text-lg font-semibold">Step 5: Manpower</h3>
-          <div class="mt-4">
-            <label class="block">Manpower Details:</label>
-            <input type="text" name="manpower_details" class="border p-2 w-full" required>
-            <label class="block mt-2">Date:</label>
-            <input type="date" name="manpower_date" class="border p-2 w-full" required>
-            <label class="block mt-2">Manpower Budget:</label>
-            <input type="number" name="manpower_budget" class="border p-2 w-full" step="0.01" required>
+      <!-- Step 3: Workshops -->
+      <div id="form-step-3" class="form-step hidden">
+        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 3: Workshops</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Workshop Name</label>
+            <input type="text" name="workshop_name" class="input-field" required />
           </div>
-          <button type="button" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onclick="nextStep(4)">Back</button>
-          <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded">Submit</button>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Date</label>
+            <input type="date" name="workshop_date" class="input-field" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Workshop Budget</label>
+            <input type="number" name="workshop_budget" class="input-field" step="0.01" required />
+          </div>
         </div>
-      </form>
-    </div>
+        <div class="flex justify-between gap-3 mt-6">
+          <button type="button" onclick="nextStep(2)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
+          <button type="button" onclick="validateStep(4)" class="nav-btn bg-indigo-600 hover:bg-indigo-700">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Review Meetings -->
+      <div id="form-step-4" class="form-step hidden">
+        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 4: Review Meetings</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Meeting Name</label>
+            <input type="text" name="meeting_name" class="input-field" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Date</label>
+            <input type="date" name="meeting_date" class="input-field" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Meeting Budget</label>
+            <input type="number" name="meeting_budget" class="input-field" step="0.01" required />
+          </div>
+        </div>
+        <div class="flex justify-between gap-3 mt-6">
+          <button type="button" onclick="nextStep(3)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
+          <button type="button" onclick="validateStep(5)" class="nav-btn bg-indigo-600 hover:bg-indigo-700">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Manpower -->
+      <div id="form-step-5" class="form-step hidden">
+        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 5: Manpower</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Manpower Details</label>
+            <input type="text" name="manpower_details" class="input-field" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Date</label>
+            <input type="date" name="manpower_date" class="input-field" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Manpower Budget</label>
+            <input type="number" name="manpower_budget" class="input-field" step="0.01" required />
+          </div>
+        </div>
+        <div class="flex justify-between gap-3 mt-6">
+          <button type="button" onclick="nextStep(4)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
+          <button type="submit" class="nav-btn bg-green-600 hover:bg-green-700">Submit</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 
-<script src="{% static "js/user_dashboard.js" %}"></script>
+<!-- Styles -->
+<style>
+  .input-field {
+    @apply border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400;
+  }
+  .nav-btn {
+    @apply px-5 py-2 text-white rounded transition duration-200 text-sm sm:text-base;
+  }
+</style>
+
+<!-- JS: Progress + Validation -->
+<script>
+  let currentStep = 1;
+  const totalSteps = 5;
+
+  function updateProgressBar() {
+    const percent = (currentStep / totalSteps) * 100;
+    document.getElementById("progress-bar").style.width = percent + "%";
+  }
+
+  function showStep(step) {
+    document.querySelectorAll(".form-step").forEach((stepDiv) => {
+      stepDiv.classList.add("hidden");
+    });
+    document.getElementById(`form-step-${step}`).classList.remove("hidden");
+    currentStep = step;
+    updateProgressBar();
+  }
+
+  function validateStep(stepToShow) {
+    const stepForm = document.getElementById(`form-step-${currentStep}`);
+    const requiredFields = stepForm.querySelectorAll("[required]");
+    let allFilled = true;
+
+    requiredFields.forEach((field) => {
+      if (!field.value.trim()) {
+        field.classList.add("border-red-500");
+        allFilled = false;
+      } else {
+        field.classList.remove("border-red-500");
+      }
+    });
+
+    if (allFilled) {
+      showStep(stepToShow);
+    }
+  }
+
+  function nextStep(step) {
+    showStep(step);
+  }
+
+  // Initialize
+  document.addEventListener("DOMContentLoaded", () => {
+    updateProgressBar();
+  });
+</script>
+
+<script src="{% static 'js/user_dashboard.js' %}"></script>
 
 {% endblock %}
