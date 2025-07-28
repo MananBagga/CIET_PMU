@@ -1,12 +1,11 @@
-{% extends "layout.html" %} {% load static %} 
-{% block title %}Edit Program - {{ program.title }}{% endblock %} 
-
+{% extends "layout.html" %} 
+{% load static %} 
+{% block title %}Edit Program - {{program.title }}{% endblock %} 
 
 {% block content %} 
 {% include "partials/navbar.html" %}
 
 <div class="container mx-auto px-4 py-12 max-w-4xl">
-  <!-- Progress Bar -->
   <div
     class="w-full bg-gray-200 rounded-full h-6 mb-10 shadow-inner border border-gray-300"
   >
@@ -21,7 +20,6 @@
     </div>
   </div>
 
-  <!-- Edit Button -->
   <div class="text-center mb-10">
     <button
       onclick="openEditForm('{{ program.id }}', '{{ program.type }}', '{{ program.title }}', '{{ program.program_budget }}', '{{ program.created_at|date:'Y-m-d' }}')"
@@ -31,7 +29,6 @@
     </button>
   </div>
 
-  <!-- Edit Form -->
   <div id="edit-form" class="hidden max-w-3xl mx-auto space-y-10">
     <form
       id="program-form"
@@ -70,6 +67,7 @@
         <div id="kpi-entries" class="space-y-6">
           {% if kpi_entries %} {% for kpi in kpi_entries %}
           <div class="kpi-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="kpi_id[]" value="{{ kpi.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >KPI Name</label
@@ -111,6 +109,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'kpi')"
+                data-entry-id="{{ kpi.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -119,6 +118,7 @@
           </div>
           {% endfor %} {% else %}
           <div class="kpi-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="kpi_id[]" value="{{ kpi.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >KPI Name</label
@@ -157,6 +157,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'kpi')"
+                data-entry-id="{{ kpi.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -202,6 +203,7 @@
         <div id="workshop-entries" class="space-y-6">
           {% if workshop_entries %} {% for workshop in workshop_entries %}
           <div class="workshop-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="workshop_id[]" value="{{ workshop.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Workshop Name</label
@@ -243,6 +245,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'workshop')"
+                data-entry-id="{{ workshop.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -251,6 +254,7 @@
           </div>
           {% endfor %} {% else %}
           <div class="workshop-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="workshop_id[]" value="{{ workshop.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Workshop Name</label
@@ -289,6 +293,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'workshop')"
+                data-entry-id="{{ workshop.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -334,6 +339,7 @@
         <div id="meeting-entries" class="space-y-6">
           {% if meeting_entries %} {% for meeting in meeting_entries %}
           <div class="meeting-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="meeting_id[]" value="{{ meeting.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Meeting Name</label
@@ -375,6 +381,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'meeting')"
+                data-entry-id="{{ meeting.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -383,6 +390,7 @@
           </div>
           {% endfor %} {% else %}
           <div class="meeting-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="meeting_id[]" value="{{ meeting.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Meeting Name</label
@@ -421,6 +429,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'meeting')"
+                data-entry-id="{{ meeting.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -465,6 +474,7 @@
         <div id="manpower-entries" class="space-y-6">
           {% if manpower_entries %} {% for manpower in manpower_entries %}
           <div class="manpower-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="manpower_id[]" value="{{ manpower.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Manpower Details</label
@@ -506,6 +516,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'manpower')"
+                data-entry-id="{{ manpower.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -514,6 +525,7 @@
           </div>
           {% endfor %} {% else %}
           <div class="manpower-entry space-y-4 border-b border-gray-200 pb-4">
+            <input type="hidden" name="manpower_id[]" value="{{ manpower.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Manpower Details</label
@@ -552,6 +564,7 @@
               <button
                 type="button"
                 onclick="removeEntry(this, 'manpower')"
+                data-entry-id="{{ manpower.id }}"
                 class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
@@ -589,14 +602,12 @@
   </div>
 </div>
 
-<!-- Styles -->
 <style>
   .input-field {
     @apply block w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200;
   }
 </style>
 
-<!-- JS: Progress + Validation + Dynamic Entries -->
 <script>
   let currentStep = 1;
   const totalSteps = 5;
@@ -687,6 +698,31 @@
     showStep(1);
     updateRemoveButtons(currentStep);
   });
+
+  function removeEntry(button, type) {
+    const entryDiv = button.closest(`.${type}-entry`);
+    const entryId = button.dataset.entryId;
+
+    // Remove from UI
+    entryDiv.remove();
+
+    // Remove from DB if ID exists
+    if (entryId) {
+      fetch(`/delete-subentry/${entryId}/`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.success) {
+            alert("Error deleting entry from DB");
+          }
+        })
+        .catch(() => alert("Request failed."));
+    }
+  }
 </script>
 
 <script src="{% static 'js/user_dashboard.js' %}"></script>
