@@ -10,7 +10,6 @@
   <div class="flex-1 overflow-y-auto px-6 py-8 bg-gray-50">
     <h1 class="text-3xl font-bold mb-6 text-center">Project Budget Overview</h1>
 
-    <!-- Filter Form -->
     <form method="POST" class="bg-white rounded-lg shadow p-6 grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
       {% csrf_token %}
       <input type="text" name="project_name" placeholder="Project Name" class="border rounded px-3 py-2" />
@@ -44,12 +43,12 @@
         {% endfor %}
       </select>
 
-      <select name="period" class="border rounded px-3 py-2">
+      {% comment %} <select name="period" class="border rounded px-3 py-2">
         <option value="">Period</option>
         <option value="monthly">Monthly</option>
         <option value="half_yearly">Half Yearly</option>
         <option value="all">All Projects</option>
-      </select>
+      </select> {% endcomment %}
 
       <select name="sub_type" class="border rounded px-3 py-2">
         <option value="">Select Project Sub-Type</option>
@@ -62,7 +61,6 @@
       <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white font-semibold py-2 rounded">Apply Filters</button>
     </form>
 
-    <!-- Budget Table -->
     {% if projects %}
     <div class="overflow-x-auto bg-white rounded-lg shadow">
       <table class="min-w-full table-auto">
@@ -112,7 +110,7 @@
 </div>
     </div>
 
-    <div class="mt-4 flex gap-4">
+    {% comment %} <div class="mt-4 flex gap-4">
       <form method="GET" action="{% url 'export_projects_excel' %}">
         {% csrf_token %}
         <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
@@ -125,7 +123,7 @@
           Download PDF
         </button>
       </form>
-    </div>
+    </div> {% endcomment %}
     {% else %}
       <p class="text-center text-gray-600 mt-6">No results found for selected filters.</p>
     {% endif %}

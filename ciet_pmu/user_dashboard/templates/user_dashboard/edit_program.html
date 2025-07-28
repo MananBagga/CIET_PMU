@@ -1,133 +1,588 @@
-{% extends "layout.html" %}
-{% load static %}
+{% extends "layout.html" %} {% load static %} 
+{% block title %}Edit Program - {{ program.title }}{% endblock %} 
 
-{% block title %}Edit Program - {{ program.title }}{% endblock %}
 
-{% block content %}
-
+{% block content %} 
 {% include "partials/navbar.html" %}
 
-<div class="container mx-auto px-4 py-8">
-
+<div class="container mx-auto px-4 py-12 max-w-4xl">
   <!-- Progress Bar -->
-  <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
-    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 20%;"></div>
+  <div
+    class="w-full bg-gray-200 rounded-full h-6 mb-10 shadow-inner border border-gray-300"
+  >
+    <div
+      id="progress-bar"
+      class="bg-gradient-to-r from-indigo-500 to-indigo-700 h-6 rounded-full text-right transition-all duration-300 ease-in-out overflow-hidden"
+      style="width: 0%"
+    >
+      <span class="text-sm font-semibold text-white pr-2" id="progress-text"
+        >Step 1 of 5</span
+      >
+    </div>
   </div>
 
   <!-- Edit Button -->
-  <div class="text-center mb-6">
+  <div class="text-center mb-10">
     <button
-      onclick="openEditForm('{{ program.id }}', '{{ program.type }}', '{{ program.title }}', '{{ program.program_budget }}', '{{ program.created_at|date:"d M Y" }}')"
-      class="px-6 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700 transition duration-200 text-sm sm:text-base"
+      onclick="openEditForm('{{ program.id }}', '{{ program.type }}', '{{ program.title }}', '{{ program.program_budget }}', '{{ program.created_at|date:'Y-m-d' }}')"
+      class="px-8 py-3 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition duration-200 text-lg font-semibold"
     >
       Edit {{ program.title }} Program
     </button>
   </div>
 
   <!-- Edit Form -->
-  <div id="edit-form" class="hidden max-w-3xl mx-auto space-y-8">
-    <form id="program-form" method="POST" class="space-y-6 bg-white shadow-lg rounded-xl p-6">
+  <div id="edit-form" class="hidden max-w-3xl mx-auto space-y-10">
+    <form
+      id="program-form"
+      method="POST"
+      class="space-y-8 bg-white shadow-2xl rounded-xl p-10"
+    >
       {% csrf_token %}
       <input type="hidden" id="program-id" name="program_id" />
 
       <!-- Step 1: Program Details -->
       <div id="form-step-1" class="form-step">
-        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 1: Program</h3>
-        <div id="program-details" class="text-gray-700 space-y-2"></div>
-        <div class="flex justify-end gap-3 mt-6">
-          <button type="button" onclick="nextStep(2)" class="px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">Next</button>
+        <h3
+          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+        >
+          Step 1: Program Details
+        </h3>
+        <div id="program-details" class="text-gray-600 space-y-4"></div>
+        <div class="flex justify-end gap-4 mt-8">
+          <button
+            type="button"
+            onclick="nextStep(2)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Next
+          </button>
         </div>
       </div>
 
       <!-- Step 2: KPI -->
       <div id="form-step-2" class="form-step hidden">
-        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 2: KPI</h3>
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">KPI Name</label>
-            <input type="text" name="kpi_name" class="input-field" required />
+        <h3
+          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+        >
+          Step 2: KPI
+        </h3>
+        <div id="kpi-entries" class="space-y-6">
+          {% if kpi_entries %} {% for kpi in kpi_entries %}
+          <div class="kpi-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >KPI Name</label
+              >
+              <input
+                type="text"
+                name="kpi_name[]"
+                class="input-field border"
+                value="{{ kpi.subtask_name }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="kpi_date[]"
+                class="input-field border"
+                value="{{ kpi.subtask_date|date:'Y-m-d' }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >KPI Budget</label
+              >
+              <input
+                type="number"
+                name="kpi_budget[]"
+                class="input-field border"
+                value="{{ kpi.subtask_budget }}"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'kpi')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Date</label>
-            <input type="date" name="kpi_date" class="input-field" required />
+          {% endfor %} {% else %}
+          <div class="kpi-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >KPI Name</label
+              >
+              <input
+                type="text"
+                name="kpi_name[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="kpi_date[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >KPI Budget</label
+              >
+              <input
+                type="number"
+                name="kpi_budget[]"
+                class="input-field border"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'kpi')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">KPI Budget</label>
-            <input type="number" name="kpi_budget" class="input-field" step="0.01" required />
-          </div>
+          {% endif %}
         </div>
-        <div class="flex justify-between gap-3 mt-6">
-          <button type="button" onclick="nextStep(1)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
-          <button type="button" onclick="validateStep(3)" class="nav-btn bg-indigo-600 hover:bg-indigo-700">Next</button>
+        <div class="mt-6 flex justify-start">
+          <button
+            type="button"
+            onclick="addEntry('kpi')"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+          >
+            Add KPI
+          </button>
+        </div>
+        <div class="flex justify-between gap-4 mt-8">
+          <button
+            type="button"
+            onclick="previousStep(1)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onclick="validateStep(3)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Next
+          </button>
         </div>
       </div>
 
       <!-- Step 3: Workshops -->
       <div id="form-step-3" class="form-step hidden">
-        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 3: Workshops</h3>
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Workshop Name</label>
-            <input type="text" name="workshop_name" class="input-field" required />
+        <h3
+          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+        >
+          Step 3: Workshops
+        </h3>
+        <div id="workshop-entries" class="space-y-6">
+          {% if workshop_entries %} {% for workshop in workshop_entries %}
+          <div class="workshop-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Workshop Name</label
+              >
+              <input
+                type="text"
+                name="workshop_name[]"
+                class="input-field border"
+                value="{{ workshop.subtask_name }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="workshop_date[]"
+                class="input-field border"
+                value="{{ workshop.subtask_date|date:'Y-m-d' }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Workshop Budget</label
+              >
+              <input
+                type="number"
+                name="workshop_budget[]"
+                class="input-field border"
+                value="{{ workshop.subtask_budget }}"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'workshop')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Date</label>
-            <input type="date" name="workshop_date" class="input-field" required />
+          {% endfor %} {% else %}
+          <div class="workshop-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Workshop Name</label
+              >
+              <input
+                type="text"
+                name="workshop_name[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="workshop_date[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Workshop Budget</label
+              >
+              <input
+                type="number"
+                name="workshop_budget[]"
+                class="input-field border"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'workshop')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Workshop Budget</label>
-            <input type="number" name="workshop_budget" class="input-field" step="0.01" required />
-          </div>
+          {% endif %}
         </div>
-        <div class="flex justify-between gap-3 mt-6">
-          <button type="button" onclick="nextStep(2)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
-          <button type="button" onclick="validateStep(4)" class="nav-btn bg-indigo-600 hover:bg-indigo-700">Next</button>
+        <div class="mt-6 flex justify-start">
+          <button
+            type="button"
+            onclick="addEntry('workshop')"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+          >
+            Add Workshop
+          </button>
+        </div>
+        <div class="flex justify-between gap-4 mt-8">
+          <button
+            type="button"
+            onclick="previousStep(2)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onclick="validateStep(4)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Next
+          </button>
         </div>
       </div>
 
       <!-- Step 4: Review Meetings -->
       <div id="form-step-4" class="form-step hidden">
-        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 4: Review Meetings</h3>
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Meeting Name</label>
-            <input type="text" name="meeting_name" class="input-field" required />
+        <h3
+          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+        >
+          Step 4: Review Meetings
+        </h3>
+        <div id="meeting-entries" class="space-y-6">
+          {% if meeting_entries %} {% for meeting in meeting_entries %}
+          <div class="meeting-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Meeting Name</label
+              >
+              <input
+                type="text"
+                name="meeting_name[]"
+                class="input-field border"
+                value="{{ meeting.subtask_name }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="meeting_date[]"
+                class="input-field border"
+                value="{{ meeting.subtask_date|date:'Y-m-d' }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Meeting Budget</label
+              >
+              <input
+                type="number"
+                name="meeting_budget[]"
+                class="input-field border"
+                value="{{ meeting.subtask_budget }}"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'meeting')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Date</label>
-            <input type="date" name="meeting_date" class="input-field" required />
+          {% endfor %} {% else %}
+          <div class="meeting-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Meeting Name</label
+              >
+              <input
+                type="text"
+                name="meeting_name[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="meeting_date[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Meeting Budget</label
+              >
+              <input
+                type="number"
+                name="meeting_budget[]"
+                class="input-field border"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'meeting')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Meeting Budget</label>
-            <input type="number" name="meeting_budget" class="input-field" step="0.01" required />
-          </div>
+          {% endif %}
         </div>
-        <div class="flex justify-between gap-3 mt-6">
-          <button type="button" onclick="nextStep(3)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
-          <button type="button" onclick="validateStep(5)" class="nav-btn bg-indigo-600 hover:bg-indigo-700">Next</button>
+        <div class="mt-6 flex justify-between items-center">
+          <button
+            type="button"
+            onclick="addEntry('meeting')"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+          >
+            Add Meeting
+          </button>
+
+          <button
+            type="button"
+            onclick="previousStep(3)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onclick="validateStep(5)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Next
+          </button>
         </div>
       </div>
 
       <!-- Step 5: Manpower -->
       <div id="form-step-5" class="form-step hidden">
-        <h3 class="text-xl font-semibold text-gray-800 border-b pb-2 mb-4">Step 5: Manpower</h3>
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Manpower Details</label>
-            <input type="text" name="manpower_details" class="input-field" required />
+        <h3
+          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+        >
+          Step 5: Manpower
+        </h3>
+        <div id="manpower-entries" class="space-y-6">
+          {% if manpower_entries %} {% for manpower in manpower_entries %}
+          <div class="manpower-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Manpower Details</label
+              >
+              <input
+                type="text"
+                name="manpower_details[]"
+                class="input-field border"
+                value="{{ manpower.subtask_name }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="manpower_date[]"
+                class="input-field border"
+                value="{{ manpower.subtask_date|date:'Y-m-d' }}"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Manpower Budget</label
+              >
+              <input
+                type="number"
+                name="manpower_budget[]"
+                class="input-field border"
+                value="{{ manpower.subtask_budget }}"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'manpower')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Date</label>
-            <input type="date" name="manpower_date" class="input-field" required />
+          {% endfor %} {% else %}
+          <div class="manpower-entry space-y-4 border-b border-gray-200 pb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Manpower Details</label
+              >
+              <input
+                type="text"
+                name="manpower_details[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Date</label
+              >
+              <input
+                type="date"
+                name="manpower_date[]"
+                class="input-field border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Manpower Budget</label
+              >
+              <input
+                type="number"
+                name="manpower_budget[]"
+                class="input-field border"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                onclick="removeEntry(this, 'manpower')"
+                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+              >
+                Remove
+              </button>
+            </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Manpower Budget</label>
-            <input type="number" name="manpower_budget" class="input-field" step="0.01" required />
-          </div>
+          {% endif %}
         </div>
-        <div class="flex justify-between gap-3 mt-6">
-          <button type="button" onclick="nextStep(4)" class="nav-btn bg-gray-400 hover:bg-gray-500">Back</button>
-          <button type="submit" class="nav-btn bg-green-600 hover:bg-green-700">Submit</button>
+        <div class="mt-6 flex justify-start">
+          <button
+            type="button"
+            onclick="addEntry('manpower')"
+            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+          >
+            Add Manpower
+          </button>
+        </div>
+        <div class="flex justify-between gap-4 mt-8">
+          <button
+            type="button"
+            onclick="previousStep(4)"
+            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+          >
+            Back
+          </button>
+          <button
+            type="submit"
+            class="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-semibold"
+          >
+            Submit
+          </button>
         </div>
       </div>
     </form>
@@ -137,21 +592,21 @@
 <!-- Styles -->
 <style>
   .input-field {
-    @apply border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400;
-  }
-  .nav-btn {
-    @apply px-5 py-2 text-white rounded transition duration-200 text-sm sm:text-base;
+    @apply block w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200;
   }
 </style>
 
-<!-- JS: Progress + Validation -->
+<!-- JS: Progress + Validation + Dynamic Entries -->
 <script>
   let currentStep = 1;
   const totalSteps = 5;
 
   function updateProgressBar() {
-    const percent = (currentStep / totalSteps) * 100;
-    document.getElementById("progress-bar").style.width = percent + "%";
+    const percent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+    const bar = document.getElementById("progress-bar");
+    const text = document.getElementById("progress-text");
+    bar.style.width = percent + "%";
+    text.textContent = `Step ${currentStep} of ${totalSteps}`;
   }
 
   function showStep(step) {
@@ -161,6 +616,7 @@
     document.getElementById(`form-step-${step}`).classList.remove("hidden");
     currentStep = step;
     updateProgressBar();
+    updateRemoveButtons(step);
   }
 
   function validateStep(stepToShow) {
@@ -179,16 +635,57 @@
 
     if (allFilled) {
       showStep(stepToShow);
+    } else {
+      alert("Please fill in all required fields.");
     }
   }
 
   function nextStep(step) {
+    validateStep(step);
+  }
+
+  function previousStep(step) {
     showStep(step);
   }
 
-  // Initialize
+  function addEntry(type) {
+    const entriesDiv = document.getElementById(`${type}-entries`);
+    const newEntry = entriesDiv.querySelector(`.${type}-entry`).cloneNode(true);
+    newEntry.querySelectorAll("input").forEach((input) => {
+      input.value = "";
+      input.classList.remove("border-red-500");
+    });
+    entriesDiv.appendChild(newEntry);
+    updateRemoveButtons(currentStep);
+  }
+
+  function removeEntry(button, type) {
+    const entriesDiv = document.getElementById(`${type}-entries`);
+    if (entriesDiv.querySelectorAll(`.${type}-entry`).length > 1) {
+      button.closest(`.${type}-entry`).remove();
+      updateRemoveButtons(currentStep);
+    } else {
+      alert("At least one entry is required.");
+    }
+  }
+
+  function updateRemoveButtons(step) {
+    const entryTypes = ["kpi", "workshop", "meeting", "manpower"];
+    const type = entryTypes[step - 2];
+    if (type) {
+      const entriesDiv = document.getElementById(`${type}-entries`);
+      const entries = entriesDiv.querySelectorAll(`.${type}-entry`);
+      entries.forEach((entry) => {
+        const removeBtn = entry.querySelector(".remove-btn");
+        removeBtn.classList.remove("hidden");
+      });
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     updateProgressBar();
+    showStep(1);
+    updateRemoveButtons(currentStep);
   });
 </script>
 

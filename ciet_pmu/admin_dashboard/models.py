@@ -51,11 +51,11 @@ class Program(models.Model):
 
 
 class Subentry(models.Model):
-    task = models.ForeignKey('Task', models.DO_NOTHING)
-    title = models.TextField()
-    type = models.TextField(blank=True, null=True)
-    date = models.DateField()
-    budget = models.DecimalField(max_digits=10, decimal_places=5)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
+    program = models.ForeignKey(Program, models.DO_NOTHING)
+    subtask_name = models.TextField(blank=True, null=True)
+    subtask = models.TextField()
+    subtask_date = models.DateField(blank=True, null=True)
+    subtask_budget = models.DecimalField(max_digits=10, decimal_places=5, blank=True, null=True)  # max_digits and decimal_places have been guessed, as this database handles decimal fields as float
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
 

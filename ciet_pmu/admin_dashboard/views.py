@@ -17,7 +17,8 @@ def admin_dashboard(request):
 
     admin = get_object_or_404(Pmuadmin, pk=user_id)
     budget = Annualbudget.objects.all()
-    return render(request, 'admin_dashboard/admin_dashboard.html', {'budget': budget, 'admin': admin})
+    program = Program.objects.all()
+    return render(request, 'admin_dashboard/admin_dashboard.html', {'budget': budget, 'admin': admin, 'program':program})
 
 from decimal import Decimal
 

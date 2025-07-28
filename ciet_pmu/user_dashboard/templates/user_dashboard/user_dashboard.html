@@ -1,58 +1,12 @@
-{% extends "layout.html" %} 
-{% load static %} 
-
+{% extends "layout.html" %} {% load static %} 
 {% block title %}CIET PMU - User Dashboard{% endblock %} 
 
 {% block content %} 
 
 {% include "partials/navbar.html" %}
+
 <div class="flex flex-col md:flex-row h-auto min-h-screen px-2">
   <div class="w-full max-w-4xl mx-auto p-4 sm:p-6">
-    <!-- Stepper -->
-    <div class="flex flex-wrap justify-start md:justify-between items-center mb-8 gap-4">
-      <!-- Step 1 -->
-      <div class="flex items-center">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-sm sm:text-base">
-          1
-        </div>
-        <span class="ml-2 text-gray-600 text-sm sm:text-base">Program</span>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="flex items-center">
-        <a href="#form-step-2">
-          <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-sm sm:text-base">
-            2
-          </div>
-        </a>
-        <span class="ml-2 text-gray-600 text-sm sm:text-base">KPI</span>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="flex items-center">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-sm sm:text-base">
-          3
-        </div>
-        <span class="ml-2 text-gray-600 text-sm sm:text-base">Workshops</span>
-      </div>
-
-      <!-- Step 4 -->
-      <div class="flex items-center">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-sm sm:text-base">
-          4
-        </div>
-        <span class="ml-2 text-gray-600 text-sm sm:text-base">Review Meetings</span>
-      </div>
-
-      <!-- Step 5 -->
-      <div class="flex items-center">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-sm sm:text-base">
-          5
-        </div>
-        <span class="ml-2 text-gray-600 text-sm sm:text-base">Manpower</span>
-      </div>
-    </div>
-
     <!-- Program List -->
     <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
       My Assigned Programs
@@ -62,26 +16,118 @@
     <div class="space-y-4">
       {% for program in programs %}
       <div class="p-4 border rounded-lg bg-gray-50 text-sm sm:text-base">
+        <!-- Basic Info -->
         <p><strong>Program Type:</strong> {{ program.type }}</p>
         <p><strong>Program Title:</strong> {{ program.title }}</p>
         <p><strong>Budget:</strong> ₹{{ program.program_budget }}</p>
-        <p><strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}</p>
-        <a href="{% url 'edit_program' program.id %}">
+        <p>
+          <strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 mt-3">
+          <a href="{% url 'edit_program' program.id %}">
+            <button
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Edit Program
+            </button>
+          </a>
           <button
-            class="mt-2 px-3 py-2 sm:px-4 sm:py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm sm:text-base"
+            onclick="toggleSummary('{{ program.id }}')"
+            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
-            Edit Program
+            View Program
           </button>
-        </a>
+        </div>
+
+        <!-- Collapsible Summary -->
+        <div
+          id="summary-{{ program.id }}"
+          class="mt-6 hidden bg-white p-4 rounded border text-gray-800 space-y-4"
+        >
+          <div>
+            <h3 class="text-lg font-semibold border-b pb-1 mb-2">
+              Program Details
+            </h3>
+            <p><strong>Title:</strong> {{ program.title }}</p>
+            <p><strong>Budget:</strong> ₹{{ program.program_budget }}</p>
+            <p><strong>Type:</strong> {{ program.type }}</p>
+            <p>
+              <strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}
+            </p>
+          </div>
+
+          {% for task in subtask %}
+            {% if task.program_id == program.id %} 
+              {% if task.subtask == 'kpi' %}
+                <div>
+                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">KPI Entries</h3>
+                  <ul class="list-disc list-inside">
+                    <li>
+                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
+                    </li>
+                  </ul>
+                </div>
+              {% endif %}
+              {% if task.subtask == 'workshop' %}
+                <div>
+                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">Workshops</h3>
+                  <ul class="list-disc list-inside">
+                    <li>
+                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
+                    </li>
+                  </ul>
+                </div>
+              {% endif %}
+              {% if task.subtask == 'meetings' %}
+                <div>
+                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">Review Meetings</h3>
+                  <ul class="list-disc list-inside">
+                    <li>
+                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
+                    </li>
+                  </ul>
+                </div>
+              {% endif %}
+              {% if task.subtask == 'manpower' %}
+                <div>
+                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">Manpower</h3>
+                  <ul class="list-disc list-inside">
+                    <li>
+                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
+                    </li>
+                  </ul>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
       </div>
       {% endfor %}
     </div>
     {% else %}
-    <p class="text-gray-500 text-sm sm:text-base">No programs assigned to you yet.</p>
+    <p class="text-gray-500 text-sm sm:text-base">
+      No programs assigned to you yet.
+    </p>
     {% endif %}
   </div>
 </div>
 
-<script src="{% static 'js/user_dashboard.js' %}"></script>
+<!-- Toggle Summary Script -->
+<script>
+  function toggleSummary(programId) {
+    const allSummaries = document.querySelectorAll('[id^="summary-"]');
+    allSummaries.forEach((div) => {
+      if (div.id !== `summary-${programId}`) {
+        div.classList.add("hidden");
+      }
+    });
 
+    const summaryDiv = document.getElementById(`summary-${programId}`);
+    summaryDiv.classList.toggle("hidden");
+  }
+</script>
+
+<script src="{% static 'js/user_dashboard.js' %}"></script>
 {% endblock %}
