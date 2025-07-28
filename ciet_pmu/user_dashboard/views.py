@@ -74,25 +74,18 @@ def edit_program(request, program_id):
 
         total_new_budget = sum(all_budgets, Decimal('0'))
 
-
-        total_new_budget = sum(all_budgets)
+        updated_ids = [i for i in (kpi_ids + workshop_ids + meeting_ids + manpower_ids) if i]
 
         existing_budget = Subentry.objects.filter(program=program).exclude(
-            subtask__in=[]
+            id__in=updated_ids
         ).aggregate(total=models.Sum('subtask_budget'))['total'] or Decimal('0')
 
-
-        user_id = request.session.get('user_id')
-        if not user_id:
-            return redirect('login')
-    
-        program = get_object_or_404(Program, coordinator_id=user_id)
         budget = program.program_budget
 
-
-        if total_new_budget + existing_budget > budget:
-            messages.error(request, "Budget limit exceeded! Please adjust your entries.")
+        if existing_budget + total_new_budget > budget:
+            messages.error(request, f"Budget limit exceeded! Please adjust your entries. Limit: {budget}, New: {total_new_budget}, Existing: {existing_budget}")
             return redirect('edit_program', program_id=program.id)
+
 
         save_entries(kpi_ids, kpi_names, kpi_dates, kpi_budgets, "kpi", program_id)
         save_entries(workshop_ids, workshop_names, workshop_dates, workshop_budgets, "workshop", program_id)
