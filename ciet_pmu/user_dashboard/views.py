@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from admin_dashboard.models import Program, User, Subentry
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db import models
+from django.contrib import messages
+from decimal import Decimal
 
 def user_dashboard(request):
     user_id = request.session.get('user_id')
@@ -38,7 +41,6 @@ def save_entries(ids, names, dates, budgets, entry_type, program_id):
                 subtask_budget=budget
             )
 
-
 def edit_program(request, program_id):
     program = get_object_or_404(Program, pk=program_id)
 
@@ -63,13 +65,42 @@ def edit_program(request, program_id):
         manpower_dates = request.POST.getlist('manpower_date[]')
         manpower_budgets = request.POST.getlist('manpower_budget[]')
 
+        all_budgets = (
+            [Decimal(b) if b else Decimal('0') for b in kpi_budgets] +
+            [Decimal(b) if b else Decimal('0') for b in workshop_budgets] +
+            [Decimal(b) if b else Decimal('0') for b in meeting_budgets] +
+            [Decimal(b) if b else Decimal('0') for b in manpower_budgets]
+        )
+
+        total_new_budget = sum(all_budgets, Decimal('0'))
+
+
+        total_new_budget = sum(all_budgets)
+
+        existing_budget = Subentry.objects.filter(program=program).exclude(
+            subtask__in=[]
+        ).aggregate(total=models.Sum('subtask_budget'))['total'] or Decimal('0')
+
+
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return redirect('login')
+    
+        program = get_object_or_404(Program, coordinator_id=user_id)
+        budget = program.program_budget
+
+
+        if total_new_budget + existing_budget > budget:
+            messages.error(request, "Budget limit exceeded! Please adjust your entries.")
+            return redirect('edit_program', program_id=program.id)
+
         save_entries(kpi_ids, kpi_names, kpi_dates, kpi_budgets, "kpi", program_id)
         save_entries(workshop_ids, workshop_names, workshop_dates, workshop_budgets, "workshop", program_id)
         save_entries(meeting_ids, meeting_names, meeting_dates, meeting_budgets, "meetings", program_id)
         save_entries(manpower_ids, manpower_names, manpower_dates, manpower_budgets, "manpower", program_id)
 
+        messages.success(request, "Entries saved successfully!")
         return redirect('user_dashboard')
-
 
     kpi_entries = Subentry.objects.filter(program=program, subtask="kpi")
     workshop_entries = Subentry.objects.filter(program=program, subtask="workshop")
@@ -83,8 +114,8 @@ def edit_program(request, program_id):
         'meeting_entries': meeting_entries,
         'manpower_entries': manpower_entries,
     })
-    
 
+    
 
 @csrf_exempt
 def delete_subentry(request, entry_id):
