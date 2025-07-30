@@ -145,6 +145,7 @@ def prepare_report(request, program_id):
         faculty = request.POST["faculty"]
 
         Projectreport.objects.create(
+            program_id = program_id,
             department = dept,
             activity = activity,
             activity_duration = act_dur,

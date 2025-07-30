@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 import datetime
 import calendar
-from .models import User, Program, Annualbudget, Pmuadmin
+from .models import User, Program, Annualbudget, Pmuadmin, Projectreport
 from openpyxl import Workbook
 from django.http import HttpResponse
 from xhtml2pdf import pisa
@@ -173,14 +173,26 @@ def export_projects_excel(request):
     return response
 
 
-def export_projects_pdf(request):
-    _, _, _, projects, total_used_budget, remaining_budget = helper_filter(request)
+from django.contrib import messages
+from django.shortcuts import redirect
+
+def export_projects_pdf(request, project_id):
+    if not Projectreport.objects.filter(program_id=project_id).exists():
+        messages.error(request, "Report does not exist for this program.")
+        return redirect('view_projects') 
+    
+    program = get_object_or_404(Program, pk=project_id)
+    project_report = Projectreport.objects.get(program_id=project_id)
+
     template = get_template('admin_dashboard/project_pdf.html')
-    html = template.render({'projects': projects, 'total_used_budget':total_used_budget, 'remaining_budget':remaining_budget})
+    html = template.render({'project_report': project_report, 'program_type': program.type})
+    
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="projects.pdf"'
-    pisa.CreatePDF(io.BytesIO(html.encode('UTF-8')), dest=response)
+    response['Content-Disposition'] = f'attachment; filename="{program.title}-report.pdf"'
+    
+    pisa.CreatePDF(html, dest=response)
     return response
+
 
 def edit_project(request, project_id):
     project = get_object_or_404(Program, id=project_id)

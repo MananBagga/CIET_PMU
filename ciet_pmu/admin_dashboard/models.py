@@ -34,6 +34,22 @@ class Pmuadmin(models.Model):
         managed = False
         db_table = 'Pmuadmin'
 
+
+class Program(models.Model):
+    type = models.TextField(blank=True, null=True)
+    title = models.TextField()
+    coordinator = models.ForeignKey('User', models.DO_NOTHING)
+    annual_budget = models.ForeignKey(Annualbudget, models.DO_NOTHING)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+    program_budget = models.DecimalField(decimal_places=2, max_digits=12)
+    program_sub_type = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'Program'
+
+
 class Projectreport(models.Model):
     department = models.TextField()
     activity = models.TextField()
@@ -52,25 +68,11 @@ class Projectreport(models.Model):
     invited = models.IntegerField()
     attended = models.IntegerField()
     faculty = models.TextField()
+    program = models.ForeignKey(Program, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'ProjectReport'
-
-
-class Program(models.Model):
-    type = models.TextField(blank=True, null=True)
-    title = models.TextField()
-    coordinator = models.ForeignKey('User', models.DO_NOTHING)
-    annual_budget = models.ForeignKey(Annualbudget, models.DO_NOTHING)
-    created_at = models.DateTimeField(default=timezone.now)
-    updated_at = models.DateTimeField(default=timezone.now)
-    program_budget = models.DecimalField(decimal_places=2, max_digits=12)
-    program_sub_type = models.TextField()
-
-    class Meta:
-        managed = False
-        db_table = 'Program'
 
 
 class Subentry(models.Model):
