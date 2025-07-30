@@ -1,7 +1,7 @@
 {% extends "layout.html" %} 
 {% load static %} 
 {% block title %}Edit Program - {{program.title }}{% endblock %} 
-
+<meta name="csrf-token" content="{{ csrf_token }}">
 {% block content %} 
 {% include "partials/navbar.html" %}
 
@@ -611,12 +611,6 @@
   </div>
 </div>
 
-<style>
-  .input-field {
-    @apply block w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200;
-  }
-</style>
-
 <script>
   let currentStep = 1;
   const totalSteps = 5;
@@ -679,15 +673,10 @@
     updateRemoveButtons(currentStep);
   }
 
+{% comment %} 
   function removeEntry(button, type) {
-    const entriesDiv = document.getElementById(`${type}-entries`);
-    if (entriesDiv.querySelectorAll(`.${type}-entry`).length > 1) {
-      button.closest(`.${type}-entry`).remove();
-      updateRemoveButtons(currentStep);
-    } else {
-      alert("At least one entry is required.");
-    }
-  }
+    
+  } {% endcomment %}
 
   function updateRemoveButtons(step) {
     const entryTypes = ["kpi", "workshop", "meeting", "manpower"];
@@ -709,19 +698,28 @@
   });
 
   function removeEntry(button, type) {
+
+    const entriesDiv = document.getElementById(`${type}-entries`);
+    if (entriesDiv.querySelectorAll(`.${type}-entry`).length > 1) {
+      button.closest(`.${type}-entry`).remove();
+      updateRemoveButtons(currentStep);
+    } else {
+      alert("At least one entry is required.");
+    }
+
+
     const entryDiv = button.closest(`.${type}-entry`);
     const entryId = button.dataset.entryId;
 
     // Remove from UI
     entryDiv.remove();
-
+    
+    const csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     // Remove from DB if ID exists
     if (entryId) {
       fetch(`/delete-subentry/${entryId}/`, {
         method: "DELETE",
-        headers: {
-          "X-CSRFToken": "{{ csrf_token }}",
-        },
+        headers: { "X-CSRFToken": csrftoken },
       })
         .then((response) => response.json())
         .then((data) => {

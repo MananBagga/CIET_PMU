@@ -1,0 +1,20 @@
+.input-field {
+    display: block;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-width: 2px;
+    border-color: #D1D5DB;
+    border-radius: 0.5rem;
+    color: #1F2937;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+.input-field:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #6366F1;
+    border-color: #6366F1;
+}
