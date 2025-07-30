@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from admin_dashboard.models import Program, User, Subentry
+from admin_dashboard.models import Program, User, Subentry, Projectreport
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
@@ -119,3 +119,53 @@ def delete_subentry(request, entry_id):
         except Subentry.DoesNotExist:
             return JsonResponse({"success": False, "error": "Not found"})
     return JsonResponse({"success": False, "error": "Invalid request"})
+
+
+def prepare_report(request, program_id):
+
+    programs = get_object_or_404(Program, pk=program_id)
+
+    if request.method == "POST":
+        dept = request.POST["department"]
+        activity = request.POST["activity"]
+        act_dur = request.POST["activity_duration"]
+        major_pro = request.POST["major_programmes"]
+        budget_pro = request.POST["budget_provision"]
+        amt_spent = request.POST["amt_spent"]
+        target_grp = request.POST["target_group"]
+        sanction_no = request.POST["sanction_no"]
+        budget_sanc = request.POST["budget_sanctions"]
+        report = request.POST["report"]
+        impact = request.POST["impact"]
+        difficulties = request.POST["difficulties"]
+        improv = request.POST["improvements"]
+        followup = request.POST["followup"]
+        invited = request.POST["invited"]
+        attended = request.POST["attended"]
+        faculty = request.POST["faculty"]
+
+        Projectreport.objects.create(
+            department = dept,
+            activity = activity,
+            activity_duration = act_dur,
+            major_programmes = major_pro,
+            budget_provision = budget_pro,
+            amt_spent = amt_spent,
+            target_group = target_grp,
+            sanction_no = sanction_no,
+            budget_sanctions = budget_sanc,
+            report = report,
+            impact = impact,
+            difficulties = difficulties,
+            improvements = improv,
+            followup = followup,
+            invited = invited,
+            attended = attended,
+            faculty = faculty,
+        )
+
+        redirect('user_dashboard')
+
+    return render(request, 'user_dashboard/prepare_report.html', {'programs':programs})
+
+

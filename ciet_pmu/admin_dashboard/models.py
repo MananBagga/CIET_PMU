@@ -34,6 +34,29 @@ class Pmuadmin(models.Model):
         managed = False
         db_table = 'Pmuadmin'
 
+class Projectreport(models.Model):
+    department = models.TextField()
+    activity = models.TextField()
+    activity_duration = models.TextField()
+    major_programmes = models.TextField()
+    budget_provision = models.IntegerField()
+    amt_spent = models.IntegerField()
+    target_group = models.TextField()
+    sanction_no = models.IntegerField()
+    budget_sanctions = models.IntegerField()
+    report = models.TextField()
+    impact = models.TextField()
+    difficulties = models.TextField()
+    improvements = models.TextField()
+    followup = models.TextField(db_column='followUp')  # Field name made lowercase.
+    invited = models.IntegerField()
+    attended = models.IntegerField()
+    faculty = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'ProjectReport'
+
 
 class Program(models.Model):
     type = models.TextField(blank=True, null=True)

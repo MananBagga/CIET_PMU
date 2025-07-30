@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block title %}CIET PMU - PROGRAM REPORT{% endblock %}
+
+{% block content %}
+
+{% include "partials/navbar.html" %}
+
+<div class=" mt-10 container mx-auto p-6 max-w-4xl bg-white shadow-lg rounded-lg">
+  <h2 class="text-2xl font-bold mb-4">Activity Completion Report</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <label class="block font-semibold">1. Name of the Deptt./Unit/Cell:</label>
+    <input type="text" name="department" class="input-field" required>
+
+    <label class="block font-semibold mt-3">2. Activity Undertaken:</label>
+    <textarea name="activity" class="input-field" required></textarea>
+
+    <label class="block font-semibold mt-3">Activity Duration:</label>
+    <input type="text" name="activity_duration" class="input-field" required>
+
+    <div class="block font-semibold mt-3">Program Category: {% if programs %}{{programs.type}}{% endif %}</div>
+
+    <label class="block font-semibold mt-3">3. Major Programmes:</label>
+    <input type="text" name="major_programmes" class="input-field" required>
+
+    <label class="block font-semibold mt-3">4. Budget Provision (Rs):</label>
+    <input type="number" name="budget_provision" class="input-field" required>
+
+    <label class="block font-semibold mt-3">5. Budget Sanctions (Rs):</label>
+    <input type="number" name="budget_sanctions" class="input-field" required>
+
+    <label class="block font-semibold mt-3">Sanction No:</label>
+    <input type="number" name="sanction_no" class="input-field" required>
+
+    <label class="block font-semibold mt-3">6. Amount Actually Spent (Rs):</label>
+    <input type="number" name="amt_spent" class="input-field" required>
+
+    <label class="block font-semibold mt-3">7. Target Group:</label>
+    <textarea name="target_group" class="input-field" required></textarea>
+
+    <label class="block font-semibold mt-3">8. Report of Activity:</label>
+    <textarea name="report" class="input-field" required></textarea>
+
+    <label class="block font-semibold mt-3">9. Outcome / Impact:</label>
+    <textarea name="impact" class="input-field" required></textarea>
+
+    <label class="block font-semibold mt-3">10. Difficulties:</label>
+    <textarea name="difficulties" class="input-field" required></textarea>
+
+    <label class="block font-semibold mt-3">11. Measures Taken for Improvement:</label>
+    <textarea name="improvements" class="input-field" required></textarea>
+
+    <label class="block font-semibold mt-3">12. Follow-Up Actions:</label>
+    <textarea name="followup" class="input-field" required></textarea>
+
+    <label class="block font-semibold mt-3">13. No. of Participants Invited:</label>
+    <input type="number" name="invited" class="input-field" required>
+
+    <label class="block font-semibold mt-3">14. No. of Participants Attended:</label>
+    <input type="number" name="attended" class="input-field" required>
+
+    <label class="block font-semibold mt-3">15. Faculty (Name & Designation):</label>
+    <textarea name="faculty" class="input-field" required></textarea>
+
+    <button type="submit" class="mt-6 px-6 py-3 bg-green-600 text-white rounded-lg">Submit Report</button>
+  </form>
+</div>
+
+<style>
+.input-field { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; margin-top: 4px; }
+</style>
+{% endblock %}
