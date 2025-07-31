@@ -370,9 +370,6 @@
   .hidden {
     display: none;
   }
-  .inline {
-    display: inline;
-  }
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
@@ -581,10 +578,6 @@
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
-  }
-  .border-2 {
-    border-style: var(--tw-border-style);
-    border-width: 2px;
   }
   .border-t {
     border-top-style: var(--tw-border-style);

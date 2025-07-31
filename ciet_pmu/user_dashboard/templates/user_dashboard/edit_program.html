@@ -1,7 +1,7 @@
 {% extends "layout.html" %} 
 {% load static %} 
-{% block title %}Edit Program - {{program.title }}{% endblock %} 
 <meta name="csrf-token" content="{{ csrf_token }}">
+{% block title %}Edit Program - {{program.title }}{% endblock %} 
 {% block content %} 
 {% include "partials/navbar.html" %}
 
@@ -610,127 +610,6 @@
     </form>
   </div>
 </div>
-
-<script>
-  let currentStep = 1;
-  const totalSteps = 5;
-
-  function updateProgressBar() {
-    const percent = ((currentStep - 1) / (totalSteps - 1)) * 100;
-    const bar = document.getElementById("progress-bar");
-    const text = document.getElementById("progress-text");
-    bar.style.width = percent + "%";
-    text.textContent = `Step ${currentStep} of ${totalSteps}`;
-  }
-
-  function showStep(step) {
-    document.querySelectorAll(".form-step").forEach((stepDiv) => {
-      stepDiv.classList.add("hidden");
-    });
-    document.getElementById(`form-step-${step}`).classList.remove("hidden");
-    currentStep = step;
-    updateProgressBar();
-    updateRemoveButtons(step);
-  }
-
-  function validateStep(stepToShow) {
-    const stepForm = document.getElementById(`form-step-${currentStep}`);
-    const requiredFields = stepForm.querySelectorAll("[required]");
-    let allFilled = true;
-
-    requiredFields.forEach((field) => {
-      if (!field.value.trim()) {
-        field.classList.add("border-red-500");
-        allFilled = false;
-      } else {
-        field.classList.remove("border-red-500");
-      }
-    });
-
-    if (allFilled) {
-      showStep(stepToShow);
-    } else {
-      alert("Please fill in all required fields.");
-    }
-  }
-
-  function nextStep(step) {
-    validateStep(step);
-  }
-
-  function previousStep(step) {
-    showStep(step);
-  }
-
-  function addEntry(type) {
-    const entriesDiv = document.getElementById(`${type}-entries`);
-    const newEntry = entriesDiv.querySelector(`.${type}-entry`).cloneNode(true);
-    newEntry.querySelectorAll("input").forEach((input) => {
-      input.value = "";
-      input.classList.remove("border-red-500");
-    });
-    entriesDiv.appendChild(newEntry);
-    updateRemoveButtons(currentStep);
-  }
-
-{% comment %} 
-  function removeEntry(button, type) {
-    
-  } {% endcomment %}
-
-  function updateRemoveButtons(step) {
-    const entryTypes = ["kpi", "workshop", "meeting", "manpower"];
-    const type = entryTypes[step - 2];
-    if (type) {
-      const entriesDiv = document.getElementById(`${type}-entries`);
-      const entries = entriesDiv.querySelectorAll(`.${type}-entry`);
-      entries.forEach((entry) => {
-        const removeBtn = entry.querySelector(".remove-btn");
-        removeBtn.classList.remove("hidden");
-      });
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    updateProgressBar();
-    showStep(1);
-    updateRemoveButtons(currentStep);
-  });
-
-  function removeEntry(button, type) {
-
-    const entriesDiv = document.getElementById(`${type}-entries`);
-    if (entriesDiv.querySelectorAll(`.${type}-entry`).length > 1) {
-      button.closest(`.${type}-entry`).remove();
-      updateRemoveButtons(currentStep);
-    } else {
-      alert("At least one entry is required.");
-    }
-
-
-    const entryDiv = button.closest(`.${type}-entry`);
-    const entryId = button.dataset.entryId;
-
-    // Remove from UI
-    entryDiv.remove();
-    
-    const csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    // Remove from DB if ID exists
-    if (entryId) {
-      fetch(`/delete-subentry/${entryId}/`, {
-        method: "DELETE",
-        headers: { "X-CSRFToken": csrftoken },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.success) {
-            alert("Error deleting entry from DB");
-          }
-        })
-        .catch(() => alert("Request failed."));
-    }
-  }
-</script>
 
 <script src="{% static 'js/user_dashboard.js' %}"></script>
 

@@ -18,3 +18,5 @@
     box-shadow: 0 0 0 2px #6366F1;
     border-color: #6366F1;
 }
+
+.input-report { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; margin-top: 4px; }
