@@ -3,102 +3,85 @@
 {% block title %}CIET PMU - Projects{% endblock %}
 
 {% block content %}
-{% load static tailwind_tags %} {% load static %}
-<div class="flex flex-col md:flex-row min-h-screen">
+{% load static tailwind_tags %}
+{% load static %}
+
+<div class="flex flex-col md:flex-row min-h-screen bg-gray-50">
   {% include "partials/admin_sidebar.html" %}
 
-  <div class="w-full md:max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-4">
-    <h2 class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mb-4">
-      Create Program
+  <div class="flex-1 w-full max-w-2xl lg:max-w-4xl mx-auto px-3 sm:px-6 md:px-8 py-6">
+    
+    <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-5 text-center md:text-left">
+      {% if edit_mode %}Edit Program{% else %}Create Program{% endif %}
     </h2>
 
-    <form method="POST" class="space-y-4 bg-white shadow-md rounded-lg p-4 sm:p-6">
+    <!-- Form Container -->
+    <form method="POST" class="space-y-4 sm:space-y-5 bg-white shadow-md rounded-lg p-4 sm:p-6">
       {% csrf_token %}
+      
+      <!-- Program Type -->
       <div>
-        <label class="block text-gray-700 mb-2 text-sm sm:text-base">Program Type</label>
-        <select
-          id="program-type"
-          name="program_type"
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-          required
-        >
+        <label class="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Program Type</label>
+        <select id="program-type" name="program_type" required
+          class="form-select w-full text-sm sm:text-base">
           <option value="">Select Program Type</option>
           <option value="PAC" {% if edit_mode and project.type == "PAC" %}selected{% endif %}>PAC</option>
           <option value="PAB" {% if edit_mode and project.type == "PAB" %}selected{% endif %}>PAB</option>
           <option value="Others" {% if edit_mode and project.type == "Others" %}selected{% endif %}>Others</option>
         </select>
-        <span class="error-message text-red-500 text-xs sm:text-sm hidden">Please select a program type</span>
       </div>
 
+      <!-- Program Sub Type -->
       <div>
-        <label class="block text-gray-700 mb-2 text-sm sm:text-base">Program Sub Type</label>
-        <select
-          id="program-sub-type"
-          name="program_sub_type"
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-          required
-        >
+        <label class="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Program Sub Type</label>
+        <select id="program-sub-type" name="program_sub_type" required
+          class="form-select w-full text-sm sm:text-base">
           <option value="">Select Program Sub Type</option>
           <option value="Planning" {% if edit_mode and project.program_sub_type == "Planning" %}selected{% endif %}>Planning</option>
-  <option value="Research" {% if edit_mode and project.program_sub_type == "Research" %}selected{% endif %}>Research</option>
-  <option value="Development" {% if edit_mode and project.program_sub_type == "Development" %}selected{% endif %}>Development</option>
-  <option value="Outreach" {% if edit_mode and project.program_sub_type == "Outreach" %}selected{% endif %}>Outreach</option>
+          <option value="Research" {% if edit_mode and project.program_sub_type == "Research" %}selected{% endif %}>Research</option>
+          <option value="Development" {% if edit_mode and project.program_sub_type == "Development" %}selected{% endif %}>Development</option>
+          <option value="Outreach" {% if edit_mode and project.program_sub_type == "Outreach" %}selected{% endif %}>Outreach</option>
         </select>
-        <span class="error-message text-red-500 text-xs sm:text-sm hidden">Please select a sub-type</span>
       </div>
 
+      <!-- Program Title -->
       <div>
-        <label class="block text-gray-700 mb-2 text-sm sm:text-base">Program Title</label>
-        <input
-          type="text"
-          id="program-title"
-          name="program_title"
-          placeholder="Enter Program Title"
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-          required
-          value="{% if edit_mode %}{{ project.title }}{% endif %}"
-        />
+        <label class="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Program Title</label>
+        <input type="text" id="program-title" name="program_title" placeholder="Enter Program Title" required
+          class="form-input w-full" value="{% if edit_mode %}{{ project.title }}{% endif %}">
       </div>
 
+      <!-- Program Coordinator -->
       <div>
-        <label class="block text-gray-700 mb-2 text-sm sm:text-base">Program Coordinator</label>
-        <select
-          id="program-coordinator"
-          name="program_coordinator"
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-          required
-        >
+        <label class="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Program Coordinator</label>
+        <select id="program-coordinator" name="program_coordinator" required
+          class="form-select w-full text-sm sm:text-base">
           {% for user in users %}
           <option value="{{ user.id }}" {% if edit_mode and project.coordinator.id == user.id %}selected{% endif %}>{{ user.get_full_name|default:user.username }}</option>
           {% endfor %}
         </select>
-        <span class="error-message text-red-500 text-xs sm:text-sm hidden">Please select a coordinator</span>
       </div>
 
+      <!-- Program Total Budget -->
       <div>
-        <label class="block text-gray-700 mb-2 text-sm sm:text-base">Program Total Budget</label>
-        <input
-          type="number"
-          id="program-budget"
-          name="program_budget"
-          placeholder="Enter Total Budget"
-          min="0"
-          step="0.01"
-          class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-          required
-          value="{% if edit_mode %}{{ project.program_budget }}{% endif %}"
-        />
-        <span class="error-message text-red-500 text-xs sm:text-sm hidden">Please enter a valid budget</span>
+        <label class="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Program Total Budget</label>
+        <input type="number" id="program-budget" name="program_budget" placeholder="Enter Total Budget"
+          min="0" step="0.01" required
+          class="form-input w-full" value="{% if edit_mode %}{{ project.program_budget }}{% endif %}">
       </div>
 
-      <button
-        type="submit"
-        id="submit"
-        class="w-full sm:w-auto px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm sm:text-base transition focus:ring-4 focus:ring-purple-300 disabled:opacity-50"
-      >
+      <!-- Submit Button -->
+      <button type="submit" id="submit"
+        class="w-full sm:w-auto px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg 
+               text-sm sm:text-base transition focus:ring-4 focus:ring-purple-300 disabled:opacity-50">
         {% if edit_mode %}Update Program{% else %}Submit{% endif %}
       </button>
     </form>
   </div>
 </div>
+
+<!-- Custom Tailwind Reusable Styles -->
+<style>
+  
+</style>
 {% endblock %}

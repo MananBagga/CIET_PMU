@@ -1,49 +1,57 @@
 {% extends "layout.html" %} 
-{% load static %} 
-<meta name="csrf-token" content="{{ csrf_token }}">
-{% block title %}Edit Program - {{program.title }}{% endblock %} 
-{% block content %} 
-{% include "partials/navbar.html" %}
 
-<div class="container mx-auto px-4 py-12 max-w-4xl">
+{% load static %}
+<meta name="csrf-token" content="{{ csrf_token }}" />
+{% block title %}Edit Program - {{program.title }}{% endblock %} 
+
+{% block content %} 
+
+{% include "partials/navbar.html" %}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12 min-h-screen max-w-full md:max-w-4xl pb-32">
   <div
-    class="w-full bg-gray-200 rounded-full h-6 mb-10 shadow-inner border border-gray-300"
+    class="w-full bg-gray-200 rounded-full h-5 sm:h-6 mb-6 sm:mb-10 shadow-inner border border-gray-300"
   >
-  {% if messages %}
-  <div class="mb-4">
-    {% for message in messages %}
-      <div class="p-3 rounded 
-        {% if message.tags == 'error' %} bg-red-100 text-red-800 border border-red-300 {% else %} bg-green-100 text-green-800 border border-green-300 {% endif %}">
+    {% if messages %}
+    <div class="mb-4">
+      {% for message in messages %}
+      <div
+        class="p-2 sm:p-3 rounded {% if message.tags == 'error' %} bg-red-100 text-red-800 border border-red-300 {% else %} bg-green-100 text-green-800 border border-green-300 {% endif %}"
+      >
         {{ message }}
       </div>
-    {% endfor %}
-  </div>
-{% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
     <div
       id="progress-bar"
-      class="bg-gradient-to-r from-indigo-500 to-indigo-700 h-6 rounded-full text-right transition-all duration-300 ease-in-out overflow-hidden"
+      class="bg-gradient-to-r from-indigo-500 to-indigo-700 h-5 sm:h-6 rounded-full text-right transition-all duration-300 ease-in-out overflow-hidden"
       style="width: 0%"
     >
-      <span class="text-sm font-semibold text-white pr-2" id="progress-text"
+      <span
+        class="text-xs sm:text-sm md:text-base font-semibold text-white pr-1 sm:pr-2"
+        id="progress-text"
         >Step 1 of 5</span
       >
     </div>
   </div>
 
-  <div class="text-center mb-10">
+  <div class="text-center mb-8 sm:mb-10">
     <button
       onclick="openEditForm('{{ program.id }}', '{{ program.type }}', '{{ program.title }}', '{{ program.program_budget }}', '{{ program.created_at|date:'Y-m-d' }}')"
-      class="px-8 py-3 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition duration-200 text-lg font-semibold"
+      class="w-full sm:w-auto px-4 sm:px-8 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-lg hover:bg-indigo-700 transition duration-200 text-base sm:text-lg font-semibold"
     >
       Edit {{ program.title }} Program
     </button>
   </div>
 
-  <div id="edit-form" class="hidden max-w-3xl mx-auto space-y-10">
+  <div
+    id="edit-form"
+    class="hidden max-w-full sm:max-w-2xl md:max-w-3xl mx-auto space-y-6 sm:space-y-8 md:space-y-10 px-2"
+  >
     <form
       id="program-form"
       method="POST"
-      class="space-y-8 bg-white shadow-2xl rounded-xl p-10"
+      class="space-y-6 sm:space-y-8 bg-white shadow-2xl rounded-xl p-4 sm:p-8 md:p-10"
     >
       {% csrf_token %}
       <input type="hidden" id="program-id" name="program_id" />
@@ -51,16 +59,21 @@
       <!-- Step 1: Program Details -->
       <div id="form-step-1" class="form-step">
         <h3
-          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+          class="text-xl sm:text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 sm:pb-4 mb-4 sm:mb-6"
         >
           Step 1: Program Details
         </h3>
-        <div id="program-details" class="text-gray-600 space-y-4"></div>
-        <div class="flex justify-end gap-4 mt-8">
+        <div
+          id="program-details"
+          class="text-gray-600 space-y-3 sm:space-y-4"
+        ></div>
+        <div
+          class="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 mt-6 sm:mt-8"
+        >
           <button
             type="button"
             onclick="nextStep(2)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
           >
             Next
           </button>
@@ -70,13 +83,15 @@
       <!-- Step 2: KPI -->
       <div id="form-step-2" class="form-step hidden">
         <h3
-          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+          class="text-xl sm:text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 sm:pb-4 mb-4 sm:mb-6"
         >
           Step 2: KPI
         </h3>
-        <div id="kpi-entries" class="space-y-6">
+        <div id="kpi-entries" class="space-y-4 sm:space-y-6">
           {% if kpi_entries %} {% for kpi in kpi_entries %}
-          <div class="kpi-entry space-y-4 border-b border-gray-200 pb-4">
+          <div
+            class="kpi-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
             <input type="hidden" name="kpi_id[]" value="{{ kpi.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
@@ -85,7 +100,7 @@
               <input
                 type="text"
                 name="kpi_name[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ kpi.subtask_name }}"
                 required
               />
@@ -97,7 +112,7 @@
               <input
                 type="date"
                 name="kpi_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ kpi.subtask_date|date:'Y-m-d' }}"
                 required
               />
@@ -109,7 +124,7 @@
               <input
                 type="number"
                 name="kpi_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ kpi.subtask_budget }}"
                 step="0.01"
                 required
@@ -120,14 +135,16 @@
                 type="button"
                 onclick="removeEntry(this, 'kpi')"
                 data-entry-id="{{ kpi.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
             </div>
           </div>
           {% endfor %} {% else %}
-          <div class="kpi-entry space-y-4 border-b border-gray-200 pb-4">
+          <div
+            class="kpi-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
             <input type="hidden" name="kpi_id[]" value="{{ kpi.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
@@ -136,7 +153,7 @@
               <input
                 type="text"
                 name="kpi_name[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
@@ -147,7 +164,7 @@
               <input
                 type="date"
                 name="kpi_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
@@ -158,7 +175,7 @@
               <input
                 type="number"
                 name="kpi_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 step="0.01"
                 required
               />
@@ -168,7 +185,7 @@
                 type="button"
                 onclick="removeEntry(this, 'kpi')"
                 data-entry-id="{{ kpi.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
@@ -176,27 +193,31 @@
           </div>
           {% endif %}
         </div>
-        <div class="mt-6 flex justify-start">
+
+        <div class="mt-4 sm:mt-6 flex justify-start">
           <button
             type="button"
             onclick="addEntry('kpi')"
-            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+            class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
           >
             Add KPI
           </button>
         </div>
-        <div class="flex justify-between gap-4 mt-8">
+
+        <div
+          class="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 mt-6 sm:mt-8"
+        >
           <button
             type="button"
             onclick="previousStep(1)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
           >
             Back
           </button>
           <button
             type="button"
             onclick="validateStep(3)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
           >
             Next
           </button>
@@ -206,14 +227,20 @@
       <!-- Step 3: Workshops -->
       <div id="form-step-3" class="form-step hidden">
         <h3
-          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+          class="text-xl sm:text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 sm:pb-4 mb-4 sm:mb-6"
         >
           Step 3: Workshops
         </h3>
-        <div id="workshop-entries" class="space-y-6">
+        <div id="workshop-entries" class="space-y-4 sm:space-y-6">
           {% if workshop_entries %} {% for workshop in workshop_entries %}
-          <div class="workshop-entry space-y-4 border-b border-gray-200 pb-4">
-            <input type="hidden" name="workshop_id[]" value="{{ workshop.id }}" />
+          <div
+            class="workshop-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
+            <input
+              type="hidden"
+              name="workshop_id[]"
+              value="{{ workshop.id }}"
+            />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Workshop Name</label
@@ -221,7 +248,7 @@
               <input
                 type="text"
                 name="workshop_name[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ workshop.subtask_name }}"
                 required
               />
@@ -233,7 +260,7 @@
               <input
                 type="date"
                 name="workshop_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ workshop.subtask_date|date:'Y-m-d' }}"
                 required
               />
@@ -245,7 +272,7 @@
               <input
                 type="number"
                 name="workshop_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ workshop.subtask_budget }}"
                 step="0.01"
                 required
@@ -256,15 +283,21 @@
                 type="button"
                 onclick="removeEntry(this, 'workshop')"
                 data-entry-id="{{ workshop.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
             </div>
           </div>
           {% endfor %} {% else %}
-          <div class="workshop-entry space-y-4 border-b border-gray-200 pb-4">
-            <input type="hidden" name="workshop_id[]" value="{{ workshop.id }}" />
+          <div
+            class="workshop-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
+            <input
+              type="hidden"
+              name="workshop_id[]"
+              value="{{ workshop.id }}"
+            />
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Workshop Name</label
@@ -272,7 +305,7 @@
               <input
                 type="text"
                 name="workshop_name[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
@@ -283,7 +316,7 @@
               <input
                 type="date"
                 name="workshop_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
@@ -294,7 +327,7 @@
               <input
                 type="number"
                 name="workshop_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 step="0.01"
                 required
               />
@@ -304,7 +337,7 @@
                 type="button"
                 onclick="removeEntry(this, 'workshop')"
                 data-entry-id="{{ workshop.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
@@ -312,27 +345,29 @@
           </div>
           {% endif %}
         </div>
-        <div class="mt-6 flex justify-start">
+        <div class="mt-4 sm:mt-6 flex justify-start">
           <button
             type="button"
             onclick="addEntry('workshop')"
-            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+            class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
           >
             Add Workshop
           </button>
         </div>
-        <div class="flex justify-between gap-4 mt-8">
+        <div
+          class="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 mt-6 sm:mt-8"
+        >
           <button
             type="button"
             onclick="previousStep(2)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
           >
             Back
           </button>
           <button
             type="button"
             onclick="validateStep(4)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
           >
             Next
           </button>
@@ -342,13 +377,15 @@
       <!-- Step 4: Review Meetings -->
       <div id="form-step-4" class="form-step hidden">
         <h3
-          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+          class="text-xl sm:text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 sm:pb-4 mb-4 sm:mb-6"
         >
           Step 4: Review Meetings
         </h3>
-        <div id="meeting-entries" class="space-y-6">
+        <div id="meeting-entries" class="space-y-4 sm:space-y-6">
           {% if meeting_entries %} {% for meeting in meeting_entries %}
-          <div class="meeting-entry space-y-4 border-b border-gray-200 pb-4">
+          <div
+            class="meeting-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
             <input type="hidden" name="meeting_id[]" value="{{ meeting.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
@@ -357,7 +394,7 @@
               <input
                 type="text"
                 name="meeting_name[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ meeting.subtask_name }}"
                 required
               />
@@ -369,7 +406,7 @@
               <input
                 type="date"
                 name="meeting_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ meeting.subtask_date|date:'Y-m-d' }}"
                 required
               />
@@ -381,7 +418,7 @@
               <input
                 type="number"
                 name="meeting_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ meeting.subtask_budget }}"
                 step="0.01"
                 required
@@ -392,14 +429,16 @@
                 type="button"
                 onclick="removeEntry(this, 'meeting')"
                 data-entry-id="{{ meeting.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
             </div>
           </div>
           {% endfor %} {% else %}
-          <div class="meeting-entry space-y-4 border-b border-gray-200 pb-4">
+          <div
+            class="meeting-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
             <input type="hidden" name="meeting_id[]" value="{{ meeting.id }}" />
             <div>
               <label class="block text-sm font-medium text-gray-700"
@@ -408,7 +447,7 @@
               <input
                 type="text"
                 name="meeting_name[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
@@ -419,7 +458,7 @@
               <input
                 type="date"
                 name="meeting_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
@@ -430,7 +469,7 @@
               <input
                 type="number"
                 name="meeting_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 step="0.01"
                 required
               />
@@ -440,7 +479,7 @@
                 type="button"
                 onclick="removeEntry(this, 'meeting')"
                 data-entry-id="{{ meeting.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
@@ -448,43 +487,57 @@
           </div>
           {% endif %}
         </div>
-        <div class="mt-6 flex justify-between items-center">
+
+        <div
+          class="mt-4 sm:mt-6 flex flex-col sm:flex-row justify-between gap-3 sm:gap-4"
+        >
           <button
             type="button"
             onclick="addEntry('meeting')"
-            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+            class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
           >
             Add Meeting
           </button>
-
-          <button
-            type="button"
-            onclick="previousStep(3)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
-          >
-            Back
-          </button>
-          <button
-            type="button"
-            onclick="validateStep(5)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
-          >
-            Next
-          </button>
         </div>
+          <div
+            class="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 mt-6 sm:mt-8"
+          >
+            <button
+              type="button"
+              onclick="previousStep(3)"
+              class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onclick="validateStep(5)"
+              class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            >
+              Next
+            </button>
+          </div>
       </div>
 
       <!-- Step 5: Manpower -->
       <div id="form-step-5" class="form-step hidden">
         <h3
-          class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-4 mb-6"
+          class="text-xl sm:text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2 sm:pb-4 mb-4 sm:mb-6"
         >
           Step 5: Manpower
         </h3>
-        <div id="manpower-entries" class="space-y-6">
+
+        <div id="manpower-entries" class="space-y-4 sm:space-y-6">
           {% if manpower_entries %} {% for manpower in manpower_entries %}
-          <div class="manpower-entry space-y-4 border-b border-gray-200 pb-4">
-            <input type="hidden" name="manpower_id[]" value="{{ manpower.id }}" />
+          <div
+            class="manpower-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
+            <input
+              type="hidden"
+              name="manpower_id[]"
+              value="{{ manpower.id }}"
+            />
+
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Manpower Details</label
@@ -492,11 +545,12 @@
               <input
                 type="text"
                 name="manpower_details[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ manpower.subtask_name }}"
                 required
               />
             </div>
+
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Date</label
@@ -504,11 +558,12 @@
               <input
                 type="date"
                 name="manpower_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ manpower.subtask_date|date:'Y-m-d' }}"
                 required
               />
             </div>
+
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Manpower Budget</label
@@ -516,26 +571,34 @@
               <input
                 type="number"
                 name="manpower_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 value="{{ manpower.subtask_budget }}"
                 step="0.01"
                 required
               />
             </div>
+
             <div class="flex justify-end gap-2">
               <button
                 type="button"
                 onclick="removeEntry(this, 'manpower')"
                 data-entry-id="{{ manpower.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
             </div>
           </div>
           {% endfor %} {% else %}
-          <div class="manpower-entry space-y-4 border-b border-gray-200 pb-4">
-            <input type="hidden" name="manpower_id[]" value="{{ manpower.id }}" />
+          <div
+            class="manpower-entry space-y-3 sm:space-y-4 border-b border-gray-200 pb-3 sm:pb-4"
+          >
+            <input
+              type="hidden"
+              name="manpower_id[]"
+              value="{{ manpower.id }}"
+            />
+
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Manpower Details</label
@@ -543,10 +606,11 @@
               <input
                 type="text"
                 name="manpower_details[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
+
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Date</label
@@ -554,10 +618,11 @@
               <input
                 type="date"
                 name="manpower_date[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 required
               />
             </div>
+
             <div>
               <label class="block text-sm font-medium text-gray-700"
                 >Manpower Budget</label
@@ -565,16 +630,18 @@
               <input
                 type="number"
                 name="manpower_budget[]"
-                class="input-field border"
+                class="w-full p-2 sm:p-3 border rounded-md"
                 step="0.01"
+                required
               />
             </div>
+
             <div class="flex justify-end gap-2">
               <button
                 type="button"
                 onclick="removeEntry(this, 'manpower')"
                 data-entry-id="{{ manpower.id }}"
-                class="remove-btn px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
+                class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition duration-200 font-medium"
               >
                 Remove
               </button>
@@ -582,26 +649,30 @@
           </div>
           {% endif %}
         </div>
-        <div class="mt-6 flex justify-start">
+
+        <div class="mt-4 sm:mt-6 flex justify-start">
           <button
             type="button"
             onclick="addEntry('manpower')"
-            class="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
+            class="w-full sm:w-auto px-3 sm:px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-medium"
           >
             Add Manpower
           </button>
         </div>
-        <div class="flex justify-between gap-4 mt-8">
+
+        <div
+          class="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4 mt-6 sm:mt-8"
+        >
           <button
             type="button"
             onclick="previousStep(4)"
-            class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
+            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition duration-200 font-semibold"
           >
             Back
           </button>
           <button
             type="submit"
-            class="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-semibold"
+            class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200 font-semibold"
           >
             Submit
           </button>

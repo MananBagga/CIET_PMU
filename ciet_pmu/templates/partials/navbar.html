@@ -1,53 +1,51 @@
 {% load static %}
 
 <nav class="flex items-center justify-between px-4 py-3 bg-white shadow-md sticky top-0 z-50">
+    <!-- Logo -->
     <div class="flex items-center space-x-3">
-        <a href="/"><img src="{% static 'images/home_page_images/ciet-full-logo.jpg' %}" alt="CIET PMU Logo" class="h-12 md:h-14 transition-transform duration-300 hover:scale-110"></a>
+        <a href="/">
+            <img src="{% static 'images/home_page_images/ciet-full-logo.jpg' %}" alt="CIET PMU Logo"
+                 class="h-10 sm:h-12 md:h-14 transition-transform duration-300 hover:scale-110">
+        </a>
     </div>
-    
-    <div class="hidden md:flex space-x-6">
-        <a href="/" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Home</a>
-        <a href="#features" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Features</a>
-        <a href="#admin" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Admin</a>
-        <a href="#faqs" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">FAQs</a>
-        
-        <a href="{% url "user_dashboard" %}" class="text-gray-600 text-lg font-medium hover:text-indigo-600 transition-colors duration-300">Projects</a>
-       
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex space-x-4 lg:space-x-6">
+        <a href="/" class="nav-link">Home</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#admin" class="nav-link">Admin</a>
+        <a href="#faqs" class="nav-link">FAQs</a>
+        <a href="{% url 'user_dashboard' %}" class="nav-link">Projects</a>
     </div>
-    
-    <div class="flex items-center space-x-3">
-        <span class="text-gray-600 text-sm md:text-lg font-medium">User: {{ request.session.username }}</span>
+
+    <!-- User Info & Login/Logout -->
+    <div class="md:flex items-center space-x-3">
+        <span class="text-gray-600 text-sm lg:text-lg font-medium">User: {{ request.session.username }}</span>
         {% if not request.session.username and request.path != '/admin_login/' %}
-            <a href="{% url 'login' %}" class="text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-1 md:px-6 md:py-2 rounded-full font-medium text-sm md:text-base transition-all duration-300 transform hover:scale-105">Login</a>
+            <a href="{% url 'login' %}" class="btn-indigo">Login</a>
         {% elif request.path != '/admin_login/' %}
-            <a href="{% url 'logout' %}" class="text-white bg-red-600 hover:bg-red-700 px-4 py-1 md:px-6 md:py-2 rounded-full font-medium text-sm md:text-base transition-all duration-300 transform hover:scale-105">Sign Out</a>
+            <a href="{% url 'logout' %}" class="btn-red">Sign Out</a>
         {% endif %}
     </div>
 
     <!-- Mobile Menu Button -->
     <div class="md:hidden flex items-center">
         <button id="menu-toggle" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
             </svg>
         </button>
     </div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden hidden absolute top-16 right-4 bg-white shadow-lg rounded-lg p-4 space-y-2 w-48 z-50">
-        <a href="/" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">Home</a>
-        <a href="#features" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">Features</a>
-        <a href="#admin" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">Admin</a>
-        <a href="#faqs" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">FAQs</a>
-        {% if not request.session.admin_username %}
-        <a href="{% url "user_dashboard" %}" class="block text-gray-600 hover:text-indigo-600 transition-colors duration-300">Projects</a>
-        {% endif %}
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="md:hidden hidden absolute top-16 right-4 bg-white shadow-lg rounded-lg p-4 space-y-3 w-56 transition-transform duration-300 transform scale-95 opacity-0">
+        <a href="/" class="block mobile-link">Home</a>
+        <a href="#features" class="block mobile-link">Features</a>
+        <a href="#admin" class="block mobile-link">Admin</a>
+        <a href="#faqs" class="block mobile-link">FAQs</a>
+        <a href="{% url 'user_dashboard' %}" class="block mobile-link">Projects</a>
     </div>
 </nav>
 
-<script>
-    document.getElementById('menu-toggle').addEventListener('click', function() {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('hidden');
-    });
-</script>
+
+<script src="{% static "js/script.js" %}"></script>

@@ -1,41 +1,55 @@
-{% extends "layout.html" %}
-{% load static %}
-{% load static tailwind_tags %}
+{% extends "layout.html" %} {% load static %} {% load static tailwind_tags %} 
 
-{% block title %}CIET PMU - Admin Dashboard{% endblock %}
+{% block title %}CIET PMU - Admin Dashboard{% endblock %} 
 
 {% block content %}
 <script src="{% static 'js/chart.js' %}"></script>
 
-<div class="flex min-h-screen bg-gray-100">
+<div class="flex flex-col md:flex-row min-h-screen bg-gray-100">
   {% include "partials/admin_sidebar.html" %}
 
-  <div class="flex-1 flex flex-col relative p-6 md:p-10">
-
-    <div class="flex justify-between items-center mb-8">
-      <p class="text-3xl font-bold text-indigo-700 fade-in">
+  <!-- Main Content Wrapper -->
+  <div
+    id="mainContent"
+    class="flex-1 flex flex-col relative p-4 sm:p-6 md:p-10 transform transition-transform duration-300 ease-in-out"
+  >
+    <div
+      class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-3"
+    >
+      <p class="text-2xl sm:text-3xl font-bold text-indigo-700 fade-in">
         Welcome, {{ admin.username }}!
       </p>
       {% if request.path != '/admin_login/' %}
-        <a href="{% url 'logout' %}"
-           class="bg-red-600 hover:bg-red-700 text-white font-medium text-sm md:text-base px-4 py-2 md:px-6 md:py-2 rounded-full shadow transition-all duration-300 transform hover:scale-105">
-          Sign Out
-        </a>
+      <a
+        href="{% url 'logout' %}"
+        class="bg-red-600 hover:bg-red-700 text-white font-medium text-sm md:text-base px-3 sm:px-4 py-2 sm:py-2 rounded-full shadow transition-all duration-300 transform hover:scale-105"
+      >
+        Sign Out
+      </a>
       {% endif %}
     </div>
 
-<div class="h-12"></div>
+    <div class="h-8 sm:h-12"></div>
 
-    <div class="bg-white p-6 mt-16 rounded-2xl shadow-md fade-in">
-      <h2 class="text-xl font-semibold mb-4 text-gray-800">Budget Overview</h2>
-      <canvas
-        id="myChart"
-        data-labels="[{% for item in budget %}{{ item.year }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
-        data-values="[{% for item in budget %}{{ item.budget }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
-        class="w-full max-w-4xl h-96 mx-auto">
-      </canvas>
+    <div
+      class="bg-white p-4 sm:p-6 mt-10 sm:mt-16 rounded-2xl shadow-md fade-in w-full overflow-x-auto"
+    >
+      <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">
+        Budget Overview
+      </h2>
+      <div class="w-full max-w-full">
+        <canvas
+          id="myChart"
+          data-labels="[{% for item in budget %}{{ item.year }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
+          data-values="[{% for item in budget %}{{ item.budget }}{% if not forloop.last %}, {% endif %}{% endfor %}]"
+          class="w-full h-64 sm:h-80 md:h-96"
+        >
+        </canvas>
+      </div>
     </div>
   </div>
 </div>
+
 <script src="{% static 'js/chartLogic.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

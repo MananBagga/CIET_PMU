@@ -1,108 +1,86 @@
-{% extends "layout.html" %} {% load static %} 
-{% block title %}CIET PMU - User Dashboard{% endblock %} 
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}CIET PMU - User Dashboard{% endblock %}
 
-{% block content %} 
-
+{% block content %}
 {% include "partials/navbar.html" %}
 
-<div class="flex flex-col md:flex-row h-auto min-h-screen px-2">
-  <div class="w-full max-w-4xl mx-auto p-4 sm:p-6">
-    <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
-      My Assigned Programs
-    </h2>
+<div class="flex flex-col md:flex-row h-auto min-h-screen px-2 sm:px-4">
+  <div class="w-full max-w-3xl lg:max-w-4xl mx-auto p-3 sm:p-6">
+    <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">My Assigned Programs</h2>
 
     {% if programs %}
     <div class="space-y-4">
       {% for program in programs %}
-      <div class="p-4 border rounded-lg bg-gray-50 text-sm sm:text-base">
+      <div class="p-4 sm:p-5 border rounded-lg bg-gray-50 text-sm sm:text-base shadow-sm hover:shadow-md transition">
         <p><strong>Program Type:</strong> {{ program.type }}</p>
         <p><strong>Program Title:</strong> {{ program.title }}</p>
         <p><strong>Budget:</strong> ₹{{ program.program_budget }}</p>
-        <p>
-          <strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}
-        </p>
+        <p><strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}</p>
 
-        <div class="flex justify-between gap-4 mt-3">
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4 mt-4">
           <a href="{% url 'edit_program' program.id %}">
-            <button
-              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
+            <button class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
               Edit Program
             </button>
           </a>
-          <button
-            onclick="toggleSummary('{{ program.id }}')"
-            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
+          <button onclick="toggleSummary('{{ program.id }}')" class="w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
             View Program
           </button>
           <a href="{% url 'prepare_report' program.id %}">
-            <button
-              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
+            <button class="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
               Prepare Report
             </button>
           </a>
         </div>
 
         <!-- Collapsible Summary -->
-        <div
-          id="summary-{{ program.id }}"
-          class="mt-6 hidden bg-white p-4 rounded border text-gray-800 space-y-4"
-        >
+        <div id="summary-{{ program.id }}" class="mt-5 hidden bg-white p-4 sm:p-5 rounded border text-gray-800 space-y-4 shadow-inner">
           <div>
-            <h3 class="text-lg font-semibold border-b pb-1 mb-2">
-              Program Details
-            </h3>
+            <h3 class="text-lg font-semibold border-b pb-1 mb-2">Program Details</h3>
             <p><strong>Title:</strong> {{ program.title }}</p>
             <p><strong>Budget:</strong> ₹{{ program.program_budget }}</p>
             <p><strong>Type:</strong> {{ program.type }}</p>
-            <p>
-              <strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}
-            </p>
+            <p><strong>Created At:</strong> {{ program.created_at|date:"d M Y" }}</p>
           </div>
 
           {% for task in subtask %}
-            {% if task.program_id == program.id %} 
+            {% if task.program_id == program.id %}
               {% if task.subtask == 'kpi' %}
-                <div>
-                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">KPI Entries</h3>
-                  <ul class="list-disc list-inside">
-                    <li>
-                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
-                    </li>
-                  </ul>
-                </div>
+              <div>
+                <h3 class="text-lg font-semibold border-b pb-1 mb-2">KPI Entries</h3>
+                <ul class="list-disc list-inside text-sm sm:text-base">
+                  <li><strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}</li>
+                </ul>
+              </div>
               {% endif %}
+
               {% if task.subtask == 'workshop' %}
-                <div>
-                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">Workshops</h3>
-                  <ul class="list-disc list-inside">
-                    <li>
-                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
-                    </li>
-                  </ul>
-                </div>
+              <div>
+                <h3 class="text-lg font-semibold border-b pb-1 mb-2">Workshops</h3>
+                <ul class="list-disc list-inside text-sm sm:text-base">
+                  <li><strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}</li>
+                </ul>
+              </div>
               {% endif %}
+
               {% if task.subtask == 'meetings' %}
-                <div>
-                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">Review Meetings</h3>
-                  <ul class="list-disc list-inside">
-                    <li>
-                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
-                    </li>
-                  </ul>
-                </div>
+              <div>
+                <h3 class="text-lg font-semibold border-b pb-1 mb-2">Review Meetings</h3>
+                <ul class="list-disc list-inside text-sm sm:text-base">
+                  <li><strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}</li>
+                </ul>
+              </div>
               {% endif %}
+
               {% if task.subtask == 'manpower' %}
-                <div>
-                  <h3 class="text-lg font-semibold border-b pb-1 mb-2">Manpower</h3>
-                  <ul class="list-disc list-inside">
-                    <li>
-                      <strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}
-                    </li>
-                  </ul>
-                </div>
+              <div>
+                <h3 class="text-lg font-semibold border-b pb-1 mb-2">Manpower</h3>
+                <ul class="list-disc list-inside text-sm sm:text-base">
+                  <li><strong>{{ task.subtask_name }}</strong> – ₹{{ task.subtask_budget }} on {{ task.subtask_date|date:"d M Y" }}</li>
+                </ul>
+              </div>
               {% endif %}
             {% endif %}
           {% endfor %}
@@ -110,10 +88,9 @@
       </div>
       {% endfor %}
     </div>
+
     {% else %}
-    <p class="text-gray-500 text-sm sm:text-base">
-      No programs assigned to you yet.
-    </p>
+    <p class="text-gray-500 text-center text-sm sm:text-base mt-6">No programs assigned to you yet.</p>
     {% endif %}
   </div>
 </div>

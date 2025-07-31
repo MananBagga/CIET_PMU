@@ -1,64 +1,75 @@
 {% extends "layout.html" %}
-{% load static %} {% load static tailwind_tags %} 
+{% load static %}
+{% load static tailwind_tags %}
 
-{% block title %}CIET PMU - Budget{% endblock %} 
-{% block content %} 
+{% block title %}CIET PMU - Budget{% endblock %}
+{% block content %}
 
-<div class="flex min-h-screen">
+<div class="flex flex-col md:flex-row min-h-screen">
   {% include "partials/admin_sidebar.html" %}
 
-  <main class="flex-1 bg-gray-100 p-6">
-  <section id="budget" class="fade-in w-full p-6">
-    <h2 class="text-2xl font-bold mb-4">Annual Budget</h2>
-    <div class="bg-white p-4 rounded-lg shadow mb-6 flex justify-center">
-      <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Set Annual Budget
-        </h2>
-        <form id="budgetForm" method="POST" class="space-y-6">
-          {% csrf_token %}
-          <div>
-            <label for="amount" class="block text-sm font-medium text-gray-700"
-              >Budget Amount (INR)</label
-            >
-            <input
-              type="number"
-              id="amount"
-              name="program_budget"
-              min="0"
-              step="0.01"
-              required
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter amount (e.g., 10000.00)"
-            />
-          </div>
-          <div>
-            <label for="date" class="block text-sm font-medium text-gray-700"
-              >Select Date</label
-            >
-            <input
-              type="date"
-              id="date"
-              name="budget_date"
-              required
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
+  <main class="flex-1 bg-gray-100 p-4 sm:p-6">
+    <section id="budget" class="fade-in w-full p-4 sm:p-6">
+      <h2 class="text-xl sm:text-2xl font-bold mb-4 text-center sm:text-left">Annual Budget</h2>
 
-          <div>
-            <button
-              type="submit"
-              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Set Budget
-            </button>
-          </div>
-        </form>
-        <p id="message" class="mt-4 text-center text-sm text-gray-600"></p>
+      <!-- Centered container -->
+      <div class="bg-white p-3 sm:p-4 rounded-lg shadow mb-6 flex justify-center">
+        <div class="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg">
+          <h2 class="text-lg sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">
+            Set Annual Budget
+          </h2>
+
+          <!-- Budget Form -->
+          <form id="budgetForm" method="POST" class="space-y-4 sm:space-y-6">
+            {% csrf_token %}
+            
+            <!-- Amount -->
+            <div>
+              <label for="amount" class="block text-sm font-medium text-gray-700">Budget Amount (INR)</label>
+              <input
+                type="number"
+                id="amount"
+                name="program_budget"
+                min="0"
+                step="0.01"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+                       focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
+                placeholder="Enter amount (e.g., 10000.00)"
+              />
+            </div>
+
+            <!-- Date -->
+            <div>
+              <label for="date" class="block text-sm font-medium text-gray-700">Select Date</label>
+              <input
+                type="date"
+                id="date"
+                name="budget_date"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+                       focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
+              />
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+              <button
+                type="submit"
+                class="w-full flex justify-center py-2 px-3 sm:px-4 border border-transparent rounded-md shadow-sm 
+                       text-sm sm:text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 
+                       focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Set Budget
+              </button>
+            </div>
+          </form>
+
+          <p id="message" class="mt-3 sm:mt-4 text-center text-xs sm:text-sm text-gray-600"></p>
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
 </div>
 
 {% endblock %}

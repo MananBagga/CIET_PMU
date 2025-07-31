@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/admin_styles.css" %}">
     <link rel="stylesheet" href="{% static "css/main.css" %}">
     <link rel="stylesheet" href="{% static "css/user.css" %}">
     {% tailwind_css %}
@@ -15,7 +15,7 @@
 <body class="bg-gray-100 font-sans text-gray-900 antialiased"> 
     {% block content %}{% endblock %}
 
-    <div class="mt-10">
+    <div>
         {% include 'partials/footer.html' %}
     </div>
 </body>

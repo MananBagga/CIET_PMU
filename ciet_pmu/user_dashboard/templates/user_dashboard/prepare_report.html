@@ -6,66 +6,70 @@
 
 {% include "partials/navbar.html" %}
 
-<div class=" mt-10 container mx-auto p-6 max-w-4xl bg-white shadow-lg rounded-lg">
-  <h2 class="text-2xl font-bold mb-4">Activity Completion Report</h2>
+<div class="mt-6 sm:mt-10 container mx-auto p-4 sm:p-6 max-w-2xl sm:max-w-4xl bg-white shadow-lg rounded-lg min-h-screen">
+  <h2 class="text-xl sm:text-2xl font-bold mb-4">Activity Completion Report</h2>
 
-  <form method="POST">
+  <form method="POST" class="space-y-3 sm:space-y-4">
     {% csrf_token %}
 
     <label class="block font-semibold">1. Name of the Deptt./Unit/Cell:</label>
-    <input type="text" name="department" class="input-report" required>
+    <input type="text" name="department" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">2. Activity Undertaken:</label>
-    <textarea name="activity" class="input-report" required></textarea>
+    <label class="block font-semibold">2. Activity Undertaken:</label>
+    <textarea name="activity" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <label class="block font-semibold mt-3">Activity Duration:</label>
-    <input type="text" name="activity_duration" class="input-report" required>
+    <label class="block font-semibold">Activity Duration:</label>
+    <input type="text" name="activity_duration" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <div class="block font-semibold mt-3">Program Category: {% if programs %}{{programs.type}}{% endif %}</div>
+    <div class="block font-semibold">Program Category: 
+      <span class="text-gray-700">{% if programs %}{{programs.type}}{% endif %}</span>
+    </div>
 
-    <label class="block font-semibold mt-3">3. Major Programmes:</label>
-    <input type="text" name="major_programmes" class="input-report" required>
+    <label class="block font-semibold">3. Major Programmes:</label>
+    <input type="text" name="major_programmes" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">4. Budget Provision (Rs):</label>
-    <input type="number" name="budget_provision" class="input-report" required>
+    <label class="block font-semibold">4. Budget Provision (Rs):</label>
+    <input type="number" name="budget_provision" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">5. Budget Sanctions (Rs):</label>
-    <input type="number" name="budget_sanctions" class="input-report" required>
+    <label class="block font-semibold">5. Budget Sanctions (Rs):</label>
+    <input type="number" name="budget_sanctions" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">Sanction No:</label>
-    <input type="number" name="sanction_no" class="input-report" required>
+    <label class="block font-semibold">Sanction No:</label>
+    <input type="number" name="sanction_no" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">6. Amount Actually Spent (Rs):</label>
-    <input type="number" name="amt_spent" class="input-report" required>
+    <label class="block font-semibold">6. Amount Actually Spent (Rs):</label>
+    <input type="number" name="amt_spent" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">7. Target Group:</label>
-    <textarea name="target_group" class="input-report" required></textarea>
+    <label class="block font-semibold">7. Target Group:</label>
+    <textarea name="target_group" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <label class="block font-semibold mt-3">8. Report of Activity:</label>
-    <textarea name="report" class="input-report" required></textarea>
+    <label class="block font-semibold">8. Report of Activity:</label>
+    <textarea name="report" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <label class="block font-semibold mt-3">9. Outcome / Impact:</label>
-    <textarea name="impact" class="input-report" required></textarea>
+    <label class="block font-semibold">9. Outcome / Impact:</label>
+    <textarea name="impact" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <label class="block font-semibold mt-3">10. Difficulties:</label>
-    <textarea name="difficulties" class="input-report" required></textarea>
+    <label class="block font-semibold">10. Difficulties:</label>
+    <textarea name="difficulties" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <label class="block font-semibold mt-3">11. Measures Taken for Improvement:</label>
-    <textarea name="improvements" class="input-report" required></textarea>
+    <label class="block font-semibold">11. Measures Taken for Improvement:</label>
+    <textarea name="improvements" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <label class="block font-semibold mt-3">12. Follow-Up Actions:</label>
-    <textarea name="followup" class="input-report" required></textarea>
+    <label class="block font-semibold">12. Follow-Up Actions:</label>
+    <textarea name="followup" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <label class="block font-semibold mt-3">13. No. of Participants Invited:</label>
-    <input type="number" name="invited" class="input-report" required>
+    <label class="block font-semibold">13. No. of Participants Invited:</label>
+    <input type="number" name="invited" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">14. No. of Participants Attended:</label>
-    <input type="number" name="attended" class="input-report" required>
+    <label class="block font-semibold">14. No. of Participants Attended:</label>
+    <input type="number" name="attended" class="w-full p-2 sm:p-3 border rounded-md" required>
 
-    <label class="block font-semibold mt-3">15. Faculty (Name & Designation):</label>
-    <textarea name="faculty" class="input-report" required></textarea>
+    <label class="block font-semibold">15. Faculty (Name & Designation):</label>
+    <textarea name="faculty" class="w-full p-2 sm:p-3 border rounded-md" required></textarea>
 
-    <button type="submit" class="mt-6 px-6 py-3 bg-green-600 text-white rounded-lg">Submit Report</button>
+    <button type="submit" class="w-full sm:w-auto mt-4 sm:mt-6 px-4 sm:px-6 py-2 sm:py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition duration-200">
+      Submit Report
+    </button>
   </form>
 </div>
 {% endblock %}
