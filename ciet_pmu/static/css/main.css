@@ -66,10 +66,10 @@
 .btn-indigo {
   color: #fff; /* text-white */
   background-color: #4F46E5; /* bg-indigo-600 */
-  padding: 0.25rem 1rem; /* px-4 py-1 */
+  padding: 0.1rem 0.7rem; /* px-4 py-1 */
   border-radius: 9999px; /* rounded-full */
-  font-weight: 500; /* font-medium */
-  font-size: 0.875rem; /* text-sm */
+  font-weight: 400; /* font-medium */
+  font-size: 0.700rem; /* text-sm */
   transition: all 300ms;
   transform: scale(1);
 }
@@ -87,10 +87,10 @@
 .btn-red {
   color: #fff; /* text-white */
   background-color: #DC2626; /* bg-red-600 */
-  padding: 0.25rem 1rem; /* px-4 py-1 */
+  padding: 0.1rem 0.7rem; /* px-4 py-1 */
   border-radius: 9999px; /* rounded-full */
-  font-weight: 500; /* font-medium */
-  font-size: 0.875rem; /* text-sm */
+  font-weight: 400; /* font-medium */
+  font-size: 0.700rem; /* text-sm */
   transition: all 300ms;
   transform: scale(1);
 }

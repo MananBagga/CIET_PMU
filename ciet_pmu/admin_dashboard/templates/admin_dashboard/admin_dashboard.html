@@ -8,17 +8,18 @@
 <div class="flex flex-col md:flex-row min-h-screen bg-gray-100">
   {% include "partials/admin_sidebar.html" %}
 
-  <!-- Main Content Wrapper -->
+  <!-- Main Content -->
   <div
     id="mainContent"
     class="flex-1 flex flex-col relative p-4 sm:p-6 md:p-10 transform transition-transform duration-300 ease-in-out"
   >
     <div
-      class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-3"
-    >
-      <p class="text-2xl sm:text-3xl font-bold text-indigo-700 fade-in">
-        Welcome, {{ admin.username }}!
-      </p>
+  class="flex flex-col items-center justify-center mb-6 sm:mb-8 gap-3 text-center"
+>
+  <p class="text-2xl sm:text-3xl font-bold text-indigo-700 fade-in">
+    Welcome, {{ admin.username }}!
+  </p>
+
       {% if request.path != '/admin_login/' %}
       <a
         href="{% url 'logout' %}"
@@ -51,5 +52,4 @@
 </div>
 
 <script src="{% static 'js/chartLogic.js' %}"></script>
-<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

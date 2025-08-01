@@ -87,6 +87,11 @@ def helper_filter(request):
     month_filter = data.get('month', '').strip()
     sub_type_filter = data.get('sub_type', '').strip()
 
+    total_used_budget = 0
+
+    for p in projects:
+        total_used_budget += p.program_budget
+
 
     if project_name:
         projects = projects.filter(title__icontains=project_name)
@@ -121,14 +126,8 @@ def helper_filter(request):
         except ValueError:
             pass
     
-    total_budget = 0
-    total_used_budget = 0
-    total_budget_query = Annualbudget.objects.all()
-    for y in total_budget_query:
-        total_budget += y.budget
-
-    for p in projects:
-        total_used_budget += p.program_budget
+    latest_budget = Annualbudget.objects.order_by('-year').first()
+    total_budget = latest_budget.budget if latest_budget else 0
 
     remaining_budget = total_budget - total_used_budget
 

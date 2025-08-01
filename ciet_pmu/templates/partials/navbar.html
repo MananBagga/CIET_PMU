@@ -18,15 +18,15 @@
         <a href="{% url 'user_dashboard' %}" class="nav-link">Projects</a>
     </div>
 
-    <!-- User Info & Login/Logout -->
-    <div class="md:flex items-center space-x-3">
-        <span class="text-gray-600 text-sm lg:text-lg font-medium">User: {{ request.session.username }}</span>
-        {% if not request.session.username and request.path != '/admin_login/' %}
-            <a href="{% url 'login' %}" class="btn-indigo">Login</a>
-        {% elif request.path != '/admin_login/' %}
-            <a href="{% url 'logout' %}" class="btn-red">Sign Out</a>
-        {% endif %}
-    </div>
+    <div class="flex flex-wrap items-center gap-2">
+    <span class="text-gray-600 text-sm lg:text-lg font-medium">{{ request.session.username }}</span>
+    {% if not request.session.username and request.path != '/admin_login/' %}
+        <a href="{% url 'login' %}" class="btn-indigo">Login</a>
+    {% elif request.path != '/admin_login/' %}
+        <a href="{% url 'logout' %}" class="btn-red">Sign Out</a>
+    {% endif %}
+</div>
+
 
     <!-- Mobile Menu Button -->
     <div class="md:hidden flex items-center">
@@ -37,15 +37,16 @@
         </button>
     </div>
 
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobile-menu" class="md:hidden hidden absolute top-16 right-4 bg-white shadow-lg rounded-lg p-4 space-y-3 w-56 transition-transform duration-300 transform scale-95 opacity-0">
-        <a href="/" class="block mobile-link">Home</a>
-        <a href="#features" class="block mobile-link">Features</a>
-        <a href="#admin" class="block mobile-link">Admin</a>
-        <a href="#faqs" class="block mobile-link">FAQs</a>
-        <a href="{% url 'user_dashboard' %}" class="block mobile-link">Projects</a>
-    </div>
+    <div id="mobile-menu" 
+     class="md:hidden hidden absolute top-16 right-4 bg-white shadow-lg rounded-lg p-4 space-y-3 w-56">
+    <a href="/" class="block mobile-link">Home</a>
+    <a href="#features" class="block mobile-link">Features</a>
+    <a href="#admin" class="block mobile-link">Admin</a>
+    <a href="#faqs" class="block mobile-link">FAQs</a>
+    <a href="{% url 'user_dashboard' %}" class="block mobile-link">Projects</a>
+</div>
+
 </nav>
 
 
-<script src="{% static "js/script.js" %}"></script>
+{% comment %} <script src="{% static "js/script.js" %}"></script> {% endcomment %}

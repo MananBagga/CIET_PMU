@@ -1,15 +1,16 @@
 {% load static %}
 {% load static tailwind_tags %}
 
-<button id="sidebarToggle" class="fixed top-4 left-4 z-50 md:hidden bg-indigo-600 text-white p-2 rounded-lg shadow-md hover:bg-indigo-700 transition">
+<button id="sidebarToggle" class="fixed top-4 left-4 z-50 lg:hidden bg-indigo-600 text-white p-2 rounded-lg shadow-md hover:bg-indigo-700 transition">
   ☰ Menu
 </button>
 
 <!-- Sidebar -->
-<div id="sidebar" class="fixed md:static top-0 left-0 h-full md:h-auto w-64 md:w-[18%] min-w-[200px]
-    bg-gradient-to-b from-indigo-400 to-indigo-900 text-black p-6 shadow-lg rounded-r-lg md:rounded-lg
-    transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-40">
-  <nav class="space-y-4">
+<div id="sidebar" class="fixed lg:static top-0 left-0 h-full lg:h-auto w-64 lg:w-[18%] min-w-[200px]
+    bg-gradient-to-b from-indigo-400 to-indigo-900 text-black p-6 shadow-lg rounded-r-lg lg:rounded-lg
+    transform transition-transform duration-300 ease-in-out z-40
+    -translate-x-full lg:translate-x-0">
+  <nav class="space-y-4 mt-16">
     <a href="{% url 'admin_dashboard' %}" class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 transition-all">
       <img src="{% static 'images/admin_dashboard_images/dashboard.svg' %}" class="w-5 h-5">
       <span class="text-black">Dashboard</span>
@@ -28,5 +29,3 @@
     </a>
   </nav>
 </div>
-
-<script src="{% static "js/script.js" %}"></script>
