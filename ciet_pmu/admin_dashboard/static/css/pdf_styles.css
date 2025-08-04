@@ -1,0 +1,64 @@
+/* ---- Corporate PDF Report Styling ---- */
+body.pdf-body {
+    font-family: 'Times New Roman', Times, serif;
+    background: #fff;
+    color: #000;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 30px;
+}
+
+/* ---- Title Header ---- */
+h2.pdf-title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #000;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+}
+
+/* ---- Corporate Table ---- */
+table.pdf-table {
+    width: 100%;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+/* ---- Table Headers ---- */
+th.pdf-th {
+    background: #f2f2f2;
+    color: #000;
+    border: 1px solid #000;
+    text-align: left;
+    padding: 6px 10px;
+    font-weight: bold;
+    width: 35%;
+}
+
+/* ---- Table Cells ---- */
+td.pdf-td {
+    border: 1px solid #000;
+    padding: 6px 10px;
+    background: #fff;
+    color: #000;
+    vertical-align: top;
+}
+
+/* ---- Remove Alternate Shading for Cleaner Corporate Look ---- */
+tr.pdf-row:nth-child(even) td.pdf-td {
+    background: #fff;
+}
+
+/* ---- Footer ---- */
+p.pdf-footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 11px;
+    color: #000;
+    border-top: 1px solid #000;
+    padding-top: 5px;
+}

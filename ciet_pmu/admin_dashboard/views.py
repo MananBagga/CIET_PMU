@@ -1,13 +1,13 @@
+from django.template.loader import render_to_string
 from django.shortcuts import render, redirect, get_object_or_404
 import datetime
 import calendar
 from .models import User, Program, Annualbudget, Pmuadmin, Projectreport
 from openpyxl import Workbook
 from django.http import HttpResponse
-from xhtml2pdf import pisa
 from django.template.loader import get_template
-import io
 from django.contrib import messages
+import pdfkit
 
 
 def admin_dashboard(request):
@@ -172,25 +172,31 @@ def export_projects_excel(request):
     return response
 
 
-from django.contrib import messages
-from django.shortcuts import redirect
-
 def export_projects_pdf(request, project_id):
+    # Check if report exists
     if not Projectreport.objects.filter(program_id=project_id).exists():
         messages.error(request, "Report does not exist for this program.")
-        return redirect('view_projects') 
-    
+        return redirect('view_projects')
+
     program = get_object_or_404(Program, pk=project_id)
     project_report = Projectreport.objects.get(program_id=project_id)
 
-    template = get_template('admin_dashboard/project_pdf.html')
-    html = template.render({'project_report': project_report, 'program_type': program.type})
-    
-    response = HttpResponse(content_type='application/pdf')
+    html = render_to_string('admin_dashboard/project_pdf.html', {
+        'project_report': project_report,
+        'program_type': program.type
+    })
+
+    options = {
+        'enable-local-file-access': None,  
+        'encoding': 'UTF-8'
+    }
+
+    pdf = pdfkit.from_string(html, False, options=options)
+
+    response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{program.title}-report.pdf"'
-    
-    pisa.CreatePDF(html, dest=response)
     return response
+
 
 
 def edit_project(request, project_id):
