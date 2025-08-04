@@ -1,42 +1,100 @@
+// document.addEventListener("DOMContentLoaded", function () {
+//   const chartElement = document.getElementById("myChart");
+
+//   const labels = JSON.parse(chartElement.dataset.labels.replace(/'/g, '"'));
+//   const data = JSON.parse(chartElement.dataset.values.replace(/'/g, '"'));
+
+//   const ctx = chartElement.getContext("2d");
+
+//   new Chart(ctx, {
+//     type: "bar",
+//     data: {
+//       labels: labels,
+//       datasets: [
+//         {
+//           label: "Yearly Budget",
+//           data: data,
+//           backgroundColor: [
+//             "rgba(75, 192, 192, 0.6)",
+//             "rgba(255, 205, 86, 0.6)",
+//             "rgba(255, 99, 132, 0.6)",
+//             "rgba(54, 162, 235, 0.6)",
+//           ],
+//           borderColor: [
+//             "rgba(75, 192, 192, 1)",
+//             "rgba(255, 205, 86, 1)",
+//             "rgba(255, 99, 132, 1)",
+//             "rgba(54, 162, 235, 1)",
+//           ],
+//           borderWidth: 1,
+//         },
+//       ],
+//     },
+//     options: {
+//       responsive: true,
+//       scales: {
+//         y: {
+//           beginAtZero: true,
+//         },
+//       },
+//     },
+//   });
+// });
+
+
 document.addEventListener("DOMContentLoaded", function () {
-  const chartElement = document.getElementById("myChart");
+  // === Function to create a chart ===
+  function createBarChart(elementId, chartLabel) {
+    const chartElement = document.getElementById(elementId);
+    if (!chartElement) return;
 
-  const labels = JSON.parse(chartElement.dataset.labels.replace(/'/g, '"'));
-  const data = JSON.parse(chartElement.dataset.values.replace(/'/g, '"'));
+    const labels = JSON.parse(chartElement.dataset.labels);
+    const data = JSON.parse(chartElement.dataset.values);
+    const ctx = chartElement.getContext("2d");
 
-  const ctx = chartElement.getContext("2d");
-
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "Yearly Budget",
-          data: data,
-          backgroundColor: [
-            "rgba(75, 192, 192, 0.6)",
-            "rgba(255, 205, 86, 0.6)",
-            "rgba(255, 99, 132, 0.6)",
-            "rgba(54, 162, 235, 0.6)",
-          ],
-          borderColor: [
-            "rgba(75, 192, 192, 1)",
-            "rgba(255, 205, 86, 1)",
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-          ],
-          borderWidth: 1,
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: chartLabel,
+            data: data,
+            backgroundColor: [
+              "rgba(75, 192, 192, 0.6)",
+              "rgba(255, 205, 86, 0.6)",
+              "rgba(255, 99, 132, 0.6)",
+              "rgba(54, 162, 235, 0.6)",
+              "rgba(153, 102, 255, 0.6)",
+              "rgba(255, 159, 64, 0.6)",
+            ],
+            borderColor: [
+              "rgba(75, 192, 192, 1)",
+              "rgba(255, 205, 86, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(153, 102, 255, 1)",
+              "rgba(255, 159, 64, 1)",
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true },
+          tooltip: { enabled: true },
         },
-      ],
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
+        scales: {
+          y: { beginAtZero: true },
         },
       },
-    },
-  });
+    });
+  }
+
+  // === Initialize both charts ===
+  createBarChart("myChart", "Yearly Budget");
+  createBarChart("monthChart", "Month-wise Budget");
 });
+

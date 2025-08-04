@@ -8,6 +8,19 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from django.contrib import messages
 import pdfkit
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
+
+
+# def admin_dashboard(request):
+#     user_id = request.session.get('user_id')
+#     if not user_id:
+#         return redirect('admin_login')
+
+#     admin = get_object_or_404(Pmuadmin, pk=user_id)
+#     budget = Annualbudget.objects.all()
+#     program = Program.objects.all()
+#     return render(request, 'admin_dashboard/admin_dashboard.html', {'budget': budget, 'admin': admin, 'program':program})
 
 
 def admin_dashboard(request):
@@ -17,8 +30,19 @@ def admin_dashboard(request):
 
     admin = get_object_or_404(Pmuadmin, pk=user_id)
     budget = Annualbudget.objects.all()
-    program = Program.objects.all()
-    return render(request, 'admin_dashboard/admin_dashboard.html', {'budget': budget, 'admin': admin, 'program':program})
+
+    monthly_budget = (Program.objects
+                      .annotate(month=TruncMonth('created_at'))
+                      .values('month')
+                      .annotate(total_budget=Sum('program_budget'))
+                      .order_by('month'))
+
+    return render(request, 'admin_dashboard/admin_dashboard.html', {
+        'budget': budget,
+        'admin': admin,
+        'program': Program.objects.all(),
+        'monthly_budget': monthly_budget
+    })
 
 from decimal import Decimal
 

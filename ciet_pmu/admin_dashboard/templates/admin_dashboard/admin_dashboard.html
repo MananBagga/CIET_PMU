@@ -48,6 +48,25 @@
         </canvas>
       </div>
     </div>
+
+
+    <div
+  class="bg-white p-4 sm:p-6 mt-10 sm:mt-16 rounded-2xl shadow-md fade-in w-full overflow-x-auto"
+>
+  <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">
+    Month-wise Budget
+  </h2>
+  <div class="w-full max-w-full">
+    <canvas
+  id="monthChart"
+  data-labels='[{% for m in monthly_budget %}"{{ m.month|date:"F Y" }}"{% if not forloop.last %}, {% endif %}{% endfor %}]'
+  data-values='[{% for m in monthly_budget %}{{ m.total_budget }}{% if not forloop.last %}, {% endif %}{% endfor %}]'
+  class="w-full h-64 sm:h-80 md:h-96">
+</canvas>
+
+  </div>
+</div>
+
   </div>
 </div>
 
