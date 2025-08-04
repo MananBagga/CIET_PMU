@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Sidebar Toggle
     const sidebar = document.getElementById("sidebar");
     const toggle = document.getElementById("sidebarToggle");
     const mainContent = document.getElementById("mainContent");
@@ -13,17 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Mobile Navbar Toggle
     const menuBtn = document.getElementById("menu-toggle");
     const mobileMenu = document.getElementById("mobile-menu");
 
     if (menuBtn && mobileMenu) {
         menuBtn.addEventListener("click", (e) => {
-            e.stopPropagation(); // ✅ prevents outside click from firing
+            e.stopPropagation(); 
             mobileMenu.classList.toggle("hidden");
         });
 
-        // Close menu when clicking outside of it
         document.addEventListener("click", (e) => {
             const isClickInside = mobileMenu.contains(e.target) || menuBtn.contains(e.target);
             if (!isClickInside && !mobileMenu.classList.contains("hidden")) {
@@ -31,4 +28,37 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const rows = document.querySelectorAll(".table-row-item");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    const showAllBtn = document.getElementById("showAllBtn");
+
+    let visibleCount = 5; 
+    function showRows(count) {
+        rows.forEach((row, index) => {
+            row.style.display = index < count ? "" : "none";
+        });
+    }
+
+    showRows(visibleCount);
+
+    loadMoreBtn.addEventListener("click", function () {
+        visibleCount += 5;
+        showRows(visibleCount);
+
+        if (visibleCount >= rows.length) {
+            loadMoreBtn.style.display = "none";
+        }
+    });
+
+    showAllBtn.addEventListener("click", function () {
+        visibleCount = rows.length;
+        showRows(visibleCount);
+        loadMoreBtn.style.display = "none"; 
+    });
 });

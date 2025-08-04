@@ -76,6 +76,7 @@ def projects(request):
         coordinator = request.POST.get("program_coordinator")
         program_budget = request.POST.get('program_budget')
         program_sub_type = request.POST.get('program_sub_type')
+        program_date = request.POST.get('created_at')
         try:
             latest_budget = Annualbudget.objects.latest('year')  
 
@@ -85,7 +86,8 @@ def projects(request):
                 coordinator_id=coordinator,
                 annual_budget_id=latest_budget.id,
                 program_budget=program_budget,
-                program_sub_type=program_sub_type
+                program_sub_type=program_sub_type,
+                created_at = program_date
             )
 
             return redirect('projects')

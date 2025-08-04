@@ -70,6 +70,13 @@
           class="form-input w-full" value="{% if edit_mode %}{{ project.program_budget }}{% endif %}">
       </div>
 
+      <div>
+        <label class="block text-gray-700 mb-1 sm:mb-2 text-sm sm:text-base">Date</label>
+        <input type="date" id="program-date" name="created_at" placeholder="Enter the date"
+          min="0" step="0.01" required
+          class="form-input w-full" value="{% if edit_mode %}{{ project.created_at }}{% endif %}">
+      </div>
+
       <!-- Submit Button -->
       <button type="submit" id="submit"
         class="w-full sm:w-auto px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg 
