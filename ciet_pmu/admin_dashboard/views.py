@@ -172,30 +172,30 @@ def view_projects(request):
         'remaining_budget':remaining_budget,
     })
 
-def export_projects_excel(request):
-    _, _, _, projects, total_used_budget, remaining_budget = helper_filter(request)
+# def export_projects_excel(request):
+#     _, _, _, projects, total_used_budget, remaining_budget = helper_filter(request)
 
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Projects"
+#     wb = Workbook()
+#     ws = wb.active
+#     ws.title = "Projects"
 
-    ws.append(["Title", "Coordinator", "Year", "Created At", "Budget", "Sub-Type"])
-    for p in projects:
-        ws.append([
-            p.title,
-            p.coordinator.username,
-            p.annual_budget.year if p.annual_budget else '',
-            p.created_at.strftime('%Y-%m-%d'),
-            p.program_budget,
-            p.program_sub_type,
-        ])
-    ws.append(["Used Budget", total_used_budget])
-    ws.append(["Remaining Budget", remaining_budget])
+#     ws.append(["Title", "Coordinator", "Year", "Created At", "Budget", "Sub-Type"])
+#     for p in projects:
+#         ws.append([
+#             p.title,
+#             p.coordinator.username,
+#             p.annual_budget.year if p.annual_budget else '',
+#             p.created_at.strftime('%Y-%m-%d'),
+#             p.program_budget,
+#             p.program_sub_type,
+#         ])
+#     ws.append(["Used Budget", total_used_budget])
+#     ws.append(["Remaining Budget", remaining_budget])
 
-    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response["Content-Disposition"] = 'attachment; filename="projects.xlsx"'
-    wb.save(response)
-    return response
+#     response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+#     response["Content-Disposition"] = 'attachment; filename="projects.xlsx"'
+#     wb.save(response)
+#     return response
 
 
 def export_projects_pdf(request, project_id):
